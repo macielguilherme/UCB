@@ -5,97 +5,116 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pasta de Professores · Católica</title>
 
-<!-- Firebase -->
+<!-- Firebase App -->
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
 
-<!-- Google Fonts: Inter + Material Icons -->
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
 <style>
-/* --------------------- VARIÁVEIS E RESET --------------------- */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* ------------------ VARIÁVEIS ------------------ */
 :root {
-  --deep-blue:#0a2e5a; --primary-blue:#004a99; --soft-blue:#e2edf9; --white:#ffffff;
-  --card-shadow:0 18px 30px -10px rgba(0,40,70,0.12),0 4px 12px rgba(0,40,70,0.03);
-  --text-primary:#1e2b3c; --text-soft:#4b5f73;
-  --border-radius-card:24px; --border-radius-img:50%; --overlay-bg:rgba(10,46,90,0.9);
+  --deep-blue: #0a2e5a;
+  --primary-blue: #004a99;
+  --soft-blue: #e2edf9;
+  --white: #ffffff;
+  --card-shadow: 0 18px 30px -10px rgba(0,40,70,0.12),0 4px 12px rgba(0,40,70,0.03);
+  --text-primary: #1e2b3c;
+  --text-soft: #4b5f73;
+  --border-radius-card: 24px;
+  --border-radius-img: 50%;
+  --overlay-bg: rgba(10,46,90,0.9);
 }
-body { background:#f6fafd; font-family:"Inter",system-ui,-apple-system,'Segoe UI',Roboto,sans-serif; color:var(--text-primary); min-height:100vh; display:flex; flex-direction:column; line-height:1.5; }
 
-/* --------------------- HEADER --------------------- */
-header { background:var(--white); padding:1.2rem 5%; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(0,74,153,0.15); box-shadow:0 2px 8px rgba(0,0,0,0.02); position:relative; }
+body {
+  margin:0; padding:0; font-family:"Inter",system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  background:#f6fafd; color:var(--text-primary); line-height:1.5; min-height:100vh; display:flex; flex-direction:column;
+}
+
+/* ------------------ HEADER ------------------ */
+header {
+  background:var(--white); padding:1.2rem 5%; display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid rgba(0,74,153,0.15); box-shadow:0 2px 8px rgba(0,0,0,0.02); position:relative;
+}
 .header-left { display:flex; align-items:center; gap:2rem; }
 .logo { max-height:64px; width:auto; object-fit:contain; }
 h1 { color:var(--deep-blue); font-size:1.9rem; font-weight:600; letter-spacing:-0.02em; border-left:3px solid var(--primary-blue); padding-left:1.5rem; }
 
-/* --------------------- MENU HAMBURGUER --------------------- */
+/* ------------------ MENU HAMBURGUER ------------------ */
 .hamburger-menu { position:relative; }
-.hamburger-button { background:none; border:none; cursor:pointer; padding:0.5rem; display:flex; flex-direction:column; gap:6px; width:40px; height:40px; justify-content:center; border-radius:8px; transition:0.2s; }
-.hamburger-button:hover { background:var(--soft-blue); }
+.hamburger-button {
+  background:none; border:none; cursor:pointer; padding:0.5rem; display:flex; flex-direction:column; gap:6px; width:40px; height:40px;
+  justify-content:center; border-radius:8px; transition:0.2s;
+}
+.hamburger-button:hover { background-color:var(--soft-blue); }
 .hamburger-button span { display:block; width:100%; height:3px; background:var(--deep-blue); border-radius:3px; transition:0.3s; }
-.hamburger-button.active span:nth-child(1) { transform:translateY(9px) rotate(45deg); }
-.hamburger-button.active span:nth-child(2) { opacity:0; }
-.hamburger-button.active span:nth-child(3) { transform:translateY(-9px) rotate(-45deg); }
-.hamburger-dropdown { position:absolute; top:60px; right:0; background:var(--white); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); min-width:200px; opacity:0; visibility:hidden; transform:translateY(-10px); transition:0.3s; z-index:100; border:1px solid rgba(0,74,153,0.1); overflow:hidden; }
-.hamburger-dropdown.active { opacity:1; visibility:visible; transform:translateY(0); }
-.hamburger-dropdown ul { list-style:none; }
-.hamburger-dropdown li { border-bottom:1px solid rgba(0,74,153,0.05); }
-.hamburger-dropdown li:last-child { border-bottom:none; }
-.hamburger-dropdown a { display:flex; align-items:center; gap:12px; padding:14px 20px; color:var(--text-primary); text-decoration:none; font-weight:500; transition:0.2s; }
-.hamburger-dropdown a:hover { background:var(--soft-blue); }
+.hamburger-button.active span:nth-child(1){transform:translateY(9px) rotate(45deg);}
+.hamburger-button.active span:nth-child(2){opacity:0;}
+.hamburger-button.active span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
+.hamburger-dropdown {
+  position:absolute; top:60px; right:0; background:var(--white); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1);
+  min-width:200px; opacity:0; visibility:hidden; transform:translateY(-10px); transition:0.3s; z-index:100; border:1px solid rgba(0,74,153,0.1); overflow:hidden;
+}
+.hamburger-dropdown.active { opacity:1; visibility:visible; transform:translateY(0);}
+.hamburger-dropdown ul { list-style:none; margin:0; padding:0;}
+.hamburger-dropdown li { border-bottom:1px solid rgba(0,74,153,0.05);}
+.hamburger-dropdown li:last-child { border-bottom:none;}
+.hamburger-dropdown a {
+  display:flex; align-items:center; gap:12px; padding:14px 20px; color:var(--text-primary); text-decoration:none; font-weight:500;
+}
+.hamburger-dropdown a:hover { background:var(--soft-blue);}
 .hamburger-dropdown .material-symbols-outlined { color:var(--primary-blue); font-size:20px; }
 
-/* --------------------- MAIN --------------------- */
+/* ------------------ MAIN ------------------ */
 main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
-.professor-grid { display:grid; grid-template-columns:1fr; gap:2rem; }
+.professor-grid { display:grid; grid-template-columns:1fr; gap:2rem;}
 @media(min-width:680px){.professor-grid{grid-template-columns:repeat(2,1fr);}}
 
-/* --------------------- CARDS --------------------- */
-.professor-item { background:var(--white); border-radius:var(--border-radius-card); padding:2rem 1.8rem 1.8rem; display:flex; flex-direction:column; align-items:center; text-align:center; box-shadow:var(--card-shadow); border:1px solid rgba(0,74,153,0.05); height:100%; }
-.prof-img-link { display:block; width:100%; max-width:220px; margin-bottom:1.4rem; cursor:pointer; border-radius:var(--border-radius-img); text-decoration:none; outline:none; }
+/* ------------------ CARD PROFESSOR ------------------ */
+.professor-item {
+  background:var(--white); border-radius:var(--border-radius-card); padding:2rem 1.8rem 1.8rem; display:flex; flex-direction:column;
+  align-items:center; text-align:center; box-shadow:var(--card-shadow); border:1px solid rgba(0,74,153,0.05); height:100%;
+}
+.prof-img-link { display:block; width:100%; max-width:220px; margin-bottom:1.4rem; cursor:pointer; border-radius:var(--border-radius-img); text-decoration:none;}
 .prof-img { width:100%; aspect-ratio:1/1; object-fit:cover; object-position:center top; border-radius:inherit; border:3px solid rgba(0,74,153,0.2); background:var(--white); display:block; pointer-events:none; }
-.prof-title { color:var(--deep-blue); font-size:1.7rem; font-weight:700; line-height:1.2; margin-bottom:0.2rem; letter-spacing:-0.01em; }
-.prof-role { color:var(--primary-blue); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.4rem; background:linear-gradient(to right, transparent,var(--soft-blue),transparent); padding:0.2rem 1.2rem; border-radius:40px; display:inline-block; }
-.prof-subject { color:var(--text-soft); font-size:0.9rem; font-weight:500; background:var(--soft-blue); padding:0.5rem 1.2rem; border-radius:50px; margin:0.8rem 0 1.2rem; border:1px solid rgba(0,74,153,0.1); max-width:90%; }
-.prof-email { display:flex; align-items:center; justify-content:center; gap:0.4rem 0.6rem; font-size:0.95rem; color:var(--text-primary); background:#f6fafe; padding:0.6rem 1.2rem; border-radius:60px; margin:0.5rem 0 1.5rem; border:1px solid rgba(0,74,153,0.08); width:fit-content; max-width:100%; flex-wrap:wrap; }
-.icon-email { font-size:1.3rem; color:var(--primary-blue); }
-.prof-email strong { font-weight:600; color:var(--deep-blue); }
-.btn-contato { background:var(--primary-blue); color:white; text-decoration:none; padding:0.9rem 1.8rem; border-radius:60px; font-weight:600; font-size:1rem; letter-spacing:0.01em; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.2); width:100%; margin-top:auto; box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); transition:0.2s; }
+.prof-title { color:var(--deep-blue); font-size:1.7rem; font-weight:700; line-height:1.2; margin-bottom:0.2rem; letter-spacing:-0.01em;}
+.prof-role { color:var(--primary-blue); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.4rem; background:linear-gradient(to right, transparent, var(--soft-blue), transparent); padding:0.2rem 1.2rem; border-radius:40px; display:inline-block;}
+.prof-subject { color:var(--text-soft); font-size:0.9rem; font-weight:500; background:var(--soft-blue); padding:0.5rem 1.2rem; border-radius:50px; margin:0.8rem 0 1.2rem 0; border:1px solid rgba(0,74,153,0.1); max-width:90%;}
+.prof-subject:empty{display:none;}
+.prof-email { display:flex; align-items:center; justify-content:center; gap:0.4rem 0.6rem; font-size:0.95rem; color:var(--text-primary); background:#f6fafe; padding:0.6rem 1.2rem; border-radius:60px; margin:0.5rem 0 1.5rem 0; border:1px solid rgba(0,74,153,0.08); width:fit-content; flex-wrap:wrap;}
+.icon-email { font-size:1.3rem; color:var(--primary-blue);}
+.prof-email strong { font-weight:600; color:var(--deep-blue);}
+.btn-contato { background:var(--primary-blue); color:#fff; text-decoration:none; padding:0.9rem 1.8rem; border-radius:60px; font-weight:600; font-size:1rem; letter-spacing:0.01em; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.2); width:100%; margin-top:auto; box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); transition:0.2s;}
 .btn-contato:hover { background:#0a3e7a; }
 
-/* --------------------- MODAL --------------------- */
-.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--overlay-bg); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; visibility:hidden; transition:0.3s; backdrop-filter:blur(5px); }
-.modal-overlay.active { opacity:1; visibility:visible; }
-.modal-content { background:var(--white); border-radius:20px; padding:1.5rem; max-width:90vw; max-height:90vh; position:relative; box-shadow:0 30px 50px rgba(0,0,0,0.4); animation:modalAppear 0.3s ease; }
-@keyframes modalAppear { from { transform:scale(0.9); opacity:0; } to { transform:scale(1); opacity:1; } }
+/* ------------------ MODAL ------------------ */
+.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--overlay-bg); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; visibility:hidden; transition:0.3s; backdrop-filter:blur(5px);}
+.modal-overlay.active { opacity:1; visibility:visible;}
+.modal-content { background:var(--white); border-radius:20px; padding:1.5rem; max-width:90vw; max-height:90vh; position:relative; box-shadow:0 30px 50px rgba(0,0,0,0.4); animation:modalAppear 0.3s ease;}
+@keyframes modalAppear { from{transform:scale(0.9);opacity:0;} to{transform:scale(1);opacity:1;} }
 .modal-img { display:block; max-width:100%; max-height:80vh; width:auto; height:auto; object-fit:contain; border-radius:12px; }
-.modal-close { position:absolute; top:0.5rem; right:0.5rem; width:40px; height:40px; border-radius:50%; background:var(--white); border:none; font-size:1.8rem; cursor:pointer; color:var(--deep-blue); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.2s; z-index:1010; }
-.modal-close:hover { background:var(--soft-blue); }
+.modal-close { position:absolute; top:0.5rem; right:0.5rem; width:40px; height:40px; border-radius:50%; background:var(--white); border:none; font-size:1.8rem; line-height:1; cursor:pointer; color:var(--deep-blue); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.2s; z-index:1010; }
+.modal-close:hover{background:var(--soft-blue);}
 
-.prof-subject:empty { display:none; }
+/* ------------------ FOOTER ------------------ */
 .footer-note { text-align:center; margin-top:3rem; color:var(--text-soft); font-size:0.9rem; opacity:0.6; border-top:1px dashed rgba(0,74,153,0.15); padding-top:2rem; }
-@media(max-width:768px){ .header-left{gap:1rem; flex-wrap:wrap;} h1{font-size:1.4rem; padding-left:1rem;} .logo{max-height:50px;} }
-@media(max-width:480px){ .professor-item{padding:1.8rem 1.2rem;} .prof-img-link{max-width:180px;} }
-
 </style>
 </head>
 <body>
 
 <header>
 <div class="header-left">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo Universidade Católica de Brasília" class="logo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo UCB" class="logo">
 <h1>Pasta de Professores · Católica</h1>
 </div>
 
 <div class="hamburger-menu">
-<button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()">
-<span></span><span></span><span></span>
-</button>
+<button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 <div class="hamburger-dropdown" id="hamburgerDropdown">
 <ul>
 <li><a href="#" onclick="handleMenuItemClick('Meu perfil')"><span class="material-symbols-outlined">person</span>Meu perfil</a></li>
@@ -106,13 +125,10 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </header>
 
 <main>
-<div class="professor-grid">
-<!-- CARDS SERÃO CARREGADOS DINAMICAMENTE PELO FIRESTORE -->
-</div>
+<div class="professor-grid"></div>
 <div class="footer-note">docentes comprometidos com a excelência · Católica</div>
 </main>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal(event)">&times;</button>
@@ -124,88 +140,87 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
 <script>
-// --------------------- FIREBASE CONFIG ---------------------
+// ---------------- FIREBASE ----------------
 const firebaseConfig = {
-    apiKey: "SUA_API_KEY",
-    authDomain: "pasta-professores.firebaseapp.com",
-    projectId: "pasta-professores",
-    storageBucket: "pasta-professores.appspot.com",
-    messagingSenderId: "SEU_MESSAGING_SENDER_ID",
-    appId: "SEU_APP_ID"
+  apiKey: "AIzaSyDov8VArwEwHnwKmcuGhuQk5P6az8sjbmY",
+  authDomain: "pasta-professores.firebaseapp.com",
+  projectId: "pasta-professores",
+  storageBucket: "pasta-professores.firebasestorage.app",
+  messagingSenderId: "954397204912",
+  appId: "1:954397204912:web:0a29dc26fd842d4c893675",
+  measurementId: "G-FHENXH8MHV"
 };
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// --------------------- EMAILS AUTORIZADOS ---------------------
+// ---------------- AUTORIZAÇÃO ----------------
 const emailsPermitidos = [
-    "guilherme.ribeiro@sosdocs.com.br",
-    "grupolacostes@gmail.com",
-    "guilherme.maciel@a.ucb.br"
+  "guilherme.ribeiro@sosdocs.com.br",
+  "grupolacostes@gmail.com",
+  "guilherme.maciel@a.ucb.br"
 ];
 
-// --------------------- LOGIN GOOGLE ---------------------
+// ---------------- LOGIN GOOGLE ----------------
 function login() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-    .then(result => {
-        const user = result.user;
-        if (!emailsPermitidos.includes(user.email)) {
-            alert("Você não tem permissão para acessar esta página!");
-            auth.signOut();
-            document.body.innerHTML = "<h2 style='text-align:center;margin-top:3rem;color:red;'>Acesso negado.</h2>";
-            return;
-        }
-        loadProfessores();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider)
+    .then((result)=>{
+      const user = result.user;
+      if(!emailsPermitidos.includes(user.email)){
+        alert("Você não tem permissão!");
+        auth.signOut();
+        document.body.innerHTML = "<h2 style='text-align:center;margin-top:3rem;color:red;'>Acesso negado.</h2>";
+        return;
+      }
+      loadProfessores();
     })
-    .catch(error => console.error("Erro no login:", error));
+    .catch(console.error);
 }
 window.addEventListener('load', login);
 
-// --------------------- CARREGAR PROFESSORES ---------------------
-function loadProfessores() {
-    const grid = document.querySelector(".professor-grid");
-    grid.innerHTML = "";
-    db.collection("professores").get()
-    .then(snapshot => {
-        snapshot.forEach(doc => {
-            const data = doc.data();
-            const card = document.createElement("article");
-            card.className = "professor-item";
-            card.innerHTML = `
-            <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL}','${data.nome}')">
-                <img src="${data.fotoURL}" alt="Professor ${data.nome}" class="prof-img">
-            </a>
-            <h2 class="prof-title">${data.nome}</h2>
-            <span class="prof-role">${data.cargo}</span>
-            <span class="prof-subject">${data.disciplina || ""}</span>
-            <div class="prof-email">
-                <span class="material-symbols-outlined icon-email">mail</span>
-                <strong>E-mail:</strong> ${data.email}
-            </div>
-            <a href="mailto:${data.email}" class="btn-contato">Enviar e-mail</a>
-            `;
-            grid.appendChild(card);
-        });
-        document.querySelectorAll('.prof-subject').forEach(el => { if(!el.textContent.trim()) el.style.display='none'; });
-    })
-    .catch(err => console.error("Erro ao carregar professores:", err));
+// ---------------- CARREGA PROFESSORES ----------------
+function loadProfessores(){
+  const grid = document.querySelector(".professor-grid");
+  grid.innerHTML="";
+  db.collection("professores").get().then(snapshot=>{
+    snapshot.forEach(doc=>{
+      const data = doc.data();
+      const card = document.createElement("article");
+      card.className="professor-item";
+      card.innerHTML=`
+        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL}','${data.nome}')">
+          <img src="${data.fotoURL}" alt="Professor ${data.nome}" class="prof-img">
+        </a>
+        <h2 class="prof-title">${data.nome}</h2>
+        <span class="prof-role">${data.cargo}</span>
+        <span class="prof-subject">${data.disciplina||""}</span>
+        <div class="prof-email">
+          <span class="material-symbols-outlined icon-email">mail</span>
+          <strong>E-mail:</strong> ${data.email}
+        </div>
+        <a href="mailto:${data.email}" class="btn-contato">Enviar e-mail</a>
+      `;
+      grid.appendChild(card);
+    });
+    document.querySelectorAll('.prof-subject').forEach(el=>{if(!el.textContent.trim()) el.style.display='none';});
+  }).catch(console.error);
 }
 
-// --------------------- MENU ---------------------
-function toggleMenu() { const btn = document.getElementById('hamburgerButton'); const dd = document.getElementById('hamburgerDropdown'); btn.classList.toggle('active'); dd.classList.toggle('active'); }
-function handleMenuItemClick(opt){document.getElementById('hamburgerButton').classList.remove('active'); document.getElementById('hamburgerDropdown').classList.remove('active'); alert(`Você clicou em: ${opt}`);}
-document.addEventListener('click', e=>{const btn=document.getElementById('hamburgerButton'); const dd=document.getElementById('hamburgerDropdown'); if(!btn.contains(e.target)&&!dd.contains(e.target)){btn.classList.remove('active'); dd.classList.remove('active');}});
+// ---------------- MENU ----------------
+function toggleMenu(){document.getElementById('hamburgerButton').classList.toggle('active');document.getElementById('hamburgerDropdown').classList.toggle('active');}
+function handleMenuItemClick(option){document.getElementById('hamburgerButton').classList.remove('active');document.getElementById('hamburgerDropdown').classList.remove('active');alert(`Você clicou em: ${option}`);}
+document.addEventListener('click',function(e){const button=document.getElementById('hamburgerButton');const dropdown=document.getElementById('hamburgerDropdown');if(!button.contains(e.target)&&!dropdown.contains(e.target)){button.classList.remove('active');dropdown.classList.remove('active');}});
 
-// --------------------- MODAL ---------------------
-const modalOverlay = document.getElementById('modalOverlay');
-const modalImage = document.getElementById('modalImage');
-function openModal(src,alt){ modalImage.src=src; modalImage.alt=alt||"Foto do professor"; modalOverlay.classList.add('active'); document.body.style.overflow='hidden'; }
-function closeModal(e){ if(e.target===modalOverlay||e.target.classList.contains('modal-close')||e.target===modalImage){ modalOverlay.classList.remove('active'); document.body.style.overflow=''; } }
-document.addEventListener('keydown', e=>{if(e.key==='Escape' && modalOverlay.classList.contains('active')){modalOverlay.classList.remove('active'); document.body.style.overflow='';}});
+// ---------------- MODAL ----------------
+const modalOverlay=document.getElementById('modalOverlay'); const modalImage=document.getElementById('modalImage');
+function openModal(img,alt){modalImage.src=img;modalImage.alt=alt||"Foto do professor";modalOverlay.classList.add("active");document.body.style.overflow="hidden";}
+function closeModal(e){if(e.target===modalOverlay||e.target.classList.contains("modal-close")||e.target===modalImage){modalOverlay.classList.remove("active");document.body.style.overflow="";}}
+document.addEventListener('keydown',function(e){if(e.key==="Escape"&&modalOverlay.classList.contains("active")){modalOverlay.classList.remove("active");document.body.style.overflow="";}});
 
-// --------------------- VLibras ---------------------
+// ---------------- VLibras ----------------
 new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
+
 </body>
 </html>
