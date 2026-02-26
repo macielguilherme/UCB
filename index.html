@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pasta de Professores · Católica</title>
 
-<!-- Firebase App & Auth & Firestore (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
-
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,10 +24,12 @@
   --border-radius-img: 50%;
   --overlay-bg: rgba(10,46,90,0.9);
 }
+
 body {
   margin:0; padding:0; font-family:"Inter",system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
   background:#f6fafd; color:var(--text-primary); line-height:1.5; min-height:100vh; display:flex; flex-direction:column;
 }
+
 header {
   background:var(--white); padding:1.2rem 5%; display:flex; align-items:center; justify-content:space-between;
   border-bottom:1px solid rgba(0,74,153,0.15); box-shadow:0 2px 8px rgba(0,0,0,0.02); position:relative;
@@ -127,8 +124,15 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </div>
 </div>
 
+<!-- VLibras -->
+<div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
+
+<!-- ---------------- FIREBASE ---------------- -->
+<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
+
 <script>
-// ---------------- FIREBASE ----------------
 const firebaseConfig = {
   apiKey: "AIzaSyDov8VArwEwHnwKmcuGhuQk5P6az8sjbmY",
   authDomain: "pasta-professores.firebaseapp.com",
@@ -142,18 +146,16 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ---------------- EMAILS PERMITIDOS ----------------
 const emailsPermitidos = [
   "guilherme.ribeiro@sosdocs.com.br",
   "grupolacostes@gmail.com",
   "guilherme.maciel@a.ucb.br"
 ];
 
-// ---------------- LOGIN GOOGLE ----------------
 function login() {
   const provider = new firebase.auth.GoogleAuthProvider();
   auth.signInWithPopup(provider)
-    .then(result => {
+    .then((result)=>{
       const user = result.user;
       if(!emailsPermitidos.includes(user.email)){
         alert("Você não tem permissão!");
@@ -163,14 +165,10 @@ function login() {
       }
       loadProfessores();
     })
-    .catch(err => {
-      console.error(err);
-      document.body.innerHTML = "<h2 style='text-align:center;margin-top:3rem;color:red;'>Erro no login.</h2>";
-    });
+    .catch(console.error);
 }
 window.addEventListener('load', login);
 
-// ---------------- CARREGA PROFESSORES ----------------
 function loadProfessores(){
   const grid = document.querySelector(".professor-grid");
   grid.innerHTML="";
@@ -198,16 +196,16 @@ function loadProfessores(){
   }).catch(console.error);
 }
 
-// ---------------- MENU ----------------
 function toggleMenu(){document.getElementById('hamburgerButton').classList.toggle('active');document.getElementById('hamburgerDropdown').classList.toggle('active');}
 function handleMenuItemClick(option){document.getElementById('hamburgerButton').classList.remove('active');document.getElementById('hamburgerDropdown').classList.remove('active');alert(`Você clicou em: ${option}`);}
 document.addEventListener('click',function(e){const button=document.getElementById('hamburgerButton');const dropdown=document.getElementById('hamburgerDropdown');if(!button.contains(e.target)&&!dropdown.contains(e.target)){button.classList.remove('active');dropdown.classList.remove('active');}});
 
-// ---------------- MODAL ----------------
 const modalOverlay=document.getElementById('modalOverlay'); const modalImage=document.getElementById('modalImage');
 function openModal(img,alt){modalImage.src=img;modalImage.alt=alt||"Foto do professor";modalOverlay.classList.add("active");document.body.style.overflow="hidden";}
 function closeModal(e){if(e.target===modalOverlay||e.target.classList.contains("modal-close")||e.target===modalImage){modalOverlay.classList.remove("active");document.body.style.overflow="";}}
 document.addEventListener('keydown',function(e){if(e.key==="Escape"&&modalOverlay.classList.contains("active")){modalOverlay.classList.remove("active");document.body.style.overflow="";}});
+
+new window.VLibras.Widget('https://vlibras.gov.br/app');
 </script>
 
 </body>
