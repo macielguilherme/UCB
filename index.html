@@ -76,8 +76,29 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 .prof-role { color:var(--primary-blue); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.4rem; background:linear-gradient(to right, transparent, var(--soft-blue), transparent); padding:0.2rem 1.2rem; border-radius:40px; display:inline-block;}
 .prof-subject { color:var(--text-soft); font-size:0.9rem; font-weight:500; background:var(--soft-blue); padding:0.5rem 1.2rem; border-radius:50px; margin:0.8rem 0 1.2rem 0; border:1px solid rgba(0,74,153,0.1); max-width:90%;}
 .prof-subject:empty{display:none;}
-/* Email completamente removido - não aparece mais */
-.btn-contato { background:var(--primary-blue); color:#fff; text-decoration:none; padding:0.9rem 1.8rem; border-radius:60px; font-weight:600; font-size:1rem; letter-spacing:0.01em; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.2); width:100%; margin-top:auto; box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); transition:0.2s; cursor:default; opacity:0.8; background:#4b5f73;}
+/* Email completamente removido */
+.btn-contato { 
+  background:var(--primary-blue); 
+  color:#fff; 
+  text-decoration:none; 
+  padding:0.9rem 1.8rem; 
+  border-radius:60px; 
+  font-weight:600; 
+  font-size:1rem; 
+  letter-spacing:0.01em; 
+  display:inline-flex; 
+  align-items:center; 
+  justify-content:center; 
+  gap:0.5rem; 
+  border:1px solid rgba(255,255,255,0.2); 
+  width:100%; 
+  margin-top:auto; 
+  box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); 
+  transition:0.2s; 
+  cursor:default; 
+  opacity:0.8; 
+  background:#4b5f73;
+}
 .btn-contato:hover { background:#3a4a5a; }
 
 .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--overlay-bg); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; visibility:hidden; transition:0.3s; backdrop-filter:blur(5px);}
@@ -89,6 +110,21 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 .modal-close:hover{background:var(--soft-blue);}
 
 .footer-note { text-align:center; margin-top:3rem; color:var(--text-soft); font-size:0.9rem; opacity:0.6; border-top:1px dashed rgba(0,74,153,0.15); padding-top:2rem; }
+
+.loading-spinner {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(0,74,153,0.1);
+  border-radius: 50%;
+  border-top-color: var(--primary-blue);
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 </style>
 </head>
 <body>
@@ -111,8 +147,9 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </header>
 
 <main>
-<div class="professor-grid">
+<div class="professor-grid" id="professorGrid">
   <div style="grid-column:1/-1; text-align:center; padding:3rem;">
+    <div class="loading-spinner"></div>
     <p>Carregando professores...</p>
   </div>
 </div>
@@ -129,43 +166,28 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 <!-- VLibras -->
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
-<!-- ---------------- FIREBASE ---------------- -->
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
-
 <script>
-// Configuração do Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyDov8VArwEwHnwKmcuGhuQk5P6az8sjbmY",
-  authDomain: "pasta-professores.firebaseapp.com",
-  projectId: "pasta-professores",
-  storageBucket: "pasta-professores.firebasestorage.app",
-  messagingSenderId: "954397204912",
-  appId: "1:954397204912:web:0a29dc26fd842d4c893675",
-  measurementId: "G-FHENXH8MHV"
-};
+// Configuração do Firestore via REST API
+const projectId = 'pasta-professores';
+const collection = 'professores';
 
-// Função para carregar professores diretamente (sem autenticação)
+// Função para carregar professores usando a API REST do Firestore
 async function carregarProfessores() {
-  const grid = document.querySelector(".professor-grid");
+  const grid = document.getElementById('professorGrid');
   
   try {
-    // Verifica se o Firebase está disponível
-    if (typeof firebase === 'undefined') {
-      throw new Error('Firebase não carregado - possível bloqueio do navegador');
+    // Usa o endpoint REST do Firestore (não precisa de autenticação se as regras permitirem leitura pública)
+    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
+    
+    const response = await fetch(url);
+    
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
     }
-
-    // Inicializa o Firebase se necessário
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
     
-    const db = firebase.firestore();
+    const data = await response.json();
     
-    // Tenta acessar a coleção (as regras do Firestore devem permitir leitura pública)
-    const snapshot = await db.collection("professores").get();
-    
-    if (snapshot.empty) {
+    if (!data.documents || data.documents.length === 0) {
       grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Nenhum professor encontrado.</p>';
       return;
     }
@@ -173,25 +195,36 @@ async function carregarProfessores() {
     // Limpa o grid
     grid.innerHTML = '';
     
-    // Cria os cards
-    snapshot.forEach(doc => {
-      const data = doc.data();
+    // Processa cada documento
+    data.documents.forEach(doc => {
+      const fields = doc.fields || {};
+      
+      // Extrai os campos do formato do Firestore REST
+      const professor = {
+        nome: fields.nome?.stringValue || fields.nome?.stringValue || 'Nome não informado',
+        cargo: fields.cargo?.stringValue || fields.cargo?.stringValue || 'Cargo não informado',
+        disciplina: fields.disciplina?.stringValue || fields.disciplina?.stringValue || '',
+        fotoURL: fields.fotoURL?.stringValue || fields.fotoURL?.stringValue || ''
+      };
       
       const card = document.createElement("article");
       card.className = "professor-item";
       
-      // Cria o card SEM o bloco de email
+      // Escapa aspas simples para não quebrar o HTML
+      const nome = professor.nome.replace(/'/g, "\\'");
+      const fotoURL = professor.fotoURL.replace(/'/g, "\\'");
+      
       card.innerHTML = `
-        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL || ''}','${data.nome || ''}')">
-          <img src="${data.fotoURL || 'https://via.placeholder.com/300?text=Sem+Foto'}" 
-               alt="Professor ${data.nome || ''}" 
+        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${fotoURL}','${nome}')">
+          <img src="${professor.fotoURL || 'https://via.placeholder.com/300?text=Sem+Foto'}" 
+               alt="Professor ${professor.nome}" 
                class="prof-img" 
                onerror="this.src='https://via.placeholder.com/300?text=Sem+Foto'">
         </a>
-        <h2 class="prof-title">${data.nome || 'Nome não informado'}</h2>
-        <span class="prof-role">${data.cargo || 'Cargo não informado'}</span>
-        <span class="prof-subject">${data.disciplina || ''}</span>
-        <!-- EMAIL COMPLETAMENTE REMOVIDO - NÃO APARECE MAIS -->
+        <h2 class="prof-title">${professor.nome}</h2>
+        <span class="prof-role">${professor.cargo}</span>
+        <span class="prof-subject">${professor.disciplina}</span>
+        <!-- EMAIL COMPLETAMENTE REMOVIDO -->
         <a href="#" class="btn-contato" onclick="return false;">Contato institucional</a>
       `;
       
@@ -207,9 +240,9 @@ async function carregarProfessores() {
     console.error("Erro ao carregar professores:", error);
     grid.innerHTML = `
       <div style="grid-column:1/-1; text-align:center; padding:2rem;">
-        <p style="color: #666;">Erro ao carregar professores. Por favor, recarregue a página.</p>
-        <p style="color: #999; font-size:0.9rem;">Se o erro persistir, verifique as configurações de privacidade do navegador.</p>
-        <button onclick="window.location.reload()" style="margin-top:1rem; padding:0.5rem 1.5rem; background:#004a99; color:white; border:none; border-radius:8px; cursor:pointer;">Recarregar</button>
+        <p style="color: #666;">Erro ao carregar professores.</p>
+        <p style="color: #999; font-size:0.9rem;">${error.message}</p>
+        <button onclick="carregarProfessores()" style="margin-top:1rem; padding:0.5rem 1.5rem; background:#004a99; color:white; border:none; border-radius:8px; cursor:pointer;">Tentar novamente</button>
       </div>
     `;
   }
@@ -217,12 +250,8 @@ async function carregarProfessores() {
 
 // Inicia o carregamento quando a página estiver pronta
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("📌 Página carregada, iniciando carregamento dos professores...");
-  
-  // Pequeno delay para garantir que tudo carregou
-  setTimeout(() => {
-    carregarProfessores();
-  }, 1000);
+  console.log("📌 Página carregada, iniciando carregamento via REST API...");
+  carregarProfessores();
 });
 
 // ---------------- MENU ----------------
@@ -252,7 +281,7 @@ const modalImage = document.getElementById('modalImage');
 
 function openModal(imgUrl, altText){
   if (!imgUrl) {
-    console.warn("URL da imagem não fornecida");
+    alert("URL da imagem não disponível");
     return;
   }
   modalImage.src = imgUrl;
@@ -276,16 +305,24 @@ document.addEventListener('keydown', function(e){
 });
 
 // ---------------- VLibras ----------------
-// Inicializa o VLibras se disponível
-window.onload = function() {
-  if (window.VLibras && window.VLibras.Widget) {
-    try {
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
-    } catch (e) {
-      console.log("VLibras não pôde ser inicializado");
+// Carrega o VLibras dinamicamente
+function carregarVLibras() {
+  const script = document.createElement('script');
+  script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+  script.onload = function() {
+    if (window.VLibras && window.VLibras.Widget) {
+      try {
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+      } catch (e) {
+        console.log("VLibras não pôde ser inicializado");
+      }
     }
-  }
-};
+  };
+  document.head.appendChild(script);
+}
+
+// Inicializa VLibras após um pequeno delay
+setTimeout(carregarVLibras, 2000);
 </script>
 
 </body>
