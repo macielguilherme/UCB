@@ -42,15 +42,22 @@
             flex-direction: column;
         }
 
-        /* ----- HEADER ----- */
+        /* ----- HEADER com menu hamburguer ----- */
         header {
             background-color: var(--white);
             padding: 1.2rem 5%;
             display: flex;
             align-items: center;
-            gap: 2rem;
+            justify-content: space-between;
             border-bottom: 1px solid rgba(0, 74, 153, 0.15);
             box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
         }
 
         .logo {
@@ -66,6 +73,108 @@
             letter-spacing: -0.02em;
             border-left: 3px solid var(--primary-blue);
             padding-left: 1.5rem;
+        }
+
+        /* ----- menu hamburguer ----- */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .hamburger-button:hover {
+            background-color: var(--soft-blue);
+        }
+
+        .hamburger-button span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--deep-blue);
+            border-radius: 3px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        /* animação do botão quando aberto */
+        .hamburger-button.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger-button.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-button.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* dropdown menu */
+        .hamburger-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 100;
+            border: 1px solid rgba(0, 74, 153, 0.1);
+            overflow: hidden;
+        }
+
+        .hamburger-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .hamburger-dropdown ul {
+            list-style: none;
+        }
+
+        .hamburger-dropdown li {
+            border-bottom: 1px solid rgba(0, 74, 153, 0.05);
+        }
+
+        .hamburger-dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .hamburger-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-weight: 500;
+        }
+
+        .hamburger-dropdown a:hover {
+            background-color: var(--soft-blue);
+        }
+
+        .hamburger-dropdown .material-symbols-outlined {
+            color: var(--primary-blue);
+            font-size: 20px;
         }
 
         /* main centralizado */
@@ -298,18 +407,23 @@
         }
 
         /* responsivo */
-        @media (max-width: 480px) {
+        @media (max-width: 768px) {
+            .header-left {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
             h1 {
                 font-size: 1.4rem;
                 padding-left: 1rem;
             }
-            header {
-                gap: 1rem;
-                flex-wrap: wrap;
-            }
+            
             .logo {
                 max-height: 50px;
             }
+        }
+
+        @media (max-width: 480px) {
             .professor-item {
                 padding: 1.8rem 1.2rem;
             }
@@ -336,8 +450,35 @@
 <body>
 
     <header>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo Universidade Católica de Brasília" class="logo">
-        <h1>Pasta de Professores · Católica</h1>
+        <div class="header-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo Universidade Católica de Brasília" class="logo">
+            <h1>Pasta de Professores · Católica</h1>
+        </div>
+
+        <!-- Menu Hambúrguer -->
+        <div class="hamburger-menu">
+            <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="hamburger-dropdown" id="hamburgerDropdown">
+                <ul>
+                    <li>
+                        <a href="#" onclick="handleMenuItemClick('Meu perfil')">
+                            <span class="material-symbols-outlined">person</span>
+                            Meu perfil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="handleMenuItemClick('Atividades')">
+                            <span class="material-symbols-outlined">assignment</span>
+                            Atividades
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </header>
 
     <main>
@@ -405,6 +546,39 @@
     </div>
 
     <script>
+        // Menu hamburguer functions
+        function toggleMenu() {
+            const button = document.getElementById('hamburgerButton');
+            const dropdown = document.getElementById('hamburgerDropdown');
+            button.classList.toggle('active');
+            dropdown.classList.toggle('active');
+        }
+
+        function handleMenuItemClick(option) {
+            // Fecha o menu
+            document.getElementById('hamburgerButton').classList.remove('active');
+            document.getElementById('hamburgerDropdown').classList.remove('active');
+            
+            // Aqui você pode adicionar a ação desejada para cada opção
+            console.log(`Clicou em: ${option}`);
+            alert(`Você clicou em: ${option}`);
+            
+            // Exemplo de navegação (descomente se tiver as páginas)
+            // if (option === 'Meu perfil') window.location.href = '/perfil';
+            // if (option === 'Atividades') window.location.href = '/atividades';
+        }
+
+        // Fecha o menu ao clicar fora
+        document.addEventListener('click', function(event) {
+            const button = document.getElementById('hamburgerButton');
+            const dropdown = document.getElementById('hamburgerDropdown');
+            
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                button.classList.remove('active');
+                dropdown.classList.remove('active');
+            }
+        });
+
         // modal functions
         const modalOverlay = document.getElementById('modalOverlay');
         const modalImage = document.getElementById('modalImage');
