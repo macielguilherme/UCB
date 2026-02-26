@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pasta de Professores · Católica</title>
 
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -75,11 +76,9 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 .prof-role { color:var(--primary-blue); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.4rem; background:linear-gradient(to right, transparent, var(--soft-blue), transparent); padding:0.2rem 1.2rem; border-radius:40px; display:inline-block;}
 .prof-subject { color:var(--text-soft); font-size:0.9rem; font-weight:500; background:var(--soft-blue); padding:0.5rem 1.2rem; border-radius:50px; margin:0.8rem 0 1.2rem 0; border:1px solid rgba(0,74,153,0.1); max-width:90%;}
 .prof-subject:empty{display:none;}
-.prof-email { display:flex; align-items:center; justify-content:center; gap:0.4rem 0.6rem; font-size:0.95rem; color:var(--text-primary); background:#f6fafe; padding:0.6rem 1.2rem; border-radius:60px; margin:0.5rem 0 1.5rem 0; border:1px solid rgba(0,74,153,0.08); width:fit-content; flex-wrap:wrap;}
-.icon-email { font-size:1.3rem; color:var(--primary-blue);}
-.prof-email strong { font-weight:600; color:var(--deep-blue);}
-.btn-contato { background:var(--primary-blue); color:#fff; text-decoration:none; padding:0.9rem 1.8rem; border-radius:60px; font-weight:600; font-size:1rem; letter-spacing:0.01em; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.2); width:100%; margin-top:auto; box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); transition:0.2s;}
-.btn-contato:hover { background:#0a3e7a; }
+/* Email completamente removido - não aparece mais */
+.btn-contato { background:var(--primary-blue); color:#fff; text-decoration:none; padding:0.9rem 1.8rem; border-radius:60px; font-weight:600; font-size:1rem; letter-spacing:0.01em; display:inline-flex; align-items:center; justify-content:center; gap:0.5rem; border:1px solid rgba(255,255,255,0.2); width:100%; margin-top:auto; box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); transition:0.2s; cursor:default; opacity:0.8; background:#4b5f73;}
+.btn-contato:hover { background:#3a4a5a; }
 
 .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--overlay-bg); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; visibility:hidden; transition:0.3s; backdrop-filter:blur(5px);}
 .modal-overlay.active { opacity:1; visibility:visible;}
@@ -112,7 +111,11 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </header>
 
 <main>
-<div class="professor-grid"></div>
+<div class="professor-grid">
+  <div style="grid-column:1/-1; text-align:center; padding:3rem;">
+    <p>Carregando professores...</p>
+  </div>
+</div>
 <div class="footer-note">docentes comprometidos com a excelência · Católica</div>
 </main>
 
@@ -123,11 +126,15 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </div>
 </div>
 
+<!-- VLibras -->
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
+<!-- ---------------- FIREBASE ---------------- -->
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
+
 <script>
+// Configuração do Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDov8VArwEwHnwKmcuGhuQk5P6az8sjbmY",
   authDomain: "pasta-professores.firebaseapp.com",
@@ -137,58 +144,148 @@ const firebaseConfig = {
   appId: "1:954397204912:web:0a29dc26fd842d4c893675",
   measurementId: "G-FHENXH8MHV"
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("📌 DOM carregado, buscando professores...");
-  loadProfessores();
-});
-
-// ---------------- CARREGA PROFESSORES ----------------
-function loadProfessores(){
+// Função para carregar professores diretamente (sem autenticação)
+async function carregarProfessores() {
   const grid = document.querySelector(".professor-grid");
-  grid.innerHTML="";
-  db.collection("professores").get().then(snapshot=>{
-    snapshot.forEach(doc=>{
+  
+  try {
+    // Verifica se o Firebase está disponível
+    if (typeof firebase === 'undefined') {
+      throw new Error('Firebase não carregado - possível bloqueio do navegador');
+    }
+
+    // Inicializa o Firebase se necessário
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    
+    const db = firebase.firestore();
+    
+    // Tenta acessar a coleção (as regras do Firestore devem permitir leitura pública)
+    const snapshot = await db.collection("professores").get();
+    
+    if (snapshot.empty) {
+      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Nenhum professor encontrado.</p>';
+      return;
+    }
+
+    // Limpa o grid
+    grid.innerHTML = '';
+    
+    // Cria os cards
+    snapshot.forEach(doc => {
       const data = doc.data();
+      
       const card = document.createElement("article");
-      card.className="professor-item";
-      // Renderização do card sem as seções de e-mail e botão de contato
-      card.innerHTML=`
-        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL}','${data.nome}')">
-          <img src="${data.fotoURL}" alt="Professor ${data.nome}" class="prof-img">
+      card.className = "professor-item";
+      
+      // Cria o card SEM o bloco de email
+      card.innerHTML = `
+        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL || ''}','${data.nome || ''}')">
+          <img src="${data.fotoURL || 'https://via.placeholder.com/300?text=Sem+Foto'}" 
+               alt="Professor ${data.nome || ''}" 
+               class="prof-img" 
+               onerror="this.src='https://via.placeholder.com/300?text=Sem+Foto'">
         </a>
-        <h2 class="prof-title">${data.nome}</h2>
-        <span class="prof-role">${data.cargo}</span>
-        <span class="prof-subject">${data.disciplina||""}</span>
+        <h2 class="prof-title">${data.nome || 'Nome não informado'}</h2>
+        <span class="prof-role">${data.cargo || 'Cargo não informado'}</span>
+        <span class="prof-subject">${data.disciplina || ''}</span>
+        <!-- EMAIL COMPLETAMENTE REMOVIDO - NÃO APARECE MAIS -->
+        <a href="#" class="btn-contato" onclick="return false;">Contato institucional</a>
       `;
+      
       grid.appendChild(card);
     });
-    document.querySelectorAll('.prof-subject').forEach(el=>{if(!el.textContent.trim()) el.style.display='none';});
-  }).catch(console.error);
+    
+    // Esconde disciplinas vazias
+    document.querySelectorAll('.prof-subject').forEach(el => {
+      if (!el.textContent.trim()) el.style.display = 'none';
+    });
+    
+  } catch (error) {
+    console.error("Erro ao carregar professores:", error);
+    grid.innerHTML = `
+      <div style="grid-column:1/-1; text-align:center; padding:2rem;">
+        <p style="color: #666;">Erro ao carregar professores. Por favor, recarregue a página.</p>
+        <p style="color: #999; font-size:0.9rem;">Se o erro persistir, verifique as configurações de privacidade do navegador.</p>
+        <button onclick="window.location.reload()" style="margin-top:1rem; padding:0.5rem 1.5rem; background:#004a99; color:white; border:none; border-radius:8px; cursor:pointer;">Recarregar</button>
+      </div>
+    `;
+  }
 }
 
+// Inicia o carregamento quando a página estiver pronta
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("📌 Página carregada, iniciando carregamento dos professores...");
+  
+  // Pequeno delay para garantir que tudo carregou
+  setTimeout(() => {
+    carregarProfessores();
+  }, 1000);
+});
+
 // ---------------- MENU ----------------
-function toggleMenu(){document.getElementById('hamburgerButton').classList.toggle('active');document.getElementById('hamburgerDropdown').classList.toggle('active');}
-function handleMenuItemClick(option){document.getElementById('hamburgerButton').classList.remove('active');document.getElementById('hamburgerDropdown').classList.remove('active');alert(`Você clicou em: ${option}`);}
-document.addEventListener('click',function(e){const button=document.getElementById('hamburgerButton');const dropdown=document.getElementById('hamburgerDropdown');if(!button.contains(e.target)&&!dropdown.contains(e.target)){button.classList.remove('active');dropdown.classList.remove('active');}});
+function toggleMenu(){
+  document.getElementById('hamburgerButton').classList.toggle('active');
+  document.getElementById('hamburgerDropdown').classList.toggle('active');
+}
+
+function handleMenuItemClick(option){
+  document.getElementById('hamburgerButton').classList.remove('active');
+  document.getElementById('hamburgerDropdown').classList.remove('active');
+  alert(`Você clicou em: ${option}`);
+}
+
+document.addEventListener('click', function(e){
+  const button = document.getElementById('hamburgerButton');
+  const dropdown = document.getElementById('hamburgerDropdown');
+  if (button && dropdown && !button.contains(e.target) && !dropdown.contains(e.target)) {
+    button.classList.remove('active');
+    dropdown.classList.remove('active');
+  }
+});
 
 // ---------------- MODAL ----------------
-const modalOverlay=document.getElementById('modalOverlay'); 
-const modalImage=document.getElementById('modalImage');
-function openModal(img,alt){modalImage.src=img;modalImage.alt=alt||"Foto do professor";modalOverlay.classList.add("active");document.body.style.overflow="hidden";}
-function closeModal(e){if(e.target===modalOverlay||e.target.classList.contains("modal-close")||e.target===modalImage){modalOverlay.classList.remove("active");document.body.style.overflow="";}}
-document.addEventListener('keydown',function(e){if(e.key==="Escape"&&modalOverlay.classList.contains("active")){modalOverlay.classList.remove("active");document.body.style.overflow="";}});
+const modalOverlay = document.getElementById('modalOverlay'); 
+const modalImage = document.getElementById('modalImage');
+
+function openModal(imgUrl, altText){
+  if (!imgUrl) {
+    console.warn("URL da imagem não fornecida");
+    return;
+  }
+  modalImage.src = imgUrl;
+  modalImage.alt = altText || "Foto do professor";
+  modalOverlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeModal(e){
+  if (e.target === modalOverlay || e.target.classList.contains("modal-close") || e.target === modalImage) {
+    modalOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+    modalOverlay.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+});
 
 // ---------------- VLibras ----------------
-// Script de inicialização do VLibras mantido
-let scriptVlibras = document.createElement('script');
-scriptVlibras.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
-scriptVlibras.onload = function() {
-  new window.VLibras.Widget('https://vlibras.gov.br/app');
+// Inicializa o VLibras se disponível
+window.onload = function() {
+  if (window.VLibras && window.VLibras.Widget) {
+    try {
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
+    } catch (e) {
+      console.log("VLibras não pôde ser inicializado");
+    }
+  }
 };
-document.head.appendChild(scriptVlibras);
 </script>
 
 </body>
