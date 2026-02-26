@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pasta de Professores · Católica</title>
 
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -124,14 +123,10 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </div>
 </div>
 
-<!-- VLibras -->
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
-<!-- ---------------- FIREBASE ---------------- -->
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.15.0/firebase-firestore-compat.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyDov8VArwEwHnwKmcuGhuQk5P6az8sjbmY",
@@ -143,24 +138,11 @@ const firebaseConfig = {
   measurementId: "G-FHENXH8MHV"
 };
 firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ---------------- LOGIN GOOGLE ----------------
-function login() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider)
-    .then((result)=>{
-      const user = result.user;
-      console.log("Usuário logado:", user.email);
-      loadProfessores();
-    })
-    .catch(console.error);
-}
-document.addEventListener('DOMContentLoaded', async () => {
-  console.log("📌 DOM carregado, aguardando Firebase...");
-  await new Promise(r => setTimeout(r, 500));
-  login();
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("📌 DOM carregado, buscando professores...");
+  loadProfessores();
 });
 
 // ---------------- CARREGA PROFESSORES ----------------
@@ -172,6 +154,7 @@ function loadProfessores(){
       const data = doc.data();
       const card = document.createElement("article");
       card.className="professor-item";
+      // Renderização do card sem as seções de e-mail e botão de contato
       card.innerHTML=`
         <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${data.fotoURL}','${data.nome}')">
           <img src="${data.fotoURL}" alt="Professor ${data.nome}" class="prof-img">
@@ -179,11 +162,6 @@ function loadProfessores(){
         <h2 class="prof-title">${data.nome}</h2>
         <span class="prof-role">${data.cargo}</span>
         <span class="prof-subject">${data.disciplina||""}</span>
-        <div class="prof-email">
-          <span class="material-symbols-outlined icon-email">mail</span>
-          <strong>E-mail:</strong> ${data.email}
-        </div>
-        <a href="mailto:${data.email}" class="btn-contato">Enviar e-mail</a>
       `;
       grid.appendChild(card);
     });
@@ -204,7 +182,13 @@ function closeModal(e){if(e.target===modalOverlay||e.target.classList.contains("
 document.addEventListener('keydown',function(e){if(e.key==="Escape"&&modalOverlay.classList.contains("active")){modalOverlay.classList.remove("active");document.body.style.overflow="";}});
 
 // ---------------- VLibras ----------------
-new window.VLibras.Widget('https://vlibras.gov.br/app');
+// Script de inicialização do VLibras mantido
+let scriptVlibras = document.createElement('script');
+scriptVlibras.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+scriptVlibras.onload = function() {
+  new window.VLibras.Widget('https://vlibras.gov.br/app');
+};
+document.head.appendChild(scriptVlibras);
 </script>
 
 </body>
