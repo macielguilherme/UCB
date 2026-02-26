@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil · Católica</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <style>
+        /* ----- variáveis (azul católica + branco) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --deep-blue: #0a2e5a;
+            --primary-blue: #004a99;
+            --soft-blue: #e2edf9;
+            --white: #ffffff;
+            --card-shadow: 0 18px 30px -10px rgba(0, 40, 70, 0.12), 0 4px 12px rgba(0, 40, 70, 0.03);
+            --text-primary: #1e2b3c;
+            --text-soft: #4b5f73;
+            --border-radius-card: 24px;
+            --border-radius-img: 50%;
+            --overlay-bg: rgba(10, 46, 90, 0.9);
+        }
+
+        body {
+            background-color: #f6fafd;
+            font-family: "Inter", system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- HEADER com menu hamburguer ----- */
+        header {
+            background-color: var(--white);
+            padding: 1.2rem 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(0, 74, 153, 0.15);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            position: relative;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            max-height: 64px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        h1 {
+            color: var(--deep-blue);
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            border-left: 3px solid var(--primary-blue);
+            padding-left: 1.5rem;
+        }
+
+        /* ----- menu hamburguer ----- */
+        .hamburger-menu {
+            position: relative;
+        }
+
+        .hamburger-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 40px;
+            height: 40px;
+            justify-content: center;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .hamburger-button:hover {
+            background-color: var(--soft-blue);
+        }
+
+        .hamburger-button span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--deep-blue);
+            border-radius: 3px;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .hamburger-button.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .hamburger-button.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-button.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        .hamburger-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s;
+            z-index: 100;
+            border: 1px solid rgba(0, 74, 153, 0.1);
+            overflow: hidden;
+        }
+
+        .hamburger-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .hamburger-dropdown ul {
+            list-style: none;
+        }
+
+        .hamburger-dropdown li {
+            border-bottom: 1px solid rgba(0, 74, 153, 0.05);
+        }
+
+        .hamburger-dropdown li:last-child {
+            border-bottom: none;
+        }
+
+        .hamburger-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            font-weight: 500;
+        }
+
+        .hamburger-dropdown a:hover {
+            background-color: var(--soft-blue);
+        }
+
+        .hamburger-dropdown .material-symbols-outlined {
+            color: var(--primary-blue);
+            font-size: 20px;
+        }
+
+        /* main centralizado - com card ocupando 80% */
+        main {
+            padding: 3rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* ----- PERFIL CARD - OCUPANDO 80% DA LARGURA ----- */
+        .profile-wrapper {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .profile-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius-card);
+            padding: 2.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(0, 74, 153, 0.05);
+            margin-bottom: 2rem;
+            width: 80%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 992px) {
+            .profile-card {
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-card {
+                width: 100%;
+            }
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--soft-blue);
+            overflow: hidden; /* Garante que a imagem não saia do círculo */
+            background-color: var(--soft-blue); /* Fundo caso a imagem falhe */
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajusta a imagem sem distorcer */
+        }
+
+        .profile-title h2 {
+            color: var(--deep-blue);
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.3rem;
+        }
+
+        .profile-title p {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item {
+            background-color: #f8fafc;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 74, 153, 0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 74, 153, 0.08);
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.8rem;
+        }
+
+        .info-label .material-symbols-outlined {
+            font-size: 1.3rem;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            font-weight: 500;
+            word-break: break-word;
+        }
+
+        .info-value.email {
+            color: var(--primary-blue);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            background-color: var(--soft-blue);
+            border-radius: 50px;
+            font-size: 0.95rem;
+        }
+
+        .info-value.email:hover {
+            background-color: #c9ddf2;
+        }
+
+        .links-section {
+            margin-top: 2.5rem;
+        }
+
+        .links-section h3 {
+            color: var(--deep-blue);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            background: linear-gradient(135deg, #f8fafc, #ffffff);
+            border: 1px solid rgba(0, 74, 153, 0.1);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s;
+        }
+
+        .link-card:hover {
+            background: var(--soft-blue);
+            border-color: var(--primary-blue);
+            transform: translateX(5px);
+        }
+
+        .link-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--white);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(0, 74, 153, 0.1);
+            flex-shrink: 0;
+        }
+
+        .link-icon .material-symbols-outlined {
+            font-size: 2rem;
+            color: var(--primary-blue);
+        }
+
+        .link-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .link-title {
+            font-weight: 600;
+            color: var(--deep-blue);
+            margin-bottom: 0.2rem;
+            font-size: 1rem;
+        }
+
+        .link-url {
+            font-size: 0.85rem;
+            color: var(--text-soft);
+            word-break: break-all;
+            line-height: 1.3;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            background-color: var(--soft-blue);
+            transition: all 0.2s;
+            margin-left: 10%;
+        }
+
+        .back-button:hover {
+            background-color: #c9ddf2;
+            transform: translateX(-5px);
+        }
+
+        /* responsivo */
+        @media (max-width: 768px) {
+            .header-left {
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            h1 {
+                font-size: 1.4rem;
+                padding-left: 1rem;
+            }
+            
+            .logo {
+                max-height: 50px;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .profile-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .profile-card {
+                padding: 1.5rem;
+            }
+
+            .back-button {
+                margin-left: 5%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo Universidade Católica de Brasília" class="logo">
+            <h1>Meu Perfil</h1>
+        </div>
+
+        <div class="hamburger-menu">
+            <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="hamburger-dropdown" id="hamburgerDropdown">
+                <ul>
+                    <li>
+                        <a href="#" onclick="handleMenuItemClick('Meu perfil'); return false;" style="background-color: var(--soft-blue);">
+                            <span class="material-symbols-outlined">person</span>
+                            Meu perfil
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" onclick="handleMenuItemClick('Atividades'); return false;">
+                            <span class="material-symbols-outlined">assignment</span>
+                            Atividades
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <a href="javascript:history.back()" class="back-button">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Voltar
+        </a>
+
+        <div class="profile-wrapper">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="https://cdn.bitrix24.com.br/b7533877/resize_cache/1797518/a7fa78f57e73ecbd0b9500a062d0d214/main/8e3/8e33b192d613594ea8861dbb4f32e7ba/avatar.png" alt="Foto de Guilherme Farias Maciel Ribeiro">
+                    </div>
+                    <div class="profile-title">
+                        <h2>GUILHERME FARIAS MACIEL RIBEIRO</h2>
+                        <p>
+                            <span class="material-symbols-outlined">badge</span>
+                            RA: UC26424102
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <span class="material-symbols-outlined">mail</span>
+                            E-mail institucional
+                        </div>
+                        <a href="mailto:guilherme.maciel@a.ucb.br" class="info-value email">
+                            <span class="material-symbols-outlined">mark_email_read</span>
+                            guilherme.maciel@a.ucb.br
+                        </a>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <span class="material-symbols-outlined">qr_code_scanner</span>
+                            Registro Acadêmico (RA)
+                        </div>
+                        <div class="info-value">
+                            <strong>UC26424102</strong>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <span class="material-symbols-outlined">school</span>
+                            Curso
+                        </div>
+                        <div class="info-value">
+                            Engenharia de Software · Bacharelado
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <span class="material-symbols-outlined">check_circle</span>
+                            Status
+                        </div>
+                        <div class="info-value" style="color: #2e7d32;">
+                            <span class="material-symbols-outlined" style="font-size: 1rem;">circle</span>
+                            Matrícula Ativa
+                        </div>
+                    </div>
+                </div>
+
+                <div class="links-section">
+                    <h3>
+                        <span class="material-symbols-outlined">link</span>
+                        Acesso rápido
+                    </h3>
+                    <div class="links-grid">
+                        <a href="https://portalacademico.ubec.edu.br/FrameHTML/Web/App/Edu/PortalEducacional/login/" 
+                           target="_blank" 
+                           class="link-card">
+                            <div class="link-icon">
+                                <span class="material-symbols-outlined">language</span>
+                            </div>
+                            <div class="link-content">
+                                <div class="link-title">Portal do Aluno</div>
+                                <div class="link-url">aluno on-line</div>
+                            </div>
+                            <span class="material-symbols-outlined" style="color: var(--primary-blue);">open_in_new</span>
+                        </a>
+
+                        <a href="https://ava.catolica.edu.br/d2l/home/6682" 
+                           target="_blank" 
+                           class="link-card">
+                            <div class="link-icon">
+                                <span class="material-symbols-outlined">cast_for_education</span>
+                            </div>
+                            <div class="link-content">
+                                <div class="link-title">AVA</div>
+                                <div class="link-url">Ambiente Virtual de Aprendizagem</div>
+                            </div>
+                            <span class="material-symbols-outlined" style="color: var(--primary-blue);">open_in_new</span>
+                        </a>
+
+                        <a href="https://ucb.pergamum.com.br/" 
+                           target="_blank" 
+                           class="link-card">
+                            <div class="link-icon">
+                                <span class="material-symbols-outlined">menu_book</span>
+                            </div>
+                            <div class="link-content">
+                                <div class="link-title">Biblioteca Digital</div>
+                                <div class="link-url">Pergamum · ucb.pergamum.com.br</div>
+                            </div>
+                            <span class="material-symbols-outlined" style="color: var(--primary-blue);">open_in_new</span>
+                        </a>
+
+                        <a href="#" 
+                           class="link-card">
+                            <div class="link-icon">
+                                <span class="material-symbols-outlined">calendar_month</span>
+                            </div>
+                            <div class="link-content">
+                                <div class="link-title">Calendário Acadêmico</div>
+                                <div class="link-url">Datas importantes 2026</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                </div>
+        </div>
+
+    </main>
+
+    <div vw class="enabled">
+        <div vw-access-button class="active"></div>
+        <div vw-plugin-wrapper>
+            <div class="vw-plugin-top-wrapper"></div>
+        </div>
+    </div>
+
+    <script>
+        // Menu hamburguer functions
+        function toggleMenu() {
+            const button = document.getElementById('hamburgerButton');
+            const dropdown = document.getElementById('hamburgerDropdown');
+            button.classList.toggle('active');
+            dropdown.classList.toggle('active');
+        }
+
+        function handleMenuItemClick(option) {
+            // Fecha o menu
+            document.getElementById('hamburgerButton').classList.remove('active');
+            document.getElementById('hamburgerDropdown').classList.remove('active');
+            
+            if (option === 'Meu perfil') {
+                // Já está na página de perfil, apenas mostra mensagem
+                alert('Você já está na página Meu Perfil');
+            } else if (option === 'Atividades') {
+                alert('Página de atividades em desenvolvimento');
+                console.log('Navegar para atividades');
+            }
+        }
+
+        // Fecha o menu ao clicar fora
+        document.addEventListener('click', function(event) {
+            const button = document.getElementById('hamburgerButton');
+            const dropdown = document.getElementById('hamburgerDropdown');
+            
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                button.classList.remove('active');
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // VLibras
+        new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+</body>
+</html>
