@@ -553,77 +553,158 @@
     </div>
 
     <script>
-        // Menu hamburguer functions
-        function toggleMenu() {
-            const button = document.getElementById('hamburgerButton');
-            const dropdown = document.getElementById('hamburgerDropdown');
-            button.classList.toggle('active');
-            dropdown.classList.toggle('active');
-        }
+    // ---------------------------
+    // Firebase Config
+    // ---------------------------
+    // Substitua pelos dados do seu projeto
+    const firebaseConfig = {
+        apiKey: "SUA_API_KEY",
+        authDomain: "pasta-professores.firebaseapp.com",
+        projectId: "pasta-professores",
+        storageBucket: "pasta-professores.appspot.com",
+        messagingSenderId: "SEU_MESSAGING_SENDER_ID",
+        appId: "SEU_APP_ID"
+    };
 
-        function handleMenuItemClick(option) {
-            // Fecha o menu
-            document.getElementById('hamburgerButton').classList.remove('active');
-            document.getElementById('hamburgerDropdown').classList.remove('active');
-            
-            // Aqui você pode adicionar a ação desejada para cada opção
-            console.log(`Clicou em: ${option}`);
-            alert(`Você clicou em: ${option}`);
-            
-            // Exemplo de navegação (descomente se tiver as páginas)
-            // if (option === 'Meu perfil') window.location.href = '/perfil';
-            // if (option === 'Atividades') window.location.href = '/atividades';
-        }
+    // Inicializa Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-        // Fecha o menu ao clicar fora
-        document.addEventListener('click', function(event) {
-            const button = document.getElementById('hamburgerButton');
-            const dropdown = document.getElementById('hamburgerDropdown');
-            
-            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                button.classList.remove('active');
-                dropdown.classList.remove('active');
-            }
-        });
+    const emailsPermitidos = [
+        "guilherme.ribeiro@sosdocs.com.br",
+        "grupolacostes@gmail.com",
+        "guilherme.maciel@a.ucb.br"
+    ];
 
-        // modal functions
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalImage = document.getElementById('modalImage');
+    // ---------------------------
+    // Google Sign-In
+    // ---------------------------
+    function login() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                console.log("Usuário logado:", user.email);
 
-        function openModal(imgSrc, altText) {
-            modalImage.src = imgSrc;
-            modalImage.alt = altText || 'Foto do professor';
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden'; // previne scroll do fundo
-        }
-
-        function closeModal(e) {
-            // se clicar no overlay ou no botão close
-            if (e.target === modalOverlay || e.target.classList.contains('modal-close') || e.target === modalImage) {
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        // fecha com tecla ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-
-        // garantir que disciplina vazia fique oculta
-        (function() {
-            document.querySelectorAll('.prof-subject').forEach(el => {
-                if (!el.textContent.trim()) {
-                    el.style.display = 'none';
+                if (!emailsPermitidos.includes(user.email)) {
+                    alert("Você não tem permissão para acessar esta página!");
+                    auth.signOut();
+                    document.body.innerHTML = "<h2 style='text-align:center;margin-top:3rem;color:red;'>Acesso negado.</h2>";
+                    return;
                 }
-            });
-        })();
 
-        // VLibras
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
+                // Usuário autorizado, carrega os professores
+                loadProfessores();
+            })
+            .catch((error) => {
+                console.error("Erro no login:", error);
+            });
+    }
+
+    // Chama login assim que a página carrega
+    window.addEventListener('load', login);
+
+    // ---------------------------
+    // Carregar professores do Firestore
+    // ---------------------------
+    function loadProfessores() {
+        const grid = document.querySelector(".professor-grid");
+        grid.innerHTML = ""; // limpa antes de preencher
+
+        db.collection("professores").get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const card = document.createElement("article");
+                    card.className = "professor-item";
+
+                    card.innerHTML = `
+                        <a href="javascript:void(0)" 
+                           class="prof-img-link" 
+                           onclick="openModal('${data.fotoURL}', '${data.nome}')">
+                            <img src="${data.fotoURL}" alt="Professor ${data.nome}" class="prof-img">
+                        </a>
+                        <h2 class="prof-title">${data.nome}</h2>
+                        <span class="prof-role">${data.cargo}</span>
+                        <span class="prof-subject">${data.disciplina || ""}</span>
+                        <div class="prof-email">
+                            <span class="material-symbols-outlined icon-email">mail</span>
+                            <strong>E-mail:</strong> ${data.email}
+                        </div>
+                        <a href="mailto:${data.email}" class="btn-contato">Enviar e-mail</a>
+                    `;
+
+                    grid.appendChild(card);
+                });
+
+                // garante que disciplina vazia fique oculta
+                document.querySelectorAll('.prof-subject').forEach(el => {
+                    if (!el.textContent.trim()) el.style.display = 'none';
+                });
+            })
+            .catch((error) => {
+                console.error("Erro ao carregar professores:", error);
+            });
+    }
+
+    // ---------------------------
+    // Menu hamburguer functions
+    // ---------------------------
+    function toggleMenu() {
+        const button = document.getElementById('hamburgerButton');
+        const dropdown = document.getElementById('hamburgerDropdown');
+        button.classList.toggle('active');
+        dropdown.classList.toggle('active');
+    }
+
+    function handleMenuItemClick(option) {
+        document.getElementById('hamburgerButton').classList.remove('active');
+        document.getElementById('hamburgerDropdown').classList.remove('active');
+        console.log(`Clicou em: ${option}`);
+        alert(`Você clicou em: ${option}`);
+    }
+
+    document.addEventListener('click', function(event) {
+        const button = document.getElementById('hamburgerButton');
+        const dropdown = document.getElementById('hamburgerDropdown');
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            button.classList.remove('active');
+            dropdown.classList.remove('active');
+        }
+    });
+
+    // ---------------------------
+    // Modal functions
+    // ---------------------------
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalImage = document.getElementById('modalImage');
+
+    function openModal(imgSrc, altText) {
+        modalImage.src = imgSrc;
+        modalImage.alt = altText || 'Foto do professor';
+        modalOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(e) {
+        if (e.target === modalOverlay || e.target.classList.contains('modal-close') || e.target === modalImage) {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+
+    // ---------------------------
+    // VLibras
+    // ---------------------------
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+</script>
 </body>
 </html>
