@@ -111,6 +111,81 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 
 .footer-note { text-align:center; margin-top:3rem; color:var(--text-soft); font-size:0.9rem; opacity:0.6; border-top:1px dashed rgba(0,74,153,0.15); padding-top:2rem; }
 
+.login-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10,46,90,0.95);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.login-box {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.login-box h2 {
+  color: var(--deep-blue);
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+
+.login-box p {
+  color: var(--text-soft);
+  margin-bottom: 2rem;
+}
+
+.login-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--soft-blue);
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-family: 'Inter', sans-serif;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--primary-blue);
+}
+
+.login-button {
+  background: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s;
+}
+
+.login-button:hover {
+  background: var(--deep-blue);
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
 .loading-spinner {
   display: inline-block;
   width: 50px;
@@ -128,6 +203,17 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 </style>
 </head>
 <body>
+
+<!-- Tela de Login -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-box">
+    <h2>🔐 Acesso Restrito</h2>
+    <p>Digite a senha para acessar a Pasta de Professores</p>
+    <input type="password" id="senhaInput" class="login-input" placeholder="****" maxlength="4" inputmode="numeric" pattern="\d*">
+    <button onclick="verificarSenha()" class="login-button">Entrar</button>
+    <div id="loginError" class="error-message"></div>
+  </div>
+</div>
 
 <header>
 <div class="header-left">
@@ -170,13 +256,48 @@ main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
 // Configuração do Firestore via REST API
 const projectId = 'pasta-professores';
 const collection = 'professores';
+const SENHA_CORRETA = '1511';
+
+// Estado do login
+let estaLogado = false;
+
+// Função para verificar a senha
+function verificarSenha() {
+  const senhaInput = document.getElementById('senhaInput');
+  const errorDiv = document.getElementById('loginError');
+  const senha = senhaInput.value;
+  
+  if (senha === SENHA_CORRETA) {
+    estaLogado = true;
+    document.getElementById('loginOverlay').style.display = 'none';
+    carregarProfessores();
+  } else {
+    errorDiv.textContent = '❌ Senha incorreta. Tente novamente.';
+    senhaInput.value = '';
+    senhaInput.focus();
+  }
+}
+
+// Permitir enviar com Enter
+document.addEventListener('DOMContentLoaded', () => {
+  const senhaInput = document.getElementById('senhaInput');
+  if (senhaInput) {
+    senhaInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        verificarSenha();
+      }
+    });
+  }
+});
 
 // Função para carregar professores usando a API REST do Firestore
 async function carregarProfessores() {
+  if (!estaLogado) return;
+  
   const grid = document.getElementById('professorGrid');
   
   try {
-    // Usa o endpoint REST do Firestore (não precisa de autenticação se as regras permitirem leitura pública)
+    // Usa o endpoint REST do Firestore
     const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
     
     const response = await fetch(url);
@@ -199,7 +320,7 @@ async function carregarProfessores() {
     data.documents.forEach(doc => {
       const fields = doc.fields || {};
       
-      // Extrai os campos do formato do Firestore REST
+      // Extrai os campos
       const professor = {
         nome: fields.nome?.stringValue || fields.nome?.stringValue || 'Nome não informado',
         cargo: fields.cargo?.stringValue || fields.cargo?.stringValue || 'Cargo não informado',
@@ -210,7 +331,7 @@ async function carregarProfessores() {
       const card = document.createElement("article");
       card.className = "professor-item";
       
-      // Escapa aspas simples para não quebrar o HTML
+      // Escapa aspas simples
       const nome = professor.nome.replace(/'/g, "\\'");
       const fotoURL = professor.fotoURL.replace(/'/g, "\\'");
       
@@ -247,12 +368,6 @@ async function carregarProfessores() {
     `;
   }
 }
-
-// Inicia o carregamento quando a página estiver pronta
-document.addEventListener('DOMContentLoaded', () => {
-  console.log("📌 Página carregada, iniciando carregamento via REST API...");
-  carregarProfessores();
-});
 
 // ---------------- MENU ----------------
 function toggleMenu(){
@@ -305,7 +420,6 @@ document.addEventListener('keydown', function(e){
 });
 
 // ---------------- VLibras ----------------
-// Carrega o VLibras dinamicamente
 function carregarVLibras() {
   const script = document.createElement('script');
   script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
