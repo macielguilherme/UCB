@@ -25,17 +25,18 @@
       --transition-speed: 0.25s;
     }
 
+    /* Ajuste 2: Box-sizing universal e reset de margens */
     * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  -webkit-tap-highlight-color: transparent;
-}
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
 
-    /* Trava absoluta contra scroll lateral */
     html, body {
-      max-width: 100vw;
+      max-width: 100%;
       overflow-x: hidden;
+      width: 100%;
     }
 
     body {
@@ -50,17 +51,19 @@
 
     /* === HEADER === */
     header {
-  background: var(--white);
-  padding: 1rem 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 74, 153, 0.08);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
+      background: var(--white); 
+      /* Ajuste 3: Padding interno sem width 100% que cause overflow */
+      padding: 1rem 5%; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(0, 74, 153, 0.08); 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      max-width: 100%;
+    }
 
     .header-left { 
       display: flex; 
@@ -176,6 +179,8 @@
       box-shadow: var(--card-shadow);
       padding: 2rem;
       border: 1px solid rgba(0, 74, 153, 0.05);
+      width: 100%; /* Garante que não ultrapasse */
+      max-width: 100%;
     }
 
     .calendar-header {
@@ -217,6 +222,7 @@
       display: grid; 
       grid-template-columns: repeat(7, 1fr); 
       gap: 8px; 
+      width: 100%;
     }
 
     .weekday {
@@ -268,7 +274,7 @@
     }
 
     /* === ÁREA DE DETALHES === */
-    .details-area { margin-top: 1.5rem; min-height: 120px; }
+    .details-area { margin-top: 1.5rem; min-height: 120px; width: 100%; }
     
     .event-card {
       background: var(--white); 
@@ -280,6 +286,7 @@
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
       border-left: 6px solid var(--primary-blue);
       animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      max-width: 100%;
     }
 
     @keyframes slideUp { 
@@ -331,44 +338,40 @@
       padding: 1.5rem 0; 
     }
 
-    img {
-  max-width: 100%;
-  height: auto;
-}
-
-.calendar-container,
-main {
-  width: 100%;
-  max-width: 100%;
-}
-
     /* ========================================= */
     /* ======= RESPONSIVIDADE (CELULAR) ======== */
     /* ========================================= */
     @media (max-width: 768px) {
-      header { padding: 1rem 1.5rem; }
+      header { padding: 1rem 1rem; }
       
-      .logo { max-height: 40px; }
+      .logo { max-height: 38px; }
       
       h1 { 
-        font-size: 1.1rem; 
-        padding-left: 0.8rem; 
+        font-size: 1rem; 
+        padding-left: 0.6rem; 
         border-left-width: 2px;
       }
 
-      .header-left { gap: 1rem; }
+      .header-left { gap: 0.8rem; }
 
-      main { padding: 1.5rem 1rem; }
+      main { padding: 1rem 0.8rem; }
 
-      .calendar-container { padding: 1.5rem 1rem; border-radius: 24px; }
+      /* Ajuste 4: Calendário otimizado para telas pequenas */
+      .calendar-container { padding: 1.2rem 0.8rem; border-radius: 20px; }
       
-      .calendar-header h2 { font-size: 1.3rem; }
+      .calendar-header h2 { font-size: 1.2rem; }
       
       .calendar-grid { gap: 4px; }
       
-      .calendar-day { font-size: 0.95rem; border-radius: 10px; }
+      .weekday { font-size: 0.7rem; padding: 5px 0; }
+      
+      .calendar-day { 
+        font-size: 0.9rem; /* Previne zoom e cabe em telas 320px */
+        border-radius: 8px; 
+      }
 
-      /* Ajuste do card de evento para celular */
+      .event-dot { width: 4px; height: 4px; bottom: 4px; }
+
       .event-card {
         flex-direction: column;
         align-items: flex-start;
@@ -385,31 +388,23 @@ main {
         width: 100%;
         text-align: left;
       }
-
-      body {
-  overflow-x: hidden;
-}
-
-.calendar-grid {
-  gap: 3px;
-}
-
-.calendar-day {
-  font-size: 0.85rem;
-}
       
       .event-card-date .d { font-size: 1.5rem; }
       .event-card-date .m { margin-top: 0; }
 
-      /* Ajuste menu mobile */
       .hamburger-dropdown {
-        right: 1.5rem;
-        left: 1.5rem;
+        right: 1rem;
+        left: 1rem;
         width: auto;
-        top: 70px;
+        top: 65px;
       }
     }
-    
+
+    /* Ajuste para telas muito pequenas (iPhone SE/320px) */
+    @media (max-width: 340px) {
+      h1 { font-size: 0.9rem; }
+      .calendar-day { font-size: 0.85rem; }
+    }
   </style>
 </head>
 <body>
