@@ -2,7 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Viewport ideal para mobile -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>Calendário Acadêmico · Católica</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,103 +12,106 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 
   <style>
+    /* 🔹 RESET + VARIÁVEIS */
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      margin: 0;
+      padding: 0;
+    }
+
     :root {
       --deep-blue: #0a2e5a;
       --primary-blue: #004a99;
       --soft-blue: #e2edf9;
       --white: #ffffff;
-      --bg-color: #f4f8fb;
+      --bg-gradient: linear-gradient(145deg, #f4f8fb 0%, #e9f0f7 100%);
       --card-shadow: 0 12px 32px -8px rgba(0, 40, 70, 0.1), 0 4px 12px rgba(0, 40, 70, 0.04);
       --text-primary: #1e2b3c;
       --text-soft: #5b6f84;
       --border-radius-card: 28px;
-      --accent-color: #f39c12;
-      --transition-speed: 0.25s;
-    }
-
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
+      --accent-gold: #f39c12;
+      --transition: 0.25s ease;
     }
 
     body {
-      margin: 0; 
-      padding: 0; 
       font-family: "Inter", system-ui, -apple-system, sans-serif;
-      background: linear-gradient(135deg, var(--bg-color) 0%, #e9f0f7 100%);
-      color: var(--text-primary); 
-      line-height: 1.5; 
-      min-height: 100vh; 
-      display: flex; 
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
       flex-direction: column;
     }
 
-    /* === HEADER === */
+    /* === HEADER REFINADO === */
     header {
-      background: var(--white); 
-      padding: 1rem 5%; 
-      display: flex; 
-      align-items: center; 
+      background: var(--white);
+      padding: 1rem 5%;
+      display: flex;
+      align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(0, 74, 153, 0.08); 
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
+      border-bottom: 1px solid rgba(0, 74, 153, 0.08);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
       position: sticky;
       top: 0;
       z-index: 50;
     }
 
-    .header-left { 
-      display: flex; 
-      align-items: center; 
-      gap: 1.5rem; 
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
-    .logo { 
-      max-height: 52px; 
-      width: auto; 
-      object-fit: contain; 
+    .logo {
+      max-height: 52px;
+      width: auto;
+      object-fit: contain;
     }
 
-    h1 { 
-      color: var(--deep-blue); 
-      font-size: 1.5rem; 
-      font-weight: 700; 
-      letter-spacing: -0.02em; 
-      border-left: 3px solid var(--primary-blue); 
-      padding-left: 1.2rem; 
+    h1 {
+      color: var(--deep-blue);
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      border-left: 3px solid var(--primary-blue);
+      padding-left: 1.2rem;
       margin: 0;
+      white-space: nowrap;
     }
 
-    /* === MENU HAMBÚRGUER === */
+    /* === MENU HAMBURGUER (CLICK OUTSIDE FIX) === */
     .hamburger-menu { position: relative; }
-    
+
     .hamburger-button {
-      background: none; 
-      border: none; 
-      cursor: pointer; 
-      padding: 0.5rem; 
-      display: flex; 
-      flex-direction: column; 
-      gap: 5px; 
-      width: 44px; 
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 44px;
       height: 44px;
       align-items: center;
-      justify-content: center; 
-      border-radius: 12px; 
-      transition: var(--transition-speed);
-    }
-    
-    .hamburger-button:hover, .hamburger-button:active { 
-      background-color: var(--soft-blue); 
+      justify-content: center;
+      border-radius: 12px;
+      transition: var(--transition);
     }
 
-    .hamburger-button span { 
-      display: block; 
-      width: 24px; 
-      height: 2.5px; 
-      background: var(--deep-blue); 
-      border-radius: 3px; 
-      transition: var(--transition-speed); 
+    .hamburger-button:hover,
+    .hamburger-button:active {
+      background-color: var(--soft-blue);
+    }
+
+    .hamburger-button span {
+      display: block;
+      width: 24px;
+      height: 2.5px;
+      background: var(--deep-blue);
+      border-radius: 3px;
+      transition: var(--transition);
     }
 
     .hamburger-button.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
@@ -115,63 +119,64 @@
     .hamburger-button.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
     .hamburger-dropdown {
-      position: absolute; 
-      top: 60px; 
-      right: 0; 
-      background: var(--white); 
-      border-radius: 16px; 
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-      min-width: 220px; 
-      opacity: 0; 
-      visibility: hidden; 
-      transform: translateY(-10px); 
-      transition: var(--transition-speed); 
-      z-index: 100; 
-      border: 1px solid rgba(0, 74, 153, 0.08); 
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition: var(--transition);
+      z-index: 100;
+      border: 1px solid rgba(0,74,153,0.08);
       overflow: hidden;
     }
 
-    .hamburger-dropdown.active { 
-      opacity: 1; 
-      visibility: visible; 
+    .hamburger-dropdown.active {
+      opacity: 1;
+      visibility: visible;
       transform: translateY(0);
     }
 
     .hamburger-dropdown ul { list-style: none; margin: 0; padding: 0.5rem; }
-    
-    .hamburger-dropdown a { 
-      display: flex; 
-      align-items: center; 
-      gap: 12px; 
-      padding: 12px 16px; 
-      color: var(--text-primary); 
-      text-decoration: none; 
+
+    .hamburger-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      color: var(--text-primary);
+      text-decoration: none;
       font-weight: 500;
       border-radius: 10px;
-      transition: var(--transition-speed);
+      transition: var(--transition);
     }
 
-    .hamburger-dropdown a:hover, .hamburger-dropdown a:active { 
-      background: var(--soft-blue); 
+    .hamburger-dropdown a:hover,
+    .hamburger-dropdown a:active {
+      background: var(--soft-blue);
       color: var(--primary-blue);
     }
 
     /* === CONTEÚDO PRINCIPAL === */
-    main { 
-      padding: 2rem 5%; 
-      max-width: 800px; 
-      margin: 0 auto; 
-      width: 100%; 
-      flex: 1; 
+    main {
+      padding: 2rem 5%;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
     }
 
-    /* === CALENDÁRIO === */
+    /* === CALENDÁRIO CARD === */
     .calendar-container {
       background: var(--white);
       border-radius: var(--border-radius-card);
       box-shadow: var(--card-shadow);
       padding: 2rem;
-      border: 1px solid rgba(0, 74, 153, 0.05);
+      border: 1px solid rgba(0,74,153,0.05);
     }
 
     .calendar-header {
@@ -181,180 +186,199 @@
       margin-bottom: 1.5rem;
     }
 
-    .calendar-header h2 { 
-      color: var(--deep-blue); 
-      font-size: 1.6rem; 
-      margin: 0; 
-      font-weight: 800; 
-      text-transform: capitalize; 
+    .calendar-header h2 {
+      color: var(--deep-blue);
+      font-size: 1.6rem;
+      margin: 0;
+      font-weight: 800;
+      text-transform: capitalize;
     }
 
     .calendar-nav { display: flex; gap: 0.5rem; }
-    
+
     .nav-btn {
-      background: var(--soft-blue); 
-      border: none; 
+      background: var(--soft-blue);
+      border: none;
       color: var(--primary-blue);
-      width: 44px; 
-      height: 44px; 
-      border-radius: 12px; 
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       cursor: pointer;
-      display: flex; 
-      align-items: center; 
-      justify-content: center; 
-      transition: var(--transition-speed);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
     }
 
-    .nav-btn:hover, .nav-btn:active { 
-      background: var(--primary-blue); 
-      color: var(--white); 
+    .nav-btn:hover,
+    .nav-btn:active {
+      background: var(--primary-blue);
+      color: var(--white);
     }
 
-    .calendar-grid { 
-      display: grid; 
-      grid-template-columns: repeat(7, 1fr); 
-      gap: 8px; 
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
     }
 
     .weekday {
-      text-align: center; 
-      font-weight: 700; 
+      text-align: center;
+      font-weight: 700;
       color: var(--text-soft);
-      padding: 10px 0; 
-      font-size: 0.8rem; 
+      padding: 10px 0;
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
     .calendar-day {
-      aspect-ratio: 1 / 1; 
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
+      aspect-ratio: 1/1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       justify-content: center;
-      border-radius: 14px; 
-      font-weight: 600; 
-      transition: var(--transition-speed); 
+      border-radius: 14px;
+      font-weight: 600;
+      transition: var(--transition);
       cursor: pointer;
-      position: relative; 
+      position: relative;
       font-size: 1.05rem;
       border: 2px solid transparent;
     }
 
-    .calendar-day:hover:not(.empty), .calendar-day:active:not(.empty) { 
-      background-color: var(--soft-blue); 
+    .calendar-day:active:not(.empty) {
+      background-color: var(--soft-blue);
+      transform: scale(0.95);
     }
-    
-    .calendar-day.today { 
-      background-color: var(--primary-blue) !important; 
-      color: white !important; 
-      font-weight: 700; 
-      box-shadow: 0 6px 16px rgba(0, 74, 153, 0.3); 
+
+    .calendar-day.today {
+      background-color: var(--primary-blue) !important;
+      color: white !important;
+      font-weight: 700;
+      box-shadow: 0 6px 16px rgba(0,74,153,0.3);
     }
-    
+
     .calendar-day.empty { cursor: default; }
 
     .event-dot {
-      width: 6px; 
-      height: 6px; 
-      background: var(--accent-color);
-      border-radius: 50%; 
-      position: absolute; 
+      width: 6px;
+      height: 6px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      position: absolute;
       bottom: 6px;
-      box-shadow: 0 2px 4px rgba(243, 156, 18, 0.4);
+      box-shadow: 0 2px 4px rgba(243,156,18,0.4);
     }
 
-    /* === ÁREA DE DETALHES === */
-    .details-area { margin-top: 1.5rem; min-height: 120px; }
-    
+    /* === ÁREA DE DETALHES (FIX ANIMAÇÃO) === */
+    .details-area {
+      margin-top: 1.5rem;
+      min-height: 120px;
+    }
+
     .event-card {
-      background: var(--white); 
-      padding: 1.5rem; 
+      background: var(--white);
+      padding: 1.5rem;
       border-radius: 20px;
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       gap: 1.5rem;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.06);
       border-left: 6px solid var(--primary-blue);
-      animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: slideUp 0.3s cubic-bezier(0.16,1,0.3,1);
     }
 
-    @keyframes slideUp { 
-      from { opacity: 0; transform: translateY(20px); } 
-      to { opacity: 1; transform: translateY(0); } 
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .event-card-date { text-align: center; min-width: 65px; }
-    
-    .event-card-date .d { 
-      font-size: 2rem; 
-      font-weight: 800; 
-      color: var(--primary-blue); 
-      display: block; 
-      line-height: 1; 
+
+    .event-card-date .d {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-blue);
+      display: block;
+      line-height: 1;
     }
-    
-    .event-card-date .m { 
-      font-size: 0.85rem; 
-      font-weight: 700; 
-      text-transform: uppercase; 
-      color: var(--text-soft); 
+
+    .event-card-date .m {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-soft);
       letter-spacing: 0.05em;
       margin-top: 4px;
       display: block;
     }
 
     .event-card-info { flex: 1; }
-    
-    .event-card-info .subject { 
-      font-size: 0.75rem; 
-      font-weight: 700; 
-      color: var(--primary-blue); 
-      background: var(--soft-blue); 
-      padding: 4px 12px; 
+
+    .event-card-info .subject {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+      background: var(--soft-blue);
+      padding: 4px 12px;
       border-radius: 20px;
-      display: inline-block; 
+      display: inline-block;
       margin-bottom: 8px;
     }
-    
-    .event-card-info h3 { margin: 0 0 6px 0; color: var(--deep-blue); font-size: 1.2rem; }
-    .event-card-info p { margin: 0; color: var(--text-soft); font-size: 0.95rem; line-height: 1.5; }
 
-    .footer-note { 
-      text-align: center; 
-      margin-top: 2rem; 
-      color: var(--text-soft); 
-      font-size: 0.85rem; 
-      padding: 1.5rem 0; 
+    .event-card-info h3 {
+      margin: 0 0 6px 0;
+      color: var(--deep-blue);
+      font-size: 1.2rem;
+    }
+
+    .event-card-info p {
+      margin: 0;
+      color: var(--text-soft);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+      padding: 1.5rem 0;
     }
 
     /* ========================================= */
-    /* ======= RESPONSIVIDADE (CELULAR) ======== */
+    /* MOBILE (ATÉ 600px) — OTIMIZADO */
     /* ========================================= */
-    @media (max-width: 768px) {
-      header { padding: 1rem 1.5rem; }
-      
-      .logo { max-height: 40px; }
-      
-      h1 { 
-        font-size: 1.1rem; 
-        padding-left: 0.8rem; 
+    @media (max-width: 600px) {
+      header { padding: 0.75rem 1rem; }
+
+      .logo { max-height: 36px; }
+
+      h1 {
+        font-size: 1rem;
+        padding-left: 0.6rem;
         border-left-width: 2px;
+        white-space: nowrap;
       }
 
-      .header-left { gap: 1rem; }
+      .header-left { gap: 0.75rem; }
 
-      main { padding: 1.5rem 1rem; }
+      main { padding: 1.5rem 0.8rem; }
 
-      .calendar-container { padding: 1.5rem 1rem; border-radius: 24px; }
-      
+      .calendar-container {
+        padding: 1.25rem 0.75rem;
+        border-radius: 24px;
+      }
+
       .calendar-header h2 { font-size: 1.3rem; }
-      
-      .calendar-grid { gap: 4px; }
-      
-      .calendar-day { font-size: 0.95rem; border-radius: 10px; }
 
-      /* Ajuste do card de evento para celular */
+      .calendar-grid { gap: 3px; }
+
+      .calendar-day { font-size: 0.9rem; border-radius: 10px; }
+
+      /* Card de detalhes em coluna */
       .event-card {
         flex-direction: column;
         align-items: flex-start;
@@ -371,16 +395,17 @@
         width: 100%;
         text-align: left;
       }
-      
+
       .event-card-date .d { font-size: 1.5rem; }
       .event-card-date .m { margin-top: 0; }
 
-      /* Ajuste menu mobile */
+      /* Dropdown ocupa melhor a largura em telas pequenas */
       .hamburger-dropdown {
-        right: 1.5rem;
-        left: 1.5rem;
+        right: 0.5rem;
+        left: 0.5rem;
         width: auto;
-        top: 70px;
+        min-width: unset;
+        top: 65px;
       }
     }
   </style>
@@ -399,7 +424,7 @@
     </button>
     <div class="hamburger-dropdown" id="hamburgerDropdown">
       <ul>
-        <li><a href="2.html"><span class="material-symbols-outlined">person</span>Meu perfil</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">person</span>Meu perfil</a></li>
         <li><a href="#"><span class="material-symbols-outlined">assignment</span>Atividades</a></li>
       </ul>
     </div>
@@ -423,29 +448,30 @@
   <div class="footer-note">Fique atento(a) às datas e prazos do Módulo I · Católica</div>
 </main>
 
+<!-- VLibras -->
 <div vw class="enabled">
   <div vw-access-button class="active"></div>
   <div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div>
 </div>
 
 <script>
-// Inicializa no mês e ano atuais do sistema
-let currentDate = new Date(); 
+  // 🔹 Dados e lógica
+  let currentDate = new Date();
 
-const MATERIA = "EXPERIÊNCIA DO USUÁRIO (UX) - GEE39I10089";
+  const MATERIA = "EXPERIÊNCIA DO USUÁRIO (UX) - GEE39I10089";
 
-const trilaEventos = {
-    // FEVEREIRO 2026 (Mês 1 no JS)
+  const trilaEventos = {
+    // Fevereiro 2026 (JS mês 1)
     "20260123": { title: "Início do Módulo I", desc: "Conteúdo disponível no AVA." },
     "20260126": { title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA iniciada." },
-    // MARÇO 2026 (Mês 2 no JS)
+    // Março 2026 (mês 2)
     "20260202": { title: "Abertura da QME – Unidade II", desc: "Atividade no AVA disponível." },
     "20260209": { title: "Abertura da Atividade Aberta - Unidade III", desc: "Atividade disponível." },
     "20260216": { title: "Abertura da QME - Unidade IV", desc: "Atividade disponível." },
     "20260223": { title: "Início do Agendamento", desc: "Início do período de agendamento para provas presenciais." },
     "20260227": { title: "Encerramento de Atividades", desc: "Fim do Fórum (U1) e Atividade Aberta (U3)." },
     "20260229": { title: "Encerramento do Agendamento", desc: "Fim do período de agendamento." },
-    // ABRIL 2026 (Mês 3 no JS)
+    // Abril 2026 (mês 3)
     "20260301": { title: "Encerramento das QMEs", desc: "Fim do prazo para Unidades II e IV." },
     "20260306": { title: "Avaliação Presencial", desc: "Início do período de provas presenciais." },
     "20260312": { title: "Avaliação Presencial", desc: "Fim do período de provas presenciais." },
@@ -454,111 +480,140 @@ const trilaEventos = {
     "20260323": { title: "Avaliação Substitutiva", desc: "Início das provas substitutivas." },
     "20260325": { title: "Avaliação Substitutiva", desc: "Fim das provas substitutivas." },
     "20260330": { title: "Encerramento do Módulo", desc: "Conclusão oficial das atividades do Módulo I." }
-};
+  };
 
-function renderCalendar() {
-  const monthYearElement = document.getElementById('currentMonthYear');
-  const calendarGrid = document.getElementById('calendarGrid');
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  
-  const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-  monthYearElement.innerText = `${monthNames[month]} ${year}`;
-  
-  calendarGrid.innerHTML = '';
-  ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(d => {
-    const div = document.createElement('div');
-    div.className = 'weekday';
-    div.innerText = d;
-    calendarGrid.appendChild(div);
+  function renderCalendar() {
+    const monthYearElement = document.getElementById('currentMonthYear');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    monthYearElement.innerText = `${monthNames[month]} ${year}`;
+
+    calendarGrid.innerHTML = '';
+
+    // Cabeçalho dias da semana
+    ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(d => {
+      const div = document.createElement('div');
+      div.className = 'weekday';
+      div.innerText = d;
+      calendarGrid.appendChild(div);
+    });
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
+
+    // células vazias antes do dia 1
+    for (let i = 0; i < firstDay; i++) {
+      const div = document.createElement('div');
+      div.className = 'calendar-day empty';
+      calendarGrid.appendChild(div);
+    }
+
+    for (let i = 1; i <= lastDate; i++) {
+      const dayDiv = document.createElement('div');
+      dayDiv.className = 'calendar-day';
+      dayDiv.innerHTML = `<span>${i}</span>`;
+
+      const key = `${year}${String(month).padStart(2, '0')}${String(i).padStart(2, '0')}`;
+
+      if (trilaEventos[key]) {
+        const dot = document.createElement('div');
+        dot.className = 'event-dot';
+        dayDiv.appendChild(dot);
+        // Corrigido: passa o nome do mês corretamente
+        dayDiv.onclick = () => showDetails(key, i, monthNames[month]);
+      }
+
+      const realToday = new Date();
+      if (i === realToday.getDate() && month === realToday.getMonth() && year === realToday.getFullYear()) {
+        dayDiv.classList.add('today');
+      }
+
+      calendarGrid.appendChild(dayDiv);
+    }
+  }
+
+  function showDetails(key, day, monthName) {
+    const ev = trilaEventos[key];
+    const area = document.getElementById('detailsArea');
+
+    // 🔹 Força reanimação: limpa e insere com pequeno delay
+    area.innerHTML = '';
+    setTimeout(() => {
+      area.innerHTML = `
+        <div class="event-card">
+          <div class="event-card-date">
+            <span class="d">${day}</span>
+            <span class="m">${monthName.substring(0, 3)}</span>
+          </div>
+          <div class="event-card-info">
+            <span class="subject">${MATERIA}</span>
+            <h3>${ev.title}</h3>
+            <p>${ev.desc}</p>
+          </div>
+        </div>
+      `;
+    }, 20); // pequeno delay para reiniciar animação
+  }
+
+  function prevMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+    resetDetails();
+  }
+
+  function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+    resetDetails();
+  }
+
+  function resetDetails() {
+    document.getElementById('detailsArea').innerHTML = '';
+  }
+
+  function toggleMenu() {
+    document.getElementById('hamburgerButton').classList.toggle('active');
+    document.getElementById('hamburgerDropdown').classList.toggle('active');
+  }
+
+  // 🔹 Fecha o menu ao clicar fora (consistente)
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('hamburgerDropdown');
+    const button = document.getElementById('hamburgerButton');
+    if (!menu.contains(event.target) && !button.contains(event.target)) {
+      menu.classList.remove('active');
+      button.classList.remove('active');
+    }
   });
-  
-  const firstDay = new Date(year, month, 1).getDay();
-  const lastDate = new Date(year, month + 1, 0).getDate();
-  
-  for (let i = 0; i < firstDay; i++) {
-    const div = document.createElement('div');
-    div.className = 'calendar-day empty';
-    calendarGrid.appendChild(div);
+
+  // VLibras
+  function carregarVLibras() {
+    if (window.VLibras) return;
+    const s = document.createElement('script');
+    s.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
+    s.onload = () => new window.VLibras.Widget('https://vlibras.gov.br/app');
+    document.head.appendChild(s);
   }
-  
-  for (let i = 1; i <= lastDate; i++) {
-    const dayDiv = document.createElement('div');
-    dayDiv.className = 'calendar-day';
-    dayDiv.innerHTML = `<span>${i}</span>`;
-    
-    const key = `${year}${String(month).padStart(2, '0')}${String(i).padStart(2, '0')}`;
-    
-    if (trilaEventos[key]) {
-      const dot = document.createElement('div');
-      dot.className = 'event-dot';
-      dayDiv.appendChild(dot);
-      dayDiv.onclick = () => showDetails(key, i, monthNames[month]);
-    }
-    
-    const realToday = new Date();
-    if (i === realToday.getDate() && month === realToday.getMonth() && year === realToday.getFullYear()) {
-      dayDiv.classList.add('today');
-    }
-    
-    calendarGrid.appendChild(dayDiv);
-  }
-}
 
-function showDetails(key, day, monthName) {
-  const ev = trilaEventos[key];
-  const area = document.getElementById('detailsArea');
-  
-  // Limpa a área, força um pequeno delay (setTimeout) e reinsere para que a animação CSS rode novamente
-  area.innerHTML = ''; 
-  setTimeout(() => {
-    area.innerHTML = `
-      <div class="event-card">
-        <div class="event-card-date">
-          <span class="d">${day}</span>
-          <span class="m">${monthName.substring(0,3)}</span>
-        </div>
-        <div class="event-card-info">
-          <span class="subject">${MATERIA}</span>
-          <h3>${ev.title}</h3>
-          <p>${ev.desc}</p>
-        </div>
-      </div>
-    `;
-  }, 10);
-}
+  document.addEventListener('DOMContentLoaded', () => {
+    renderCalendar();
+    setTimeout(carregarVLibras, 1500);
+  });
 
-function prevMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); resetDetails(); }
-function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); resetDetails(); }
-function resetDetails() { document.getElementById('detailsArea').innerHTML = ''; }
-
-function toggleMenu(){
-  document.getElementById('hamburgerButton').classList.toggle('active');
-  document.getElementById('hamburgerDropdown').classList.toggle('active');
-}
-
-// Fecha o menu ao clicar fora dele
-document.addEventListener('click', function(event) {
-  const menu = document.getElementById('hamburgerDropdown');
-  const button = document.getElementById('hamburgerButton');
-  if (!menu.contains(event.target) && !button.contains(event.target)) {
-    menu.classList.remove('active');
-    button.classList.remove('active');
-  }
-});
-
-function carregarVLibras() {
-  const s = document.createElement('script');
-  s.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
-  s.onload = () => new window.VLibras.Widget('https://vlibras.gov.br/app');
-  document.head.appendChild(s);
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderCalendar();
-  setTimeout(carregarVLibras, 1500);
-});
+  // Expor funções globais para os botões HTML
+  window.prevMonth = prevMonth;
+  window.nextMonth = nextMonth;
+  window.toggleMenu = toggleMenu;
 </script>
+
+<!-- Ajuste fino nos ícones do material symbols -->
+<style>
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24; }
+  .nav-btn .material-symbols-outlined { font-size: 1.3rem; }
+</style>
 
 </body>
 </html>
