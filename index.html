@@ -103,7 +103,6 @@ main { padding: 2rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1;
   border-radius: 50%; position: absolute; bottom: 8px;
 }
 
-/* Painel de Detalhes */
 .details-area { margin-top: 2rem; min-height: 120px; }
 .event-card {
   background: white; padding: 1.5rem; border-radius: 20px;
@@ -158,49 +157,47 @@ main { padding: 2rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1;
 <main>
   <div class="calendar-container">
     <div class="calendar-header">
-      <h2 id="currentMonthYear">Fevereiro 2026</h2>
+      <h2 id="currentMonthYear"></h2>
       <div class="calendar-nav">
         <button class="nav-btn" onclick="prevMonth()"><span class="material-symbols-outlined">chevron_left</span></button>
         <button class="nav-btn" onclick="nextMonth()"><span class="material-symbols-outlined">chevron_right</span></button>
       </div>
     </div>
-    
     <div class="calendar-grid" id="calendarGrid"></div>
   </div>
 
-  <div class="details-area" id="detailsArea">
-    </div>
+  <div class="details-area" id="detailsArea"></div>
   
-  <div class="footer-note">docentes comprometidos com a excelência · Católica</div>
+  <div class="footer-note">Fique atento(a) às datas e prazos do Módulo I · Católica</div>
 </main>
 
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
 <script>
-let currentDate = new Date(2026, 1, 1); // Fev 2026
+// Inicializa no mês e ano atuais do sistema
+let currentDate = new Date(); 
 
 const MATERIA = "EXPERIÊNCIA DO USUÁRIO (UX) - GEE39I10089";
 
-// Banco de dados mapeado (Chave: YYYYMMDD onde MM é 00-11)
 const trilaEventos = {
-    // FEVEREIRO 2026
-    "20260123": { title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." },
+    // FEVEREIRO 2026 (Mês 1 no JS)
+    "20260123": { title: "Início do Módulo I", desc: "Conteúdo disponível no AVA." },
     "20260126": { title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA iniciada." },
-    // MARÇO 2026
+    // MARÇO 2026 (Mês 2 no JS)
     "20260202": { title: "Abertura da QME – Unidade II", desc: "Atividade no AVA disponível." },
-    "20260209": { title: "Abertura da Atividade Aberta - Unidade III", desc: "Atividade no AVA disponível." },
-    "20260216": { title: "Abertura da QME - Unidade IV", desc: "Atividade no AVA disponível." },
-    "20260223": { title: "Início do Agendamento", desc: "Início do período de agendamento para as provas presenciais." },
-    "20260227": { title: "Encerramento de Atividades", desc: "Fim do Fórum (Unidade I) e da Atividade Aberta (Unidade III)." },
-    "20260229": { title: "Encerramento do Agendamento", desc: "Fim do período de agendamento para as provas presenciais." },
-    // ABRIL 2026
-    "20260301": { title: "Encerramento das QMEs", desc: "Fim do prazo para as Unidades II e IV no AVA." },
-    "20260306": { title: "Avaliação Presencial", desc: "Início do período para a realização das provas presenciais." },
-    "20260312": { title: "Avaliação Presencial", desc: "Fim do período para a realização das provas presenciais." },
-    "20260317": { title: "Agendamento Substitutiva", desc: "Início do período de agendamento para as provas substitutivas." },
-    "20260319": { title: "Agendamento Substitutiva", desc: "Início do período de agendamento para as provas substitutivas." },
-    "20260323": { title: "Avaliação Substitutiva", desc: "Início do período para realização das provas substitutivas." },
-    "20260325": { title: "Avaliação Substitutiva", desc: "Fim do período para realização das provas substitutivas." },
+    "20260209": { title: "Abertura da Atividade Aberta - Unidade III", desc: "Atividade disponível." },
+    "20260216": { title: "Abertura da QME - Unidade IV", desc: "Atividade disponível." },
+    "20260223": { title: "Início do Agendamento", desc: "Início do período de agendamento para provas presenciais." },
+    "20260227": { title: "Encerramento de Atividades", desc: "Fim do Fórum (U1) e Atividade Aberta (U3)." },
+    "20260229": { title: "Encerramento do Agendamento", desc: "Fim do período de agendamento." },
+    // ABRIL 2026 (Mês 3 no JS)
+    "20260301": { title: "Encerramento das QMEs", desc: "Fim do prazo para Unidades II e IV." },
+    "20260306": { title: "Avaliação Presencial", desc: "Início do período de provas presenciais." },
+    "20260312": { title: "Avaliação Presencial", desc: "Fim do período de provas presenciais." },
+    "20260317": { title: "Agendamento Substitutiva", desc: "Início do agendamento para provas substitutivas." },
+    "20260319": { title: "Fim do Agendamento Sub.", desc: "Fim do agendamento para provas substitutivas." },
+    "20260323": { title: "Avaliação Substitutiva", desc: "Início das provas substitutivas." },
+    "20260325": { title: "Avaliação Substitutiva", desc: "Fim das provas substitutivas." },
     "20260330": { title: "Encerramento do Módulo", desc: "Conclusão oficial das atividades do Módulo I." }
 };
 
@@ -244,8 +241,8 @@ function renderCalendar() {
       dayDiv.onclick = () => showDetails(key, i, monthNames[month]);
     }
     
-    const today = new Date();
-    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+    const realToday = new Date();
+    if (i === realToday.getDate() && month === realToday.getMonth() && year === realToday.getFullYear()) {
       dayDiv.classList.add('today');
     }
     
@@ -274,7 +271,6 @@ function showDetails(key, day, monthName) {
 function prevMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); resetDetails(); }
 function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); resetDetails(); }
 function resetDetails() { document.getElementById('detailsArea').innerHTML = ''; }
-
 function toggleMenu(){
   document.getElementById('hamburgerButton').classList.toggle('active');
   document.getElementById('hamburgerDropdown').classList.toggle('active');
