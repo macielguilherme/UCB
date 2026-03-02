@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendário Acadêmico · Católica</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,11 +26,11 @@
     }
 
     * {
-      
-      -webkit-tap-highlight-color: transparent;
-      margin: 0;
-      padding: 0;
-    }
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
 
     /* Trava absoluta contra scroll lateral */
     html, body {
@@ -50,18 +50,17 @@
 
     /* === HEADER === */
     header {
-      background: var(--white); 
-      padding: 1rem 5%; 
-      display: flex; 
-      align-items: center; 
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(0, 74, 153, 0.08); 
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02); 
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      width: 100%;
-    }
+  background: var(--white);
+  padding: 1rem 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 74, 153, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
 
     .header-left { 
       display: flex; 
@@ -332,6 +331,17 @@
       padding: 1.5rem 0; 
     }
 
+    img {
+  max-width: 100%;
+  height: auto;
+}
+
+.calendar-container,
+main {
+  width: 100%;
+  max-width: 100%;
+}
+
     /* ========================================= */
     /* ======= RESPONSIVIDADE (CELULAR) ======== */
     /* ========================================= */
@@ -375,6 +385,18 @@
         width: 100%;
         text-align: left;
       }
+
+      body {
+  overflow-x: hidden;
+}
+
+.calendar-grid {
+  gap: 3px;
+}
+
+.calendar-day {
+  font-size: 0.85rem;
+}
       
       .event-card-date .d { font-size: 1.5rem; }
       .event-card-date .m { margin-top: 0; }
@@ -387,6 +409,7 @@
         top: 70px;
       }
     }
+    
   </style>
 </head>
 <body>
