@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pasta de Professores · Católica</title>
+<title>Calendário Acadêmico · Católica</title>
 
-<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
@@ -17,368 +16,246 @@
   --primary-blue: #004a99;
   --soft-blue: #e2edf9;
   --white: #ffffff;
-  --card-shadow: 0 18px 30px -10px rgba(0,40,70,0.12),0 4px 12px rgba(0,40,70,0.03);
+  --card-shadow: 0 18px 30px -10px rgba(0,40,70,0.12), 0 4px 12px rgba(0,40,70,0.03);
   --text-primary: #1e2b3c;
   --text-soft: #4b5f73;
   --border-radius-card: 24px;
-  --border-radius-img: 50%;
-  --overlay-bg: rgba(10,46,90,0.9);
 }
 
 body {
-  margin:0; padding:0; font-family:"Inter",system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
-  background:#f6fafd; color:var(--text-primary); line-height:1.5; min-height:100vh; display:flex; flex-direction:column;
+  margin: 0; padding: 0; font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: #f6fafd; color: var(--text-primary); line-height: 1.5; min-height: 100vh; display: flex; flex-direction: column;
 }
 
 header {
-  background:var(--white); padding:1.2rem 5%; display:flex; align-items:center; justify-content:space-between;
-  border-bottom:1px solid rgba(0,74,153,0.15); box-shadow:0 2px 8px rgba(0,0,0,0.02); position:relative;
+  background: var(--white); padding: 1.2rem 5%; display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(0,74,153,0.15); box-shadow: 0 2px 8px rgba(0,0,0,0.02); position: relative;
 }
-.header-left { display:flex; align-items:center; gap:2rem; }
-.logo { max-height:64px; width:auto; object-fit:contain; }
-h1 { color:var(--deep-blue); font-size:1.9rem; font-weight:600; letter-spacing:-0.02em; border-left:3px solid var(--primary-blue); padding-left:1.5rem; }
+.header-left { display: flex; align-items: center; gap: 2rem; }
+.logo { max-height: 64px; width: auto; object-fit: contain; }
+h1 { color: var(--deep-blue); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.02em; border-left: 3px solid var(--primary-blue); padding-left: 1.5rem; }
 
-.hamburger-menu { position:relative; }
+/* Menu Hambúrguer */
+.hamburger-menu { position: relative; }
 .hamburger-button {
-  background:none; border:none; cursor:pointer; padding:0.5rem; display:flex; flex-direction:column; gap:6px; width:40px; height:40px;
-  justify-content:center; border-radius:8px; transition:0.2s;
+  background: none; border: none; cursor: pointer; padding: 0.5rem; display: flex; flex-direction: column; gap: 6px; width: 40px; height: 40px;
+  justify-content: center; border-radius: 8px; transition: 0.2s;
 }
-.hamburger-button:hover { background-color:var(--soft-blue); }
-.hamburger-button span { display:block; width:100%; height:3px; background:var(--deep-blue); border-radius:3px; transition:0.3s; }
+.hamburger-button:hover { background-color: var(--soft-blue); }
+.hamburger-button span { display: block; width: 100%; height: 3px; background: var(--deep-blue); border-radius: 3px; transition: 0.3s; }
 .hamburger-button.active span:nth-child(1){transform:translateY(9px) rotate(45deg);}
 .hamburger-button.active span:nth-child(2){opacity:0;}
 .hamburger-button.active span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
 .hamburger-dropdown {
-  position:absolute; top:60px; right:0; background:var(--white); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1);
-  min-width:200px; opacity:0; visibility:hidden; transform:translateY(-10px); transition:0.3s; z-index:100; border:1px solid rgba(0,74,153,0.1); overflow:hidden;
+  position: absolute; top: 60px; right: 0; background: var(--white); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  min-width: 200px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: 0.3s; z-index: 100; border: 1px solid rgba(0,74,153,0.1); overflow: hidden;
 }
-.hamburger-dropdown.active { opacity:1; visibility:visible; transform:translateY(0);}
-.hamburger-dropdown ul { list-style:none; margin:0; padding:0;}
-.hamburger-dropdown li { border-bottom:1px solid rgba(0,74,153,0.05);}
-.hamburger-dropdown li:last-child { border-bottom:none;}
-.hamburger-dropdown a {
-  display:flex; align-items:center; gap:12px; padding:14px 20px; color:var(--text-primary); text-decoration:none; font-weight:500;
+.hamburger-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0);}
+.hamburger-dropdown ul { list-style: none; margin: 0; padding: 0;}
+.hamburger-dropdown li { border-bottom: 1px solid rgba(0,74,153,0.05);}
+.hamburger-dropdown a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: var(--text-primary); text-decoration: none; font-weight: 500; }
+.hamburger-dropdown a:hover { background: var(--soft-blue);}
+
+main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; }
+
+/* Estilo do Calendário */
+.calendar-container {
+  background: var(--white);
+  border-radius: var(--border-radius-card);
+  box-shadow: var(--card-shadow);
+  padding: 2rem;
+  overflow: hidden;
 }
-.hamburger-dropdown a:hover { background:var(--soft-blue);}
-.hamburger-dropdown .material-symbols-outlined { color:var(--primary-blue); font-size:20px; }
 
-main { padding:3rem 5%; max-width:1300px; margin:0 auto; width:100%; flex:1; }
-.professor-grid { display:grid; grid-template-columns:1fr; gap:2rem;}
-@media(min-width:680px){.professor-grid{grid-template-columns:repeat(2,1fr);}}
-
-.professor-item {
-  background:var(--white); border-radius:var(--border-radius-card); padding:2rem 1.8rem 1.8rem; display:flex; flex-direction:column;
-  align-items:center; text-align:center; box-shadow:var(--card-shadow); border:1px solid rgba(0,74,153,0.05); height:100%;
-}
-.prof-img-link { display:block; width:100%; max-width:220px; margin-bottom:1.4rem; cursor:pointer; border-radius:var(--border-radius-img); text-decoration:none;}
-.prof-img { width:100%; aspect-ratio:1/1; object-fit:cover; object-position:center top; border-radius:inherit; border:3px solid rgba(0,74,153,0.2); background:var(--white); display:block; pointer-events:none; }
-.prof-title { color:var(--deep-blue); font-size:1.7rem; font-weight:700; line-height:1.2; margin-bottom:0.2rem; letter-spacing:-0.01em;}
-.prof-role { color:var(--primary-blue); font-size:1rem; font-weight:600; text-transform:uppercase; letter-spacing:0.03em; margin-bottom:0.4rem; background:linear-gradient(to right, transparent, var(--soft-blue), transparent); padding:0.2rem 1.2rem; border-radius:40px; display:inline-block;}
-.prof-subject { color:var(--text-soft); font-size:0.9rem; font-weight:500; background:var(--soft-blue); padding:0.5rem 1.2rem; border-radius:50px; margin:0.8rem 0 1.2rem 0; border:1px solid rgba(0,74,153,0.1); max-width:90%;}
-.prof-subject:empty{display:none;}
-/* Email completamente removido */
-.btn-contato { 
-  background:var(--primary-blue); 
-  color:#fff; 
-  text-decoration:none; 
-  padding:0.9rem 1.8rem; 
-  border-radius:60px; 
-  font-weight:600; 
-  font-size:1rem; 
-  letter-spacing:0.01em; 
-  display:inline-flex; 
-  align-items:center; 
-  justify-content:center; 
-  gap:0.5rem; 
-  border:1px solid rgba(255,255,255,0.2); 
-  width:100%; 
-  margin-top:auto; 
-  box-shadow:0 6px 14px -6px rgba(0,74,153,0.3); 
-  transition:0.2s; 
-  cursor:default; 
-  opacity:0.8; 
-  background:#4b5f73;
-}
-.btn-contato:hover { background:#3a4a5a; }
-
-.modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--overlay-bg); display:flex; align-items:center; justify-content:center; z-index:1000; opacity:0; visibility:hidden; transition:0.3s; backdrop-filter:blur(5px);}
-.modal-overlay.active { opacity:1; visibility:visible;}
-.modal-content { background:var(--white); border-radius:20px; padding:1.5rem; max-width:90vw; max-height:90vh; position:relative; box-shadow:0 30px 50px rgba(0,0,0,0.4); animation:modalAppear 0.3s ease;}
-@keyframes modalAppear { from{transform:scale(0.9);opacity:0;} to{transform:scale(1);opacity:1;} }
-.modal-img { display:block; max-width:100%; max-height:80vh; width:auto; height:auto; object-fit:contain; border-radius:12px; }
-.modal-close { position:absolute; top:0.5rem; right:0.5rem; width:40px; height:40px; border-radius:50%; background:var(--white); border:none; font-size:1.8rem; line-height:1; cursor:pointer; color:var(--deep-blue); display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.2s; z-index:1010; }
-.modal-close:hover{background:var(--soft-blue);}
-
-.footer-note { text-align:center; margin-top:3rem; color:var(--text-soft); font-size:0.9rem; opacity:0.6; border-top:1px dashed rgba(0,74,153,0.15); padding-top:2rem; }
-
-.login-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(10,46,90,0.95);
-  backdrop-filter: blur(5px);
+.calendar-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 2000;
-}
-
-.login-box {
-  background: white;
-  padding: 2.5rem;
-  border-radius: 24px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  max-width: 400px;
-  width: 90%;
-  text-align: center;
-}
-
-.login-box h2 {
-  color: var(--deep-blue);
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
-}
-
-.login-box p {
-  color: var(--text-soft);
+  justify-content: space-between;
   margin-bottom: 2rem;
 }
 
-.login-input {
-  width: 100%;
-  padding: 1rem;
-  border: 2px solid var(--soft-blue);
-  border-radius: 12px;
-  font-size: 1.2rem;
-  font-family: 'Inter', sans-serif;
-  margin-bottom: 1.5rem;
-  text-align: center;
-  letter-spacing: 4px;
+.calendar-header h2 {
+  color: var(--deep-blue);
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: 700;
 }
 
-.login-input:focus {
-  outline: none;
-  border-color: var(--primary-blue);
+.calendar-nav {
+  display: flex;
+  gap: 1rem;
 }
 
-.login-button {
-  background: var(--primary-blue);
-  color: white;
+.nav-btn {
+  background: var(--soft-blue);
   border: none;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  color: var(--primary-blue);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   cursor: pointer;
-  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.2s;
 }
 
-.login-button:hover {
-  background: var(--deep-blue);
+.nav-btn:hover {
+  background: var(--primary-blue);
+  color: var(--white);
 }
 
-.error-message {
-  color: #d32f2f;
-  margin-top: 1rem;
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 700;
+  color: var(--primary-blue);
+  padding: 10px 0;
   font-size: 0.9rem;
+  text-transform: uppercase;
 }
 
-.loading-spinner {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  border: 3px solid rgba(0,74,153,0.1);
-  border-radius: 50%;
-  border-top-color: var(--primary-blue);
-  animation: spin 1s ease-in-out infinite;
-  margin-bottom: 1rem;
+.calendar-day {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: 0.2s;
+  cursor: pointer;
+  border: 1px solid transparent;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.calendar-day:hover:not(.empty) {
+  background-color: var(--soft-blue);
+  color: var(--primary-blue);
+}
+
+.calendar-day.today {
+  background-color: var(--primary-blue) !important;
+  color: var(--white) !important;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(0, 74, 153, 0.3);
+}
+
+.calendar-day.empty {
+  cursor: default;
+}
+
+.footer-note { text-align: center; margin-top: 3rem; color: var(--text-soft); font-size: 0.9rem; opacity: 0.6; border-top: 1px dashed rgba(0,74,153,0.15); padding-top: 2rem; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.4rem; padding-left: 1rem; }
+  .calendar-container { padding: 1rem; }
+  .calendar-day { font-size: 0.9rem; }
 }
 </style>
 </head>
 <body>
 
-<!-- Tela de Login -->
-<div id="loginOverlay" class="login-overlay">
-  <div class="login-box">
-    <h2>🔐 Acesso Restrito</h2>
-    <p>Digite a senha para acessar a Pasta de Professores</p>
-    <input type="password" id="senhaInput" class="login-input" placeholder="****" maxlength="4" inputmode="numeric" pattern="\d*">
-    <button onclick="verificarSenha()" class="login-button">Entrar</button>
-    <div id="loginError" class="error-message"></div>
-  </div>
-</div>
-
 <header>
-<div class="header-left">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo UCB" class="logo">
-<h1>Pasta de Professores · Católica</h1>
-</div>
+  <div class="header-left">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" alt="Logo UCB" class="logo">
+    <h1>Calendário Acadêmico · Católica</h1>
+  </div>
 
-<div class="hamburger-menu">
-<button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-<div class="hamburger-dropdown" id="hamburgerDropdown">
-<ul>
-<li><a href="#" onclick="handleMenuItemClick('Meu perfil')"><span class="material-symbols-outlined">person</span>Meu perfil</a></li>
-<li><a href="#" onclick="handleMenuItemClick('Atividades')"><span class="material-symbols-outlined">assignment</span>Atividades</a></li>
-</ul>
-</div>
-</div>
+  <div class="hamburger-menu">
+    <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <div class="hamburger-dropdown" id="hamburgerDropdown">
+      <ul>
+        <li><a href="#"><span class="material-symbols-outlined">event</span>Eventos</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">description</span>Editais</a></li>
+      </ul>
+    </div>
+  </div>
 </header>
 
 <main>
-<div class="professor-grid" id="professorGrid">
-  <div style="grid-column:1/-1; text-align:center; padding:3rem;">
-    <div class="loading-spinner"></div>
-    <p>Carregando professores...</p>
+  <div class="calendar-container">
+    <div class="calendar-header">
+      <h2 id="currentMonthYear">Janeiro 2024</h2>
+      <div class="calendar-nav">
+        <button class="nav-btn" onclick="prevMonth()"><span class="material-symbols-outlined">chevron_left</span></button>
+        <button class="nav-btn" onclick="nextMonth()"><span class="material-symbols-outlined">chevron_right</span></button>
+      </div>
+    </div>
+    
+    <div class="calendar-grid" id="calendarGrid">
+      </div>
   </div>
-</div>
-<div class="footer-note">docentes comprometidos com a excelência · Católica</div>
+  
+  <div class="footer-note">planejamento e organização para o seu sucesso acadêmico · Católica</div>
 </main>
 
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-<div class="modal-content">
-<button class="modal-close" onclick="closeModal(event)">&times;</button>
-<img src="" alt="" class="modal-img" id="modalImage">
-</div>
-</div>
-
-<!-- VLibras -->
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
 <script>
-// Configuração do Firestore via REST API
-const projectId = 'pasta-professores';
-const collection = 'professores';
-const SENHA_CORRETA = '1511';
+let date = new Date();
 
-// Estado do login
-let estaLogado = false;
-
-// Função para verificar a senha
-function verificarSenha() {
-  const senhaInput = document.getElementById('senhaInput');
-  const errorDiv = document.getElementById('loginError');
-  const senha = senhaInput.value;
+function renderCalendar() {
+  const monthYearElement = document.getElementById('currentMonthYear');
+  const calendarGrid = document.getElementById('calendarGrid');
   
-  if (senha === SENHA_CORRETA) {
-    estaLogado = true;
-    document.getElementById('loginOverlay').style.display = 'none';
-    carregarProfessores();
-  } else {
-    errorDiv.textContent = '❌ Senha incorreta. Tente novamente.';
-    senhaInput.value = '';
-    senhaInput.focus();
+  const currentYear = date.getFullYear();
+  const currentMonth = date.getMonth();
+  
+  const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  monthYearElement.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+  
+  calendarGrid.innerHTML = '';
+  
+  const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  daysOfWeek.forEach(day => {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'weekday';
+    dayDiv.innerText = day;
+    calendarGrid.appendChild(dayDiv);
+  });
+  
+  const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
+  const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+  
+  for (let i = 0; i < firstDayIndex; i++) {
+    const emptyDiv = document.createElement('div');
+    emptyDiv.className = 'calendar-day empty';
+    calendarGrid.appendChild(emptyDiv);
+  }
+  
+  const today = new Date();
+  
+  for (let i = 1; i <= lastDay; i++) {
+    const dayDiv = document.createElement('div');
+    dayDiv.className = 'calendar-day';
+    dayDiv.innerText = i;
+    
+    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+      dayDiv.classList.add('today');
+    }
+    
+    calendarGrid.appendChild(dayDiv);
   }
 }
 
-// Permitir enviar com Enter
-document.addEventListener('DOMContentLoaded', () => {
-  const senhaInput = document.getElementById('senhaInput');
-  if (senhaInput) {
-    senhaInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        verificarSenha();
-      }
-    });
-  }
-});
-
-// Função para carregar professores usando a API REST do Firestore
-async function carregarProfessores() {
-  if (!estaLogado) return;
-  
-  const grid = document.getElementById('professorGrid');
-  
-  try {
-    // Usa o endpoint REST do Firestore
-    const url = `https://firestore.googleapis.com/v1/projects/${projectId}/databases/(default)/documents/${collection}`;
-    
-    const response = await fetch(url);
-    
-    if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    if (!data.documents || data.documents.length === 0) {
-      grid.innerHTML = '<p style="grid-column:1/-1; text-align:center;">Nenhum professor encontrado.</p>';
-      return;
-    }
-
-    // Limpa o grid
-    grid.innerHTML = '';
-    
-    // Processa cada documento
-    data.documents.forEach(doc => {
-      const fields = doc.fields || {};
-      
-      // Extrai os campos
-      const professor = {
-        nome: fields.nome?.stringValue || fields.nome?.stringValue || 'Nome não informado',
-        cargo: fields.cargo?.stringValue || fields.cargo?.stringValue || 'Cargo não informado',
-        disciplina: fields.disciplina?.stringValue || fields.disciplina?.stringValue || '',
-        fotoURL: fields.fotoURL?.stringValue || fields.fotoURL?.stringValue || ''
-      };
-      
-      const card = document.createElement("article");
-      card.className = "professor-item";
-      
-      // Escapa aspas simples
-      const nome = professor.nome.replace(/'/g, "\\'");
-      const fotoURL = professor.fotoURL.replace(/'/g, "\\'");
-      
-      card.innerHTML = `
-        <a href="javascript:void(0)" class="prof-img-link" onclick="openModal('${fotoURL}','${nome}')">
-          <img src="${professor.fotoURL || 'https://via.placeholder.com/300?text=Sem+Foto'}" 
-               alt="Professor ${professor.nome}" 
-               class="prof-img" 
-               onerror="this.src='https://via.placeholder.com/300?text=Sem+Foto'">
-        </a>
-        <h2 class="prof-title">${professor.nome}</h2>
-        <span class="prof-role">${professor.cargo}</span>
-        <span class="prof-subject">${professor.disciplina}</span>
-        <!-- EMAIL COMPLETAMENTE REMOVIDO -->
-        <a href="#" class="btn-contato" onclick="return false;">Contato institucional</a>
-      `;
-      
-      grid.appendChild(card);
-    });
-    
-    // Esconde disciplinas vazias
-    document.querySelectorAll('.prof-subject').forEach(el => {
-      if (!el.textContent.trim()) el.style.display = 'none';
-    });
-    
-  } catch (error) {
-    console.error("Erro ao carregar professores:", error);
-    grid.innerHTML = `
-      <div style="grid-column:1/-1; text-align:center; padding:2rem;">
-        <p style="color: #666;">Erro ao carregar professores.</p>
-        <p style="color: #999; font-size:0.9rem;">${error.message}</p>
-        <button onclick="carregarProfessores()" style="margin-top:1rem; padding:0.5rem 1.5rem; background:#004a99; color:white; border:none; border-radius:8px; cursor:pointer;">Tentar novamente</button>
-      </div>
-    `;
-  }
+function prevMonth() {
+  date.setMonth(date.getMonth() - 1);
+  renderCalendar();
 }
 
-// ---------------- MENU ----------------
+function nextMonth() {
+  date.setMonth(date.getMonth() + 1);
+  renderCalendar();
+}
+
+// Menu Toggle
 function toggleMenu(){
   document.getElementById('hamburgerButton').classList.toggle('active');
   document.getElementById('hamburgerDropdown').classList.toggle('active');
-}
-
-function handleMenuItemClick(option){
-  document.getElementById('hamburgerButton').classList.remove('active');
-  document.getElementById('hamburgerDropdown').classList.remove('active');
-  alert(`Você clicou em: ${option}`);
 }
 
 document.addEventListener('click', function(e){
@@ -390,53 +267,20 @@ document.addEventListener('click', function(e){
   }
 });
 
-// ---------------- MODAL ----------------
-const modalOverlay = document.getElementById('modalOverlay'); 
-const modalImage = document.getElementById('modalImage');
-
-function openModal(imgUrl, altText){
-  if (!imgUrl) {
-    alert("URL da imagem não disponível");
-    return;
-  }
-  modalImage.src = imgUrl;
-  modalImage.alt = altText || "Foto do professor";
-  modalOverlay.classList.add("active");
-  document.body.style.overflow = "hidden";
-}
-
-function closeModal(e){
-  if (e.target === modalOverlay || e.target.classList.contains("modal-close") || e.target === modalImage) {
-    modalOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-}
-
-document.addEventListener('keydown', function(e){
-  if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
-    modalOverlay.classList.remove("active");
-    document.body.style.overflow = "";
-  }
-});
-
-// ---------------- VLibras ----------------
+// VLibras
 function carregarVLibras() {
   const script = document.createElement('script');
   script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
   script.onload = function() {
-    if (window.VLibras && window.VLibras.Widget) {
-      try {
-        new window.VLibras.Widget('https://vlibras.gov.br/app');
-      } catch (e) {
-        console.log("VLibras não pôde ser inicializado");
-      }
-    }
+    if (window.VLibras) new window.VLibras.Widget('https://vlibras.gov.br/app');
   };
   document.head.appendChild(script);
 }
 
-// Inicializa VLibras após um pequeno delay
-setTimeout(carregarVLibras, 2000);
+document.addEventListener('DOMContentLoaded', () => {
+  renderCalendar();
+  setTimeout(carregarVLibras, 2000);
+});
 </script>
 
 </body>
