@@ -46,78 +46,84 @@ h1 { color: var(--deep-blue); font-size: 1.9rem; font-weight: 600; letter-spacin
 .hamburger-button.active span:nth-child(1){transform:translateY(9px) rotate(45deg);}
 .hamburger-button.active span:nth-child(2){opacity:0;}
 .hamburger-button.active span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
+
 .hamburger-dropdown {
   position: absolute; top: 60px; right: 0; background: var(--white); border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-  min-width: 200px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: 0.3s; z-index: 100; border: 1px solid rgba(0,74,153,0.1); overflow: hidden;
+  min-width: 220px; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: 0.3s; z-index: 100; border: 1px solid rgba(0,74,153,0.1); overflow: hidden;
 }
 .hamburger-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0);}
 .hamburger-dropdown ul { list-style: none; margin: 0; padding: 0;}
 .hamburger-dropdown li { border-bottom: 1px solid rgba(0,74,153,0.05);}
-.hamburger-dropdown a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: var(--text-primary); text-decoration: none; font-weight: 500; }
-.hamburger-dropdown a:hover { background: var(--soft-blue);}
+.hamburger-dropdown li:last-child { border-bottom: none; }
+.hamburger-dropdown a { 
+  display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: var(--text-primary); 
+  text-decoration: none; font-weight: 500; transition: background 0.2s;
+}
+.hamburger-dropdown a:hover { background: var(--soft-blue); color: var(--primary-blue); }
+.hamburger-dropdown .material-symbols-outlined { color: var(--primary-blue); font-size: 22px; }
 
-main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1; }
+main { padding: 3rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1; }
 
-/* Estilo do Calendário */
+/* Calendário */
 .calendar-container {
   background: var(--white);
   border-radius: var(--border-radius-card);
   box-shadow: var(--card-shadow);
-  padding: 2rem;
-  overflow: hidden;
+  padding: 2.5rem;
+  border: 1px solid rgba(0,74,153,0.05);
 }
 
 .calendar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .calendar-header h2 {
   color: var(--deep-blue);
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   margin: 0;
   font-weight: 700;
+  text-transform: capitalize;
 }
 
-.calendar-nav {
-  display: flex;
-  gap: 1rem;
-}
+.calendar-nav { display: flex; gap: 1rem; }
 
 .nav-btn {
   background: var(--soft-blue);
   border: none;
   color: var(--primary-blue);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
+  transition: all 0.2s;
 }
 
 .nav-btn:hover {
   background: var(--primary-blue);
   color: var(--white);
+  transform: translateY(-2px);
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
+  gap: 10px;
 }
 
 .weekday {
   text-align: center;
   font-weight: 700;
-  color: var(--primary-blue);
+  color: var(--text-soft);
   padding: 10px 0;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .calendar-day {
@@ -125,11 +131,13 @@ main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 500;
   transition: 0.2s;
   cursor: pointer;
-  border: 1px solid transparent;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  background: transparent;
 }
 
 .calendar-day:hover:not(.empty) {
@@ -141,19 +149,23 @@ main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1
   background-color: var(--primary-blue) !important;
   color: var(--white) !important;
   font-weight: 700;
-  box-shadow: 0 4px 12px rgba(0, 74, 153, 0.3);
+  box-shadow: 0 8px 15px rgba(0, 74, 153, 0.25);
 }
 
-.calendar-day.empty {
-  cursor: default;
-}
+.calendar-day.empty { cursor: default; }
 
-.footer-note { text-align: center; margin-top: 3rem; color: var(--text-soft); font-size: 0.9rem; opacity: 0.6; border-top: 1px dashed rgba(0,74,153,0.15); padding-top: 2rem; }
+.footer-note { 
+  text-align: center; margin-top: 3rem; color: var(--text-soft); 
+  font-size: 0.9rem; opacity: 0.6; border-top: 1px dashed rgba(0,74,153,0.15); padding-top: 2rem; 
+}
 
 @media (max-width: 600px) {
-  h1 { font-size: 1.4rem; padding-left: 1rem; }
-  .calendar-container { padding: 1rem; }
-  .calendar-day { font-size: 0.9rem; }
+  h1 { font-size: 1.3rem; padding-left: 0.8rem; }
+  .logo { max-height: 45px; }
+  main { padding: 1.5rem 5%; }
+  .calendar-container { padding: 1.5rem; }
+  .calendar-day { font-size: 1rem; }
+  .calendar-header h2 { font-size: 1.4rem; }
 }
 </style>
 </head>
@@ -166,11 +178,23 @@ main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1
   </div>
 
   <div class="hamburger-menu">
-    <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+    <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
     <div class="hamburger-dropdown" id="hamburgerDropdown">
       <ul>
-        <li><a href="#"><span class="material-symbols-outlined">event</span>Eventos</a></li>
-        <li><a href="#"><span class="material-symbols-outlined">description</span>Editais</a></li>
+        <li>
+          <a href="#">
+            <span class="material-symbols-outlined">person</span>
+            Meu perfil
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="material-symbols-outlined">assignment</span>
+            Atividades
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -179,10 +203,14 @@ main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1
 <main>
   <div class="calendar-container">
     <div class="calendar-header">
-      <h2 id="currentMonthYear">Janeiro 2024</h2>
+      <h2 id="currentMonthYear">Março 2026</h2>
       <div class="calendar-nav">
-        <button class="nav-btn" onclick="prevMonth()"><span class="material-symbols-outlined">chevron_left</span></button>
-        <button class="nav-btn" onclick="nextMonth()"><span class="material-symbols-outlined">chevron_right</span></button>
+        <button class="nav-btn" onclick="prevMonth()" title="Mês Anterior">
+          <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        <button class="nav-btn" onclick="nextMonth()" title="Próximo Mês">
+          <span class="material-symbols-outlined">chevron_right</span>
+        </button>
       </div>
     </div>
     
@@ -196,20 +224,26 @@ main { padding: 3rem 5%; max-width: 1000px; margin: 0 auto; width: 100%; flex: 1
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
 <script>
-let date = new Date();
+let currentDate = new Date();
 
 function renderCalendar() {
   const monthYearElement = document.getElementById('currentMonthYear');
   const calendarGrid = document.getElementById('calendarGrid');
   
-  const currentYear = date.getFullYear();
-  const currentMonth = date.getMonth();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
   
-  const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
-  monthYearElement.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
   
+  monthYearElement.innerText = `${monthNames[month]} ${year}`;
+  
+  // Limpar grid
   calendarGrid.innerHTML = '';
   
+  // Cabeçalho dos dias
   const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   daysOfWeek.forEach(day => {
     const dayDiv = document.createElement('div');
@@ -218,10 +252,12 @@ function renderCalendar() {
     calendarGrid.appendChild(dayDiv);
   });
   
-  const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
-  const lastDay = new Date(currentYear, currentMonth + 1, 0).getDate();
+  // Cálculos do mês
+  const firstDayOfMonth = new Date(year, month, 1).getDay();
+  const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
   
-  for (let i = 0; i < firstDayIndex; i++) {
+  // Espaços vazios do início
+  for (let i = 0; i < firstDayOfMonth; i++) {
     const emptyDiv = document.createElement('div');
     emptyDiv.className = 'calendar-day empty';
     calendarGrid.appendChild(emptyDiv);
@@ -229,12 +265,13 @@ function renderCalendar() {
   
   const today = new Date();
   
-  for (let i = 1; i <= lastDay; i++) {
+  // Dias do mês
+  for (let i = 1; i <= lastDateOfMonth; i++) {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'calendar-day';
     dayDiv.innerText = i;
     
-    if (i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
       dayDiv.classList.add('today');
     }
     
@@ -243,21 +280,22 @@ function renderCalendar() {
 }
 
 function prevMonth() {
-  date.setMonth(date.getMonth() - 1);
+  currentDate.setMonth(currentDate.getMonth() - 1);
   renderCalendar();
 }
 
 function nextMonth() {
-  date.setMonth(date.getMonth() + 1);
+  currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
 }
 
-// Menu Toggle
+// Controle do Menu
 function toggleMenu(){
   document.getElementById('hamburgerButton').classList.toggle('active');
   document.getElementById('hamburgerDropdown').classList.toggle('active');
 }
 
+// Fechar menu ao clicar fora
 document.addEventListener('click', function(e){
   const button = document.getElementById('hamburgerButton');
   const dropdown = document.getElementById('hamburgerDropdown');
@@ -277,9 +315,10 @@ function carregarVLibras() {
   document.head.appendChild(script);
 }
 
+// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
-  setTimeout(carregarVLibras, 2000);
+  setTimeout(carregarVLibras, 1500);
 });
 </script>
 
