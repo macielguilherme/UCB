@@ -20,6 +20,7 @@
   --text-primary: #1e2b3c;
   --text-soft: #4b5f73;
   --border-radius-card: 24px;
+  --accent-color: #f39c12;
 }
 
 body {
@@ -35,7 +36,6 @@ header {
 .logo { max-height: 64px; width: auto; object-fit: contain; }
 h1 { color: var(--deep-blue); font-size: 1.9rem; font-weight: 600; letter-spacing: -0.02em; border-left: 3px solid var(--primary-blue); padding-left: 1.5rem; }
 
-/* Menu Hambúrguer */
 .hamburger-menu { position: relative; }
 .hamburger-button {
   background: none; border: none; cursor: pointer; padding: 0.5rem; display: flex; flex-direction: column; gap: 6px; width: 40px; height: 40px;
@@ -53,23 +53,28 @@ h1 { color: var(--deep-blue); font-size: 1.9rem; font-weight: 600; letter-spacin
 }
 .hamburger-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0);}
 .hamburger-dropdown ul { list-style: none; margin: 0; padding: 0;}
-.hamburger-dropdown li { border-bottom: 1px solid rgba(0,74,153,0.05);}
-.hamburger-dropdown li:last-child { border-bottom: none; }
-.hamburger-dropdown a { 
-  display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: var(--text-primary); 
-  text-decoration: none; font-weight: 500; transition: background 0.2s;
+.hamburger-dropdown a { display: flex; align-items: center; gap: 12px; padding: 14px 20px; color: var(--text-primary); text-decoration: none; font-weight: 500; }
+.hamburger-dropdown a:hover { background: var(--soft-blue); }
+
+main { padding: 2rem 5%; max-width: 1100px; margin: 0 auto; width: 100%; flex: 1; }
+
+.course-info {
+    text-align: center;
+    margin-bottom: 2rem;
+    background: var(--deep-blue);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
 }
-.hamburger-dropdown a:hover { background: var(--soft-blue); color: var(--primary-blue); }
-.hamburger-dropdown .material-symbols-outlined { color: var(--primary-blue); font-size: 22px; }
+.course-info h2 { margin: 0; font-size: 1.2rem; opacity: 0.9; font-weight: 400; }
+.course-info h3 { margin: 5px 0 0; font-size: 1.8rem; letter-spacing: 1px; }
 
-main { padding: 3rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1; }
-
-/* Calendário */
 .calendar-container {
   background: var(--white);
   border-radius: var(--border-radius-card);
   box-shadow: var(--card-shadow);
-  padding: 2.5rem;
+  padding: 2rem;
   border: 1px solid rgba(0,74,153,0.05);
 }
 
@@ -77,95 +82,62 @@ main { padding: 3rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
 }
-
-.calendar-header h2 {
-  color: var(--deep-blue);
-  font-size: 1.8rem;
-  margin: 0;
-  font-weight: 700;
-  text-transform: capitalize;
-}
+.calendar-header h2 { color: var(--deep-blue); font-size: 1.8rem; margin: 0; font-weight: 700; }
 
 .calendar-nav { display: flex; gap: 1rem; }
-
 .nav-btn {
-  background: var(--soft-blue);
-  border: none;
-  color: var(--primary-blue);
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
+  background: var(--soft-blue); border: none; color: var(--primary-blue);
+  width: 44px; height: 44px; border-radius: 12px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: 0.2s;
 }
+.nav-btn:hover { background: var(--primary-blue); color: var(--white); }
 
-.nav-btn:hover {
-  background: var(--primary-blue);
-  color: var(--white);
-  transform: translateY(-2px);
-}
-
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
-}
+.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
 
 .weekday {
-  text-align: center;
-  font-weight: 700;
-  color: var(--text-soft);
-  padding: 10px 0;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-align: center; font-weight: 700; color: var(--primary-blue);
+  padding: 10px 0; font-size: 0.85rem; text-transform: uppercase;
 }
 
 .calendar-day {
-  aspect-ratio: 1 / 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 14px;
-  font-weight: 500;
-  transition: 0.2s;
-  cursor: pointer;
-  font-size: 1.1rem;
-  color: var(--text-primary);
-  background: transparent;
+  aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  border-radius: 12px; font-weight: 500; transition: 0.2s; cursor: pointer;
+  padding: 8px; border: 1px solid #f0f0f0; position: relative;
+}
+.calendar-day:hover:not(.empty) { background-color: var(--soft-blue); }
+.calendar-day.today { background-color: var(--primary-blue) !important; color: white !important; }
+.calendar-day.empty { border: none; cursor: default; }
+
+.event-dot {
+    width: 8px; height: 8px; background: var(--accent-color);
+    border-radius: 50%; margin-top: 5px;
 }
 
-.calendar-day:hover:not(.empty) {
-  background-color: var(--soft-blue);
-  color: var(--primary-blue);
+.event-list {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
 }
-
-.calendar-day.today {
-  background-color: var(--primary-blue) !important;
-  color: var(--white) !important;
-  font-weight: 700;
-  box-shadow: 0 8px 15px rgba(0, 74, 153, 0.25);
+.event-item {
+    background: white; padding: 1rem 1.5rem; border-radius: 12px;
+    display: flex; align-items: center; gap: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border-left: 5px solid var(--primary-blue);
 }
+.event-date { font-weight: 800; color: var(--primary-blue); min-width: 60px; font-size: 1.1rem; }
+.event-desc { flex: 1; }
+.event-desc strong { display: block; color: var(--deep-blue); }
+.event-desc span { font-size: 0.9rem; color: var(--text-soft); }
 
-.calendar-day.empty { cursor: default; }
-
-.footer-note { 
-  text-align: center; margin-top: 3rem; color: var(--text-soft); 
-  font-size: 0.9rem; opacity: 0.6; border-top: 1px dashed rgba(0,74,153,0.15); padding-top: 2rem; 
-}
+.footer-note { text-align: center; margin-top: 3rem; color: var(--text-soft); font-size: 0.9rem; opacity: 0.6; padding: 2rem 0; border-top: 1px dashed #ccc; }
 
 @media (max-width: 600px) {
-  h1 { font-size: 1.3rem; padding-left: 0.8rem; }
-  .logo { max-height: 45px; }
-  main { padding: 1.5rem 5%; }
-  .calendar-container { padding: 1.5rem; }
-  .calendar-day { font-size: 1rem; }
-  .calendar-header h2 { font-size: 1.4rem; }
+    .calendar-grid { gap: 4px; }
+    .calendar-day { font-size: 0.8rem; padding: 4px; }
+    .course-info h3 { font-size: 1.2rem; }
+    h1 { font-size: 1.3rem; }
 }
 </style>
 </head>
@@ -178,147 +150,138 @@ main { padding: 3rem 5%; max-width: 900px; margin: 0 auto; width: 100%; flex: 1;
   </div>
 
   <div class="hamburger-menu">
-    <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger-button" id="hamburgerButton" onclick="toggleMenu()"><span></span><span></span><span></span></button>
     <div class="hamburger-dropdown" id="hamburgerDropdown">
       <ul>
-        <li>
-          <a href="#">
-            <span class="material-symbols-outlined">person</span>
-            Meu perfil
-          </a>
-        </li>
-        <li>
-          <a href="#">
-            <span class="material-symbols-outlined">assignment</span>
-            Atividades
-          </a>
-        </li>
+        <li><a href="#"><span class="material-symbols-outlined">person</span>Meu perfil</a></li>
+        <li><a href="#"><span class="material-symbols-outlined">assignment</span>Atividades</a></li>
       </ul>
     </div>
   </div>
 </header>
 
 <main>
+    <div class="course-info">
+        <h2>EXPERIÊNCIA DO USUÁRIO (UX) - GEE39I10089</h2>
+        <h3>MÓDULO 1</h3>
+    </div>
+
   <div class="calendar-container">
     <div class="calendar-header">
-      <h2 id="currentMonthYear">Março 2026</h2>
+      <h2 id="currentMonthYear">Fevereiro 2026</h2>
       <div class="calendar-nav">
-        <button class="nav-btn" onclick="prevMonth()" title="Mês Anterior">
-          <span class="material-symbols-outlined">chevron_left</span>
-        </button>
-        <button class="nav-btn" onclick="nextMonth()" title="Próximo Mês">
-          <span class="material-symbols-outlined">chevron_right</span>
-        </button>
+        <button class="nav-btn" onclick="prevMonth()"><span class="material-symbols-outlined">chevron_left</span></button>
+        <button class="nav-btn" onclick="nextMonth()"><span class="material-symbols-outlined">chevron_right</span></button>
       </div>
     </div>
-    
-    <div class="calendar-grid" id="calendarGrid">
-      </div>
+    <div class="calendar-grid" id="calendarGrid"></div>
   </div>
+
+  <div class="event-list" id="eventDetail">
+      </div>
   
-  <div class="footer-note">planejamento e organização para o seu sucesso acadêmico · Católica</div>
+  <div class="footer-note">Fique atento(a) às datas e prazos para organizar seus estudos com tranquilidade ao longo do módulo.</div>
 </main>
 
 <div vw class="enabled"><div vw-access-button class="active"></div><div vw-plugin-wrapper><div class="vw-plugin-top-wrapper"></div></div></div>
 
 <script>
-let currentDate = new Date();
+let currentDate = new Date(2026, 1, 1); // Começa em Fev 2026
+
+const academicEvents = {
+    "20260123": { title: "Início do Módulo I", type: "Início", desc: "Conteúdo disponível no AVA" },
+    "20260126": { title: "Atividade no AVA", type: "Abertura", desc: "Abertura do Fórum – Unidade I" },
+    "20260202": { title: "Atividade no AVA", type: "Abertura", desc: "Abertura da QME – Unidade II" },
+    "20260209": { title: "Atividade no AVA", type: "Abertura", desc: "Abertura da Atividade Aberta - Unidade III" },
+    "20260216": { title: "Atividade no AVA", type: "Abertura", desc: "Abertura da QME - Unidade IV" },
+    "20260223": { title: "Agendamento Provas", type: "Início", desc: "Início do período de agendamento presencial" },
+    "20260227": { title: "Atividade no AVA", type: "Fim", desc: "Encerramento do Fórum (Unidade I) e Atividade Aberta (Unidade III)" },
+    "20260229": { title: "Agendamento Provas", type: "Fim", desc: "Encerramento do período de agendamento presencial" },
+    "20260301": { title: "Atividade no AVA", type: "Fim", desc: "Encerramento das QMEs (Unidades II e IV)" },
+    "20260306": { title: "Avaliação Presencial", type: "Início", desc: "Início do período para a realização das provas" },
+    "20260312": { title: "Avaliação Presencial", type: "Fim", desc: "Fim do período para a realização das provas" },
+    "20260317": { title: "Agendamento Subst.", type: "Início", desc: "Início agendamento provas substitutivas" },
+    "20260319": { title: "Agendamento Subst.", type: "Início", desc: "Início agendamento provas substitutivas" },
+    "20260323": { title: "Avaliação Substitutiva", type: "Início", desc: "Início período provas substitutivas" },
+    "20260325": { title: "Avaliação Substitutiva", type: "Fim", desc: "Fim período provas substitutivas" },
+    "20260330": { title: "Encerramento", type: "Fim", desc: "Conclusão do Módulo" }
+};
 
 function renderCalendar() {
   const monthYearElement = document.getElementById('currentMonthYear');
   const calendarGrid = document.getElementById('calendarGrid');
-  
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   
-  const monthNames = [
-    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-  ];
-  
+  const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
   monthYearElement.innerText = `${monthNames[month]} ${year}`;
   
-  // Limpar grid
   calendarGrid.innerHTML = '';
-  
-  // Cabeçalho dos dias
-  const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-  daysOfWeek.forEach(day => {
-    const dayDiv = document.createElement('div');
-    dayDiv.className = 'weekday';
-    dayDiv.innerText = day;
-    calendarGrid.appendChild(dayDiv);
+  ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(day => {
+    const div = document.createElement('div');
+    div.className = 'weekday';
+    div.innerText = day;
+    calendarGrid.appendChild(div);
   });
   
-  // Cálculos do mês
-  const firstDayOfMonth = new Date(year, month, 1).getDay();
-  const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
+  const firstDay = new Date(year, month, 1).getDay();
+  const lastDate = new Date(year, month + 1, 0).getDate();
   
-  // Espaços vazios do início
-  for (let i = 0; i < firstDayOfMonth; i++) {
-    const emptyDiv = document.createElement('div');
-    emptyDiv.className = 'calendar-day empty';
-    calendarGrid.appendChild(emptyDiv);
+  for (let i = 0; i < firstDay; i++) {
+    const div = document.createElement('div');
+    div.className = 'calendar-day empty';
+    calendarGrid.appendChild(div);
   }
   
-  const today = new Date();
-  
-  // Dias do mês
-  for (let i = 1; i <= lastDateOfMonth; i++) {
+  for (let i = 1; i <= lastDate; i++) {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'calendar-day';
-    dayDiv.innerText = i;
+    dayDiv.innerHTML = `<span>${i}</span>`;
     
-    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
-      dayDiv.classList.add('today');
+    const dateKey = `${year}${String(month).padStart(2, '0')}${String(i).padStart(2, '0')}`;
+    if (academicEvents[dateKey]) {
+        const dot = document.createElement('div');
+        dot.className = 'event-dot';
+        dayDiv.appendChild(dot);
+        dayDiv.onclick = () => showEvent(dateKey, i, monthNames[month]);
     }
     
     calendarGrid.appendChild(dayDiv);
   }
 }
 
-function prevMonth() {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
+function showEvent(key, day, monthName) {
+    const event = academicEvents[key];
+    const detailDiv = document.getElementById('eventDetail');
+    detailDiv.innerHTML = `
+        <div class="event-item">
+            <div class="event-date">${day}<br>${monthName.substring(0,3)}</div>
+            <div class="event-desc">
+                <strong>${event.title}</strong>
+                <span>${event.desc}</span>
+            </div>
+        </div>
+    `;
 }
 
-function nextMonth() {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
-}
+function prevMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); }
+function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); }
 
-// Controle do Menu
 function toggleMenu(){
   document.getElementById('hamburgerButton').classList.toggle('active');
   document.getElementById('hamburgerDropdown').classList.toggle('active');
 }
 
-// Fechar menu ao clicar fora
-document.addEventListener('click', function(e){
-  const button = document.getElementById('hamburgerButton');
-  const dropdown = document.getElementById('hamburgerDropdown');
-  if (button && dropdown && !button.contains(e.target) && !dropdown.contains(e.target)) {
-    button.classList.remove('active');
-    dropdown.classList.remove('active');
-  }
-});
-
-// VLibras
 function carregarVLibras() {
   const script = document.createElement('script');
   script.src = 'https://vlibras.gov.br/app/vlibras-plugin.js';
-  script.onload = function() {
-    if (window.VLibras) new window.VLibras.Widget('https://vlibras.gov.br/app');
-  };
+  script.onload = () => new window.VLibras.Widget('https://vlibras.gov.br/app');
   document.head.appendChild(script);
 }
 
-// Inicialização
 document.addEventListener('DOMContentLoaded', () => {
   renderCalendar();
-  setTimeout(carregarVLibras, 1500);
+  setTimeout(carregarVLibras, 2000);
 });
 </script>
 
