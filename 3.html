@@ -1,491 +1,357 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Plano de Estudos · Católica</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 
-
-
     <style>
-
         :root {
-
             --deep-blue: #0a2e5a;
-
             --primary-blue: #004a99;
-
             --soft-blue: #e2edf9;
-
-            --bg-color: #f4f8fb;
-
+            --bg-color: #f1f5f9; /* Fundo ligeiramente mais escuro para destacar os cards brancos */
             --white: #ffffff;
-
             --text-primary: #1e2b3c;
-
             --text-soft: #5b6f84;
-
-            --ux-color: #f39c12;
-
-            --comp-color: #00bcd4;
-
-            --front-color: #8e44ad;
-
-            --success: #27ae60;
-
-            --card-shadow: 0 12px 32px rgba(0, 40, 70, 0.1);
-
+            --radius-lg: 28px; /* Combinando com os cantos físicos do A35 */
+            --radius-md: 20px;
+            /* Sombra suave e elegante (Glassmorphism inspired) */
+            --card-shadow: 0 10px 30px rgba(0, 40, 70, 0.08);
         }
 
-
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-primary); }
-
-
-
-        header {
-
-            background: var(--white); padding: 1rem 5%;
-
-            display: flex; align-items: center; justify-content: space-between;
-
-            position: sticky; top: 0; z-index: 1100; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-
-        }
-
-        .logo { max-height: 40px; }
-
-
-
-        main { padding: 2rem 3%; max-width: 1400px; margin: 0 auto; }
-
-
-
-        /* === BOX DE FOCO (O que estudar agora) === */
-
-        .study-focus-area {
-
-            background: var(--white); border-radius: 30px; padding: 2.5rem;
-
-            margin-bottom: 3rem; border: 1px solid rgba(0, 74, 153, 0.1);
-
-            box-shadow: var(--card-shadow);
-
-        }
-
-        .focus-header { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
-
-        .focus-header h1 { font-size: 1.6rem; color: var(--deep-blue); font-weight: 800; }
-
-        .focus-header .tag { background: var(--soft-blue); color: var(--primary-blue); padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; }
-
-
-
-        .schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
-
-        .schedule-card {
-
-            background: #f8fafc; padding: 1.5rem; border-radius: 20px;
-
-            border-left: 6px solid var(--accent-color); position: relative;
-
-        }
-
-        .time-badge { font-size: 0.75rem; font-weight: 800; color: var(--text-soft); display: block; margin-bottom: 8px; }
-
-        .subj-name { font-size: 1.1rem; font-weight: 800; color: var(--deep-blue); display: block; margin-bottom: 10px; }
-
-        .topic-suggestion { 
-
-            font-size: 0.9rem; color: var(--text-primary); background: white; 
-
-            padding: 12px; border-radius: 12px; border: 1px dashed #cbd5e1;
-
-            display: flex; align-items: center; gap: 8px; font-weight: 500;
-
-        }
-
-
-
-        /* === GRIDS DE REFERÊNCIA (Checkboxes) === */
-
-        .subjects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; opacity: 0.9; }
-
-        .subject-card { background: var(--white); border-radius: 24px; padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); display: flex; flex-direction: column; }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         
-
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-
-        .subject-info h2 { font-size: 0.9rem; font-weight: 800; color: var(--deep-blue); }
-
-
-
-        .progress-circle { position: relative; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
-
-        .progress-circle svg { transform: rotate(-90deg); width: 50px; height: 50px; }
-
-        .progress-circle circle { fill: none; stroke-width: 5; cx: 25; cy: 25; r: 21; stroke-linecap: round; }
-
-        .bg-circle { stroke: var(--soft-blue); }
-
-        .main-stroke { stroke: var(--accent-color); transition: 0.5s; stroke-dasharray: 131.9; stroke-dashoffset: 131.9; }
-
-
-
-        .module-accordion { margin-bottom: 5px; border-radius: 8px; border: 1px solid #f1f5f9; overflow: hidden; }
-
-        .acc-header { background: #f8fafc; padding: 8px 12px; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; }
-
-        .acc-content { display: none; padding: 8px; background: white; }
-
-        .module-accordion.active .acc-content { display: block; }
-
-
-
-        .topic-row { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f8fafc; }
-
-        .topic-row input { margin-top: 3px; accent-color: var(--accent-color); }
-
-        .topic-row label { font-size: 0.75rem; font-weight: 500; }
-
-
-
-        @media (max-width: 1000px) { 
-
-            .schedule-grid, .subjects-grid { grid-template-columns: 1fr; }
-
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-primary);
+            line-height: 1.4;
+            padding-bottom: 40px;
         }
+
+        /* HEADER MOBILE REFINADO */
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px); /* Efeito de vidro na barra de navegação */
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1100;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+        .logo { max-height: 30px; width: auto; }
+        .header-tag {
+            font-weight: 800;
+            color: var(--primary-blue);
+            font-size: 0.65rem;
+            background: var(--soft-blue);
+            padding: 5px 12px;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        main { padding: 16px; max-width: 480px; margin: 0 auto; }
+
+        /* BOX DE FOCO (UX IMPROVED) */
+        .study-focus-area {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 22px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        .focus-header { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            margin-bottom: 20px; 
+        }
+        .focus-title-group { display: flex; align-items: center; gap: 10px; }
+        .focus-header h1 { font-size: 1.3rem; color: var(--deep-blue); font-weight: 800; }
+        .meta-tag { 
+            font-size: 0.7rem; 
+            font-weight: 700; 
+            color: var(--primary-blue);
+            background: var(--soft-blue);
+            padding: 5px 14px;
+            border-radius: 50px;
+        }
+
+        /* GRID DE HORÁRIOS COM SOMBRA (NOVO ESTILO) */
+        .schedule-grid { display: flex; flex-direction: column; gap: 14px; }
+        .schedule-card {
+            background: var(--white);
+            padding: 18px;
+            border-radius: var(--radius-md);
+            /* Removida a borda lateral esquerda grossa */
+            border: 1px solid rgba(0,0,0,0.02); /* Borda quase invisível */
+            box-shadow: 0 6px 16px rgba(0, 30, 60, 0.05); /* Sombra dedicada para estes cards */
+            position: relative;
+            overflow: hidden; /* Para o indicador vertical */
+        }
+        
+        /* Indicador vertical interno sutil */
+        .schedule-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 18px;
+            bottom: 18px;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+            background-color: var(--accent-color);
+        }
+
+        .time-badge { font-size: 0.7rem; font-weight: 700; color: var(--text-soft); margin-bottom: 5px; display: block; padding-left: 10px; }
+        .subj-name { font-size: 1.05rem; font-weight: 800; color: var(--deep-blue); margin-bottom: 14px; display: block; padding-left: 10px; }
+        
+        .topic-suggestion { 
+            font-size: 0.85rem; 
+            color: var(--text-primary); 
+            background: #f8fafc; /* Fundo levemente diferente */
+            padding: 12px 16px; 
+            border-radius: 14px; 
+            border: 1px solid #edf2f7;
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            font-weight: 500;
+        }
+
+        /* CARDS DE MATÉRIAS */
+        .subjects-grid { display: flex; flex-direction: column; gap: 18px; }
+        .subject-card { 
+            background: var(--white); 
+            border-radius: var(--radius-lg); 
+            padding: 22px; 
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(255,255,255,0.7);
+        }
+        
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .subject-info h2 { font-size: 1.05rem; font-weight: 800; color: var(--deep-blue); max-width: 75%; }
+
+        .progress-circle { position: relative; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; }
+        .progress-circle svg { transform: rotate(-90deg); width: 46px; height: 46px; }
+        .progress-circle circle { fill: none; stroke-width: 5; cx: 23; cy: 23; r: 19; stroke-linecap: round; }
+        .bg-circle { stroke: #f1f5f9; }
+        .main-stroke { stroke: var(--accent-color); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-dasharray: 119.4; stroke-dashoffset: 119.4; }
+
+        /* ACORDION REFORMULADO PARA TOUCH */
+        .module-accordion { margin-bottom: 10px; border-radius: 16px; background: #f8fafc; border: 1px solid #edf2f7; overflow: hidden; transition: 0.2s; }
+        .acc-header { padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; color: var(--text-soft); }
+        .acc-content { display: none; padding: 4px 14px 14px; background: white; }
+        
+        .module-accordion.active { border-color: rgba(0,0,0,0.05); background: var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        .module-accordion.active .acc-content { display: block; }
+        .module-accordion.active .acc-header { color: var(--deep-blue); padding-bottom: 8px; }
+
+        /* LINHA DE TÓPICO (ZONA DE TOQUE AMPLIADA) */
+        .topic-row { 
+            display: flex; 
+            align-items: center; 
+            gap: 14px; 
+            padding: 14px 4px; 
+            border-bottom: 1px solid #f1f5f9; 
+        }
+        .topic-row:last-child { border-bottom: none; }
+        
+        /* Checkbox Customizado One UI Style */
+        .topic-row input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: 0.15s;
+        }
+        .topic-row input[type="checkbox"]:checked {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            transform: scale(1.05);
+        }
+        .topic-row input[type="checkbox"]:checked::after {
+            content: 'check';
+            font-family: 'Material Symbols Outlined';
+            color: white;
+            font-size: 18px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: 800;
+        }
+        
+        .topic-row label { font-size: 0.88rem; font-weight: 500; color: var(--text-primary); flex: 1; padding: 4px 0; }
+        .topic-row input:checked + label { color: var(--text-soft); text-decoration: line-through; opacity: 0.7; }
 
     </style>
-
 </head>
-
 <body>
 
-
-
 <header>
-
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" class="logo">
-
-    <div style="font-weight: 800; color: var(--deep-blue); font-size: 0.8rem;">PLANO DE ENSINO 17H - 22H</div>
-
+    <div class="header-tag">17H - 22H</div>
 </header>
 
-
-
 <main>
-
     <section class="study-focus-area">
-
         <div class="focus-header">
-
-            <span class="material-symbols-outlined" style="color: var(--primary-blue); font-size: 2rem;">auto_stories</span>
-
-            <h1 id="dayDisplay">O que estudar hoje?</h1>
-
-            <span class="tag">Meta: 5 horas/dia</span>
-
+            <div class="focus-title-group">
+                <span class="material-symbols-outlined" style="color: var(--primary-blue); font-size: 26px;">event_upcoming</span>
+                <h1 id="dayDisplay">---</h1>
+            </div>
+            <span class="meta-tag">Meta: 5h</span>
         </div>
 
-
-
         <div class="schedule-grid" id="scheduleGrid">
-
             </div>
-
     </section>
 
-
-
-    <div class="subjects-grid" id="subjectsGrid"></div>
-
+    <div class="subjects-grid" id="subjectsGrid">
+         </div>
 </main>
 
-
-
 <script>
-
     const DATA = [
-
         {
-
             id: 'front', name: 'Desenvolvimento Front End', accent: '#8e44ad',
-
             units: [
-
                 { name: 'Unidade 1', topics: ['1.1 Linguagem de marcação', '1.2 Formatação web HTML', '1.3 Criação de páginas HTML5', 'Videoaula UCB: Unidade 1', '1.4 Validação de formulários HTML5', 'Videoaula UCB - Unidade I', 'Projeto PetShop - Videoaulas', 'Avaliação: Fórum'] },
-
                 { name: 'Unidade 2', topics: ['2.1 Folha de Estilo (CSS)', '2.2 Páginas com CSS3', '2.3 JavaScript', '2.4 DOM', '2.5 BOM e Cookie', 'Avaliação: QME 2'] },
-
                 { name: 'Unidade 3', topics: ['3.1 Usabilidade e UX', '3.2 Design responsivo', '3.3 Acessibilidade WCAG', '3.4 Acessibilidade eMAG', 'Avaliação: Atividade aberta'] },
-
                 { name: 'Unidade 4', topics: ['4.1 Navegadores', '4.2 Frameworks front-end', '4.3 Publicação web', 'Avaliação: QME 4'] }
-
             ]
-
         },
-
         {
-
             id: 'comp', name: 'Teoria da Computação', accent: '#00bcd4',
-
             units: [
-
                 { name: 'Unidade 1', topics: ['1.1 O pensamento computacional', '1.2 Conceitos básicos', '1.3 Hardware', '1.4 Software', 'Avaliação: Fórum'] },
-
                 { name: 'Unidade 2', topics: ['2.1 Programa e máquina', '2.2 Fundamentos computacionais', '2.3 Algoritmos e lógica', '2.4 Pseudocódigo VisuAlg', '2.5 Comandos condicionais', '2.6 Teste de Mesa', '2.7 Repetição ENQUANTO', '2.8 Repetição PARA', 'Avaliação: QME'] }
-
             ]
-
         },
-
         {
-
             id: 'ux', name: 'Experiência do Usuário (UX)', accent: '#f39c12',
-
             units: [
-
                 { name: 'Unidade 1', topics: ['1.1 Introdução a IHC', '1.2 Fatores Humanos', '1.3 Interface e Affordance', '1.4 Usabilidade e UX', '1.5 Gestão de UX', 'Avaliação: Fórum'] },
-
                 { name: 'Unidade 2', topics: ['2.1 Métodos ágeis', '2.2 Processos Design I', '2.3 Processos Design II', '2.4 Requisitos', 'Avaliação: QME 2'] },
-
                 { name: 'Unidade 3', topics: ['3.1 Storyboarding e prototipação', '3.2 Prototipação e concepção', '3.3 Ferramentas de apoio', 'Avaliação: Atividade aberta'] },
-
                 { name: 'Unidade 4', topics: ['4.1 Acessibilidade', '4.2 Acessibilidade em jogos', '4.3 Avaliação em IHC', '4.4 Testes de usabilidade', 'Avaliação: QME 4'] }
-
             ]
-
         }
-
     ];
 
-
-
-    // Ciclo Semanal (17h-22h)
-
     const STUDY_PLAN = {
-
-        1: ['front', 'comp', 'front'], // Segunda
-
-        2: ['ux', 'front', 'ux'],      // Terça
-
-        3: ['comp', 'ux', 'comp'],     // Quarta
-
-        4: ['front', 'ux', 'front'],   // Quinta
-
-        5: ['ux', 'comp', 'ux'],       // Sexta
-
-        6: ['front', 'comp', 'ux'],    // Sábado
-
-        0: ['ux', 'comp', 'front']     // Domingo
-
+        1: ['front', 'comp', 'front'], 2: ['ux', 'front', 'ux'],
+        3: ['comp', 'ux', 'comp'], 4: ['front', 'ux', 'front'],
+        5: ['ux', 'comp', 'ux'], 6: ['front', 'comp', 'ux'], 0: ['ux', 'comp', 'front']
     };
-
-
 
     let progress = JSON.parse(localStorage.getItem('study_tracker_vFINAL')) || {};
 
-
-
     function init() {
-
         renderSchedule();
-
         renderSubjects();
-
     }
-
-
 
     function renderSchedule() {
-
         const now = new Date();
-
         const day = now.getDay();
-
         const daysBR = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
-
         document.getElementById('dayDisplay').innerText = daysBR[day];
 
-
-
         const grid = document.getElementById('scheduleGrid');
-
         const subjectsToday = STUDY_PLAN[day];
-
         const times = ["17:00 - 18:30", "18:45 - 20:30", "20:45 - 22:00"];
 
-
-
         grid.innerHTML = subjectsToday.map((sid, index) => {
-
             const subject = DATA.find(s => s.id === sid);
-
             const nextTopic = findNextTopic(subject);
-
-            
-
             return `
-
                 <div class="schedule-card" style="--accent-color: ${subject.accent}">
-
                     <span class="time-badge">${times[index]}</span>
-
                     <span class="subj-name">${subject.name}</span>
-
                     <div class="topic-suggestion">
-
-                        <span class="material-symbols-outlined" style="font-size:18px; color:${subject.accent}">play_circle</span>
-
+                        <span class="material-symbols-outlined" style="font-size:22px; color:${subject.accent}">play_circle</span>
                         ${nextTopic}
-
                     </div>
-
                 </div>
-
             `;
-
         }).join('');
-
     }
-
-
 
     function findNextTopic(subject) {
-
         for (let uIdx = 0; uIdx < subject.units.length; uIdx++) {
-
             const unit = subject.units[uIdx];
-
             for (let tIdx = 0; tIdx < unit.topics.length; tIdx++) {
-
                 const tid = `${subject.id}-${uIdx}-${tIdx}`;
-
-                if (!progress[tid]) {
-
-                    return `${unit.name}: ${unit.topics[tIdx]}`;
-
-                }
-
+                if (!progress[tid]) return unit.topics[tIdx];
             }
-
         }
-
-        return "Matéria concluída! 🎉";
-
+        return "Concluído! 🎉";
     }
-
-
 
     function renderSubjects() {
-
         const grid = document.getElementById('subjectsGrid');
-
         grid.innerHTML = DATA.map(subject => {
-
             const total = subject.units.reduce((a, b) => a + b.topics.length, 0);
-
             const done = Object.keys(progress).filter(k => k.startsWith(subject.id) && progress[k]).length;
-
             const perc = Math.round((done / total) * 100);
-
-
+            const dash = 119.4 - (perc/100 * 119.4); // Ajustado para r=19
 
             return `
-
                 <div class="subject-card" style="--accent-color: ${subject.accent}">
-
                     <div class="card-top">
-
                         <div class="subject-info">
-
                             <h2>${subject.name}</h2>
-
                         </div>
-
                         <div class="progress-circle">
-
-                            <svg><circle class="bg-circle"/><circle class="main-stroke" style="stroke-dashoffset: ${131.9 - (perc/100*131.9)}"/></svg>
-
-                            <span style="position:absolute; font-size:0.7rem; font-weight:800">${perc}%</span>
-
+                            <svg><circle class="bg-circle"/><circle class="main-stroke" style="stroke-dashoffset: ${dash}"/></svg>
+                            <span style="position:absolute; font-size:0.65rem; font-weight:800">${perc}%</span>
                         </div>
-
                     </div>
-
                     ${subject.units.map((unit, uIdx) => `
-
                         <div class="module-accordion" onclick="this.classList.toggle('active')">
-
-                            <div class="acc-header">${unit.name} <span class="material-symbols-outlined" style="font-size:16px">expand_more</span></div>
-
-                            <div class="acc-content">
-
+                            <div class="acc-header">${unit.name} <span class="material-symbols-outlined" style="font-size:18px">expand_more</span></div>
+                            <div class="acc-content" onclick="event.stopPropagation()">
                                 ${unit.topics.map((topic, tIdx) => {
-
                                     const tid = `${subject.id}-${uIdx}-${tIdx}`;
-
                                     return `
-
                                         <div class="topic-row">
-
                                             <input type="checkbox" id="${tid}" ${progress[tid] ? 'checked' : ''} onchange="updateProgress('${tid}')">
-
-                                            <label>${topic}</label>
-
+                                            <label for="${tid}">${topic}</label>
                                         </div>
-
                                     `;
-
                                 }).join('')}
-
                             </div>
-
                         </div>
-
                     `).join('')}
-
                 </div>
-
             `;
-
         }).join('');
-
     }
-
-
 
     function updateProgress(tid) {
-
         progress[tid] = document.getElementById(tid).checked;
-
         localStorage.setItem('study_tracker_vFINAL', JSON.stringify(progress));
-
-        init(); // Atualiza tudo
-
+        setTimeout(init, 180); // Ligeiro delay para a animação do check One UI
     }
 
-
-
     init();
-
 </script>
-
 </body>
-
 </html>
