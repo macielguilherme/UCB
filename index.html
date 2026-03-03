@@ -178,10 +178,7 @@
     <span></span><span></span><span></span>
   </button>
   <div class="hamburger-dropdown" id="hamburgerDropdown">
-    <a href="#"><span class="material-symbols-outlined">person</span> Meu Perfil</a>
-    <a href="#"><span class="material-symbols-outlined">school</span> Trilha Acadêmica</a>
-    <a href="#"><span class="material-symbols-outlined">assignment</span> Atividades AVA</a>
-    <a href="#"><span class="material-symbols-outlined">logout</span> Sair</a>
+    <a href="2.htmnl"><span class="material-symbols-outlined">person</span> Meu Perfil</a>
   </div>
 </header>
 
@@ -209,141 +206,57 @@ const MATERIAS = {
 };;
 
 const trilaEventos = {
+  // === UX ===
+  "20260223": [{ subject: MATERIAS.UX, title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." }],
+  "20260226": [{ subject: MATERIAS.UX, title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA." }],
+  "20260302": [{ subject: MATERIAS.UX, title: "Abertura da QME – Unidade II", desc: "Atividade no AVA." }],
+  "20260309": [{ subject: MATERIAS.UX, title: "Abertura da Atividade Aberta - Unidade III", desc: "Atividade no AVA." }],
+  "20260316": [{ subject: MATERIAS.UX, title: "Abertura da QME - Unidade IV", desc: "Atividade no AVA." }],
+  "20260323": [{ subject: MATERIAS.UX, title: "Início do agendamento para provas presenciais", desc: "Período de agendamento." }],
+  "20260327": [{ subject: MATERIAS.UX, title: "Encerramento do Fórum (U1) e Atividade Aberta (U3)", desc: "Atividade no AVA." }],
+  "20260329": [{ subject: MATERIAS.UX, title: "Encerramento do período de agendamento", desc: "Período de agendamento." }],
+  "20260401": [{ subject: MATERIAS.UX, title: "Encerramento das QMEs (U2 e U4)", desc: "Atividade no AVA." }],
+  "20260406": [{ subject: MATERIAS.UX, title: "Início da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260412": [{ subject: MATERIAS.UX, title: "Fim da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260417": [{ subject: MATERIAS.UX, title: "Início do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260419": [{ subject: MATERIAS.UX, title: "Continuação do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260423": [{ subject: MATERIAS.UX, title: "Início da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260425": [{ subject: MATERIAS.UX, title: "Fim da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260430": [{ subject: MATERIAS.UX, title: "Encerramento do Módulo", desc: "Conclusão do Módulo." }],
 
-    "20260123": [
-        { subject: MATERIAS.UX, title: "Início do Módulo I", desc: "Conteúdo disponível no AVA." },
-        { subject: MATERIAS.COMP, title: "Início do Módulo I", desc: "Conteúdo disponível no AVA." }
-    ],
+  // === COMP ===
+  "20260223": [{ subject: MATERIAS.COMP, title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." }],
+  "20260226": [{ subject: MATERIAS.COMP, title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA." }],
+  "20260302": [{ subject: MATERIAS.COMP, title: "Abertura da QME – Unidade II", desc: "Atividade no AVA." }],
+  "20260323": [{ subject: MATERIAS.COMP, title: "Início do agendamento para provas presenciais", desc: "Período de agendamento." }],
+  "20260327": [{ subject: MATERIAS.COMP, title: "Encerramento do Fórum - Unidade I", desc: "Atividade no AVA." }],
+  "20260329": [{ subject: MATERIAS.COMP, title: "Encerramento do período de agendamento", desc: "Período de agendamento." }],
+  "20260401": [{ subject: MATERIAS.COMP, title: "Encerramento das QMEs (U2 e U4)", desc: "Atividade no AVA." }],
+  "20260406": [{ subject: MATERIAS.COMP, title: "Início da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260412": [{ subject: MATERIAS.COMP, title: "Fim da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260417": [{ subject: MATERIAS.COMP, title: "Início do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260419": [{ subject: MATERIAS.COMP, title: "Continuação do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260423": [{ subject: MATERIAS.COMP, title: "Início da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260425": [{ subject: MATERIAS.COMP, title: "Fim da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260430": [{ subject: MATERIAS.COMP, title: "Encerramento do Módulo", desc: "Conclusão do Módulo." }],
 
-    "20260126": [
-        { subject: MATERIAS.UX, title: "Fórum – Unidade I", desc: "Abertura da atividade no AVA." },
-        { subject: MATERIAS.COMP, title: "Fórum – Unidade I", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260202": [
-        { subject: MATERIAS.UX, title: "QME – Unidade II", desc: "Abertura da atividade no AVA." },
-        { subject: MATERIAS.COMP, title: "QME – Unidade II", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260209": [
-        { subject: MATERIAS.UX, title: "Atividade Aberta - Unidade III", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260216": [
-        { subject: MATERIAS.UX, title: "QME - Unidade IV", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260223": [
-        { subject: MATERIAS.UX, title: "Agendamento Presencial", desc: "Início do agendamento para as provas presenciais." },
-        { subject: MATERIAS.COMP, title: "Agendamento Presencial", desc: "Início do agendamento para as provas presenciais." },
-        { subject: MATERIAS.FRONT, title: "Início do Módulo I", desc: "Conteúdo disponível no AVA." }
-    ],
-
-    "20260226": [
-        { subject: MATERIAS.FRONT, title: "Fórum – Unidade I", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260227": [
-        { subject: MATERIAS.UX, title: "Encerramento Unidade I/III", desc: "Fim do Fórum (U1) e Atividade Aberta (U3)." },
-        { subject: MATERIAS.COMP, title: "Encerramento Fórum", desc: "Encerramento do Fórum - Unidade I" }
-    ],
-
-    "20260228": [
-        { subject: MATERIAS.UX, title: "Fim Agendamento", desc: "Encerramento do período de agendamento." },
-        { subject: MATERIAS.COMP, title: "Fim Agendamento", desc: "Encerramento do período de agendamento." }
-    ],
-
-    "20260301": [
-        { subject: MATERIAS.UX, title: "Fim QMEs", desc: "Prazo final para Unidades II e IV." },
-        { subject: MATERIAS.COMP, title: "Encerramento QME II", desc: "Encerramento da atividade no AVA." }
-    ],
-
-    "20260302": [
-        { subject: MATERIAS.FRONT, title: "QME – Unidade II", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260306": [
-        { subject: MATERIAS.UX, title: "Avaliação Presencial", desc: "Início das provas do módulo." },
-        { subject: MATERIAS.COMP, title: "Avaliação Presencial", desc: "Início das provas presenciais." }
-    ],
-
-    "20260309": [
-        { subject: MATERIAS.FRONT, title: "Atividade Aberta - Unidade III", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260312": [
-        { subject: MATERIAS.UX, title: "Avaliação Presencial", desc: "Término das provas do módulo." },
-        { subject: MATERIAS.COMP, title: "Avaliação Presencial", desc: "Fim do período para realização das provas." }
-    ],
-
-    "20260316": [
-        { subject: MATERIAS.FRONT, title: "QME - Unidade IV", desc: "Abertura da atividade no AVA." }
-    ],
-
-    "20260317": [
-        { subject: MATERIAS.UX, title: "Agendamento Substitutiva", desc: "Início do agendamento para provas substitutivas." },
-        { subject: MATERIAS.COMP, title: "Agendamento Substitutiva", desc: "Início do agendamento para substitutivas presenciais." }
-    ],
-
-    "20260318": [
-        { subject: MATERIAS.COMP, title: "Agendamento Sub.", desc: "Continuidade do agendamento para substitutivas." }
-    ],
-
-    "20260323": [
-        { subject: MATERIAS.UX, title: "Avaliação Substitutiva", desc: "Início das provas substitutivas." },
-        { subject: MATERIAS.COMP, title: "Avaliação Substitutiva", desc: "Início do período para realização das provas." },
-        { subject: MATERIAS.FRONT, title: "Início Agendamento", desc: "Início do período de agendamento para provas presenciais." }
-    ],
-
-    "20260325": [
-        { subject: MATERIAS.UX, title: "Avaliação Substitutiva", desc: "Fim das provas substitutivas." },
-        { subject: MATERIAS.COMP, title: "Avaliação Substitutiva", desc: "Fim do período para realização das provas." }
-    ],
-
-    "20260327": [
-        { subject: MATERIAS.FRONT, title: "Encerramento Atividades", desc: "Encerramento do Fórum (U1) e Atividade Aberta (U3)." }
-    ],
-
-    "20260329": [
-        { subject: MATERIAS.FRONT, title: "Fim Agendamento", desc: "Encerramento do período de agendamento das provas presenciais." }
-    ],
-
-    "20260330": [
-        { subject: MATERIAS.UX, title: "Encerramento Módulo", desc: "Conclusão oficial de todas as atividades." },
-        { subject: MATERIAS.COMP, title: "Encerramento Módulo", desc: "Conclusão das atividades e encerramento." }
-    ],
-
-    "20260401": [
-        { subject: MATERIAS.FRONT, title: "Encerramento QMEs", desc: "Encerramento das QMEs (Unidades II e IV)." }
-    ],
-
-    "20260406": [
-        { subject: MATERIAS.FRONT, title: "Avaliação Presencial", desc: "Início do período para realização das provas." }
-    ],
-
-    "20260412": [
-        { subject: MATERIAS.FRONT, title: "Avaliação Presencial", desc: "Fim do período para realização das provas." }
-    ],
-
-    "20260417": [
-        { subject: MATERIAS.FRONT, title: "Agendamento Substitutiva", desc: "Início do agendamento para provas substitutivas." }
-    ],
-
-    "20260419": [
-        { subject: MATERIAS.FRONT, title: "Agendamento Substitutiva", desc: "Continuação do período de agendamento." }
-    ],
-
-    "20260423": [
-        { subject: MATERIAS.FRONT, title: "Avaliação Substitutiva", desc: "Início das provas substitutivas." }
-    ],
-
-    "20260425": [
-        { subject: MATERIAS.FRONT, title: "Avaliação Substitutiva", desc: "Fim das provas substitutivas." }
-    ],
-
-    "20260430": [
-        { subject: MATERIAS.FRONT, title: "Encerramento do Módulo", desc: "Conclusão oficial do módulo." }
-    ]
+  // === FRONT ===
+  "20260223": [{ subject: MATERIAS.FRONT, title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." }],
+  "20260226": [{ subject: MATERIAS.FRONT, title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA." }],
+  "20260302": [{ subject: MATERIAS.FRONT, title: "Abertura da QME – Unidade II", desc: "Atividade no AVA." }],
+  "20260309": [{ subject: MATERIAS.FRONT, title: "Abertura da Atividade Aberta - Unidade III", desc: "Atividade no AVA." }],
+  "20260316": [{ subject: MATERIAS.FRONT, title: "Abertura da QME - Unidade IV", desc: "Atividade no AVA." }],
+  "20260323": [{ subject: MATERIAS.FRONT, title: "Início do agendamento para provas presenciais", desc: "Período de agendamento." }],
+  "20260327": [{ subject: MATERIAS.FRONT, title: "Encerramento do Fórum (U1) e Atividade Aberta (U3)", desc: "Atividade no AVA." }],
+  "20260329": [{ subject: MATERIAS.FRONT, title: "Encerramento do período de agendamento", desc: "Período de agendamento." }],
+  "20260401": [{ subject: MATERIAS.FRONT, title: "Encerramento das QMEs (U2 e U4)", desc: "Atividade no AVA." }],
+  "20260406": [{ subject: MATERIAS.FRONT, title: "Início da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260412": [{ subject: MATERIAS.FRONT, title: "Fim da Avaliação presencial", desc: "Período de Avaliação." }],
+  "20260417": [{ subject: MATERIAS.FRONT, title: "Início do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260419": [{ subject: MATERIAS.FRONT, title: "Continuação do agendamento para provas substitutivas", desc: "Período de agendamento." }],
+  "20260423": [{ subject: MATERIAS.FRONT, title: "Início da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260425": [{ subject: MATERIAS.FRONT, title: "Fim da Avaliação Substitutiva", desc: "Período de Avaliação Substitutiva." }],
+  "20260430": [{ subject: MATERIAS.FRONT, title: "Encerramento do Módulo", desc: "Conclusão do Módulo." }],
 };
 
 function renderCalendar() {
