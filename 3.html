@@ -1,264 +1,491 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciador de Atividades · Católica</title>
+
+    <title>Plano de Estudos · Católica</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 
+
+
     <style>
+
         :root {
+
             --deep-blue: #0a2e5a;
+
             --primary-blue: #004a99;
+
             --soft-blue: #e2edf9;
+
             --bg-color: #f4f8fb;
+
             --white: #ffffff;
+
             --text-primary: #1e2b3c;
+
             --text-soft: #5b6f84;
-            --success: #27ae60;
+
             --ux-color: #f39c12;
+
             --comp-color: #00bcd4;
+
             --front-color: #8e44ad;
+
+            --success: #27ae60;
+
             --card-shadow: 0 12px 32px rgba(0, 40, 70, 0.1);
-            --transition-speed: 0.3s;
+
         }
+
+
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-primary); overflow-x: hidden; }
+
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-primary); }
+
+
 
         header {
+
             background: var(--white); padding: 1rem 5%;
+
             display: flex; align-items: center; justify-content: space-between;
+
             position: sticky; top: 0; z-index: 1100; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
         }
+
         .logo { max-height: 40px; }
 
-        .hamburger-button {
-            background: none; border: none; cursor: pointer;
-            display: flex; flex-direction: column; gap: 5px;
-            width: 44px; height: 44px; align-items: center; justify-content: center;
-            z-index: 1200; position: relative;
-        }
-        .hamburger-button span {
-            display: block; width: 24px; height: 2.5px;
-            background: var(--deep-blue); border-radius: 3px;
-            transition: var(--transition-speed);
-        }
-        .hamburger-button.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
-        .hamburger-button.active span:nth-child(2) { opacity: 0; }
-        .hamburger-button.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
 
-        .hamburger-dropdown {
-            position: fixed; top: 0; right: 0; bottom: 0; width: 280px;
-            background: var(--white); box-shadow: -15px 0 35px rgba(0,0,0,0.1);
-            visibility: hidden; transform: translateX(100%);
-            transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1150; padding-top: 80px;
-        }
-        .hamburger-dropdown.active { visibility: visible; transform: translateX(0); }
-        .hamburger-dropdown a {
-            display: flex; align-items: center; gap: 15px; padding: 18px 25px;
-            color: var(--text-primary); text-decoration: none; font-weight: 600;
-            border-bottom: 1px solid #f1f5f9;
-        }
 
         main { padding: 2rem 3%; max-width: 1400px; margin: 0 auto; }
-        .dashboard-header { margin-bottom: 2.5rem; text-align: center; }
-        .dashboard-header h1 { font-size: 2.2rem; font-weight: 800; color: var(--deep-blue); }
 
-        /* GRID ATUALIZADO PARA 3 COLUNAS IGUAIS NO PC */
-        .subjects-grid { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 1.5rem; 
-            align-items: stretch; /* Garante altura igual */
+
+
+        /* === BOX DE FOCO (O que estudar agora) === */
+
+        .study-focus-area {
+
+            background: var(--white); border-radius: 30px; padding: 2.5rem;
+
+            margin-bottom: 3rem; border: 1px solid rgba(0, 74, 153, 0.1);
+
+            box-shadow: var(--card-shadow);
+
         }
 
-        .subject-card {
-            background: var(--white); border-radius: 30px; padding: 1.8rem;
-            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
+        .focus-header { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+
+        .focus-header h1 { font-size: 1.6rem; color: var(--deep-blue); font-weight: 800; }
+
+        .focus-header .tag { background: var(--soft-blue); color: var(--primary-blue); padding: 6px 15px; border-radius: 50px; font-size: 0.8rem; font-weight: 700; }
+
+
+
+        .schedule-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+        .schedule-card {
+
+            background: #f8fafc; padding: 1.5rem; border-radius: 20px;
+
+            border-left: 6px solid var(--accent-color); position: relative;
+
         }
 
-        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
-        .subject-info h2 { font-size: 1.05rem; color: var(--deep-blue); font-weight: 800; line-height: 1.2; }
+        .time-badge { font-size: 0.75rem; font-weight: 800; color: var(--text-soft); display: block; margin-bottom: 8px; }
 
-        .progress-circle { position: relative; width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .progress-circle svg { transform: rotate(-90deg); width: 70px; height: 70px; }
-        .progress-circle circle { fill: none; stroke-width: 7; stroke-linecap: round; cx: 35; cy: 35; r: 30; }
+        .subj-name { font-size: 1.1rem; font-weight: 800; color: var(--deep-blue); display: block; margin-bottom: 10px; }
+
+        .topic-suggestion { 
+
+            font-size: 0.9rem; color: var(--text-primary); background: white; 
+
+            padding: 12px; border-radius: 12px; border: 1px dashed #cbd5e1;
+
+            display: flex; align-items: center; gap: 8px; font-weight: 500;
+
+        }
+
+
+
+        /* === GRIDS DE REFERÊNCIA (Checkboxes) === */
+
+        .subjects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; opacity: 0.9; }
+
+        .subject-card { background: var(--white); border-radius: 24px; padding: 1.5rem; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.02); display: flex; flex-direction: column; }
+
+        
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+        .subject-info h2 { font-size: 0.9rem; font-weight: 800; color: var(--deep-blue); }
+
+
+
+        .progress-circle { position: relative; width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; }
+
+        .progress-circle svg { transform: rotate(-90deg); width: 50px; height: 50px; }
+
+        .progress-circle circle { fill: none; stroke-width: 5; cx: 25; cy: 25; r: 21; stroke-linecap: round; }
+
         .bg-circle { stroke: var(--soft-blue); }
-        .main-stroke { stroke: var(--accent-color); transition: stroke-dashoffset 0.5s ease; stroke-dasharray: 188.5; stroke-dashoffset: 188.5; }
-        .percentage { position: absolute; font-size: 0.9rem; font-weight: 800; color: var(--deep-blue); }
 
-        .units-container { flex-grow: 1; } /* Empurra o conteúdo para preencher o card */
+        .main-stroke { stroke: var(--accent-color); transition: 0.5s; stroke-dasharray: 131.9; stroke-dashoffset: 131.9; }
 
-        .module-accordion { margin-bottom: 8px; border-radius: 12px; overflow: hidden; border: 1px solid #f1f5f9; }
-        .accordion-header {
-            background: #f8fafc; padding: 12px 14px; display: flex; justify-content: space-between;
-            align-items: center; cursor: pointer; transition: 0.2s;
+
+
+        .module-accordion { margin-bottom: 5px; border-radius: 8px; border: 1px solid #f1f5f9; overflow: hidden; }
+
+        .acc-header { background: #f8fafc; padding: 8px 12px; cursor: pointer; display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; }
+
+        .acc-content { display: none; padding: 8px; background: white; }
+
+        .module-accordion.active .acc-content { display: block; }
+
+
+
+        .topic-row { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid #f8fafc; }
+
+        .topic-row input { margin-top: 3px; accent-color: var(--accent-color); }
+
+        .topic-row label { font-size: 0.75rem; font-weight: 500; }
+
+
+
+        @media (max-width: 1000px) { 
+
+            .schedule-grid, .subjects-grid { grid-template-columns: 1fr; }
+
         }
-        .accordion-header:hover { background: var(--soft-blue); }
-        .accordion-header h3 { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); text-transform: uppercase; }
-        .accordion-header .status-info { font-size: 0.7rem; color: var(--text-soft); font-weight: 700; }
 
-        .accordion-content { display: none; padding: 5px 14px; background: white; }
-        .module-accordion.active .accordion-content { display: block; }
-        .module-accordion.active .expand-icon { transform: rotate(180deg); }
-        .expand-icon { transition: 0.3s; font-size: 18px; color: var(--primary-blue); }
-
-        .topic-item {
-            display: flex; align-items: center; gap: 10px; padding: 7px 0;
-            border-bottom: 1px solid #f8fafc; cursor: pointer;
-        }
-        .topic-item:last-child { border-bottom: none; }
-        input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--accent-color); cursor: pointer; }
-        .topic-label { font-size: 0.85rem; font-weight: 500; }
-        input[type="checkbox"]:checked + .topic-label { color: var(--text-soft); text-decoration: line-through; }
-
-        /* Ajuste para tablets e celulares */
-        @media (max-width: 1024px) { .subjects-grid { grid-template-columns: 1fr; max-width: 500px; margin: 0 auto; } }
     </style>
+
 </head>
+
 <body>
 
+
+
 <header>
+
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" class="logo">
-    <button class="hamburger-button" onclick="toggleMenu()" id="hamburgerBtn">
-        <span></span><span></span><span></span>
-    </button>
+
+    <div style="font-weight: 800; color: var(--deep-blue); font-size: 0.8rem;">PLANO DE ENSINO 17H - 22H</div>
+
 </header>
 
-<div class="hamburger-dropdown" id="menu">
-    <a href="index.html"><span class="material-symbols-outlined">calendar_month</span> Calendário</a>
-    <a href="#" style="background: var(--soft-blue)"><span class="material-symbols-outlined">assignment_turned_in</span> Atividades</a>
-    <a href="2.html"><span class="material-symbols-outlined">person</span> Meu Perfil</a>
-</div>
+
 
 <main>
-    <div class="dashboard-header">
-        <h1>Minhas Atividades</h1>
-        <p>Progresso sincronizado por disciplina.</p>
-    </div>
 
-    <div class="subjects-grid" id="grid"></div>
+    <section class="study-focus-area">
+
+        <div class="focus-header">
+
+            <span class="material-symbols-outlined" style="color: var(--primary-blue); font-size: 2rem;">auto_stories</span>
+
+            <h1 id="dayDisplay">O que estudar hoje?</h1>
+
+            <span class="tag">Meta: 5 horas/dia</span>
+
+        </div>
+
+
+
+        <div class="schedule-grid" id="scheduleGrid">
+
+            </div>
+
+    </section>
+
+
+
+    <div class="subjects-grid" id="subjectsGrid"></div>
+
 </main>
 
+
+
 <script>
+
     const DATA = [
+
         {
-            id: 'front', name: 'Desenvolvimento Front End', code: 'GEE61I10021', color: 'var(--front-color)',
+
+            id: 'front', name: 'Desenvolvimento Front End', accent: '#8e44ad',
+
             units: [
-                { name: 'Plano de Ensino', count: 5 }, { name: 'Dúvidas', count: 2 },
-                { name: 'Unidade 1', count: 9 }, { name: 'Unidade 2', count: 7 },
-                { name: 'Unidade 3', count: 6 }, { name: 'Unidade 4', count: 4 }
+
+                { name: 'Unidade 1', topics: ['1.1 Linguagem de marcação', '1.2 Formatação web HTML', '1.3 Criação de páginas HTML5', 'Videoaula UCB: Unidade 1', '1.4 Validação de formulários HTML5', 'Videoaula UCB - Unidade I', 'Projeto PetShop - Videoaulas', 'Avaliação: Fórum'] },
+
+                { name: 'Unidade 2', topics: ['2.1 Folha de Estilo (CSS)', '2.2 Páginas com CSS3', '2.3 JavaScript', '2.4 DOM', '2.5 BOM e Cookie', 'Avaliação: QME 2'] },
+
+                { name: 'Unidade 3', topics: ['3.1 Usabilidade e UX', '3.2 Design responsivo', '3.3 Acessibilidade WCAG', '3.4 Acessibilidade eMAG', 'Avaliação: Atividade aberta'] },
+
+                { name: 'Unidade 4', topics: ['4.1 Navegadores', '4.2 Frameworks front-end', '4.3 Publicação web', 'Avaliação: QME 4'] }
+
             ]
+
         },
+
         {
-            id: 'comp', name: 'Teoria Geral da Computação', code: 'GEE01I10375', color: 'var(--comp-color)',
+
+            id: 'comp', name: 'Teoria da Computação', accent: '#00bcd4',
+
             units: [
-                { name: 'Plano de Ensino', count: 5 }, { name: 'Dúvidas', count: 2 },
-                { name: 'Unidade 1', count: 6 }, { name: 'Unidade 2', count: 10 },
-                { name: 'Avaliações', count: 1 }
+
+                { name: 'Unidade 1', topics: ['1.1 O pensamento computacional', '1.2 Conceitos básicos', '1.3 Hardware', '1.4 Software', 'Avaliação: Fórum'] },
+
+                { name: 'Unidade 2', topics: ['2.1 Programa e máquina', '2.2 Fundamentos computacionais', '2.3 Algoritmos e lógica', '2.4 Pseudocódigo VisuAlg', '2.5 Comandos condicionais', '2.6 Teste de Mesa', '2.7 Repetição ENQUANTO', '2.8 Repetição PARA', 'Avaliação: QME'] }
+
             ]
+
         },
+
         {
-            id: 'ux', name: 'Experiência do Usuário (UX)', code: 'GEE39I10089', color: 'var(--ux-color)',
+
+            id: 'ux', name: 'Experiência do Usuário (UX)', accent: '#f39c12',
+
             units: [
-                { name: 'Plano de Ensino', count: 4 }, { name: 'Dúvidas', count: 2 },
-                { name: 'Unidade 1', count: 7 }, { name: 'Unidade 2', count: 6 },
-                { name: 'Unidade 3', count: 5 }, { name: 'Unidade 4', count: 5 }
+
+                { name: 'Unidade 1', topics: ['1.1 Introdução a IHC', '1.2 Fatores Humanos', '1.3 Interface e Affordance', '1.4 Usabilidade e UX', '1.5 Gestão de UX', 'Avaliação: Fórum'] },
+
+                { name: 'Unidade 2', topics: ['2.1 Métodos ágeis', '2.2 Processos Design I', '2.3 Processos Design II', '2.4 Requisitos', 'Avaliação: QME 2'] },
+
+                { name: 'Unidade 3', topics: ['3.1 Storyboarding e prototipação', '3.2 Prototipação e concepção', '3.3 Ferramentas de apoio', 'Avaliação: Atividade aberta'] },
+
+                { name: 'Unidade 4', topics: ['4.1 Acessibilidade', '4.2 Acessibilidade em jogos', '4.3 Avaliação em IHC', '4.4 Testes de usabilidade', 'Avaliação: QME 4'] }
+
             ]
+
         }
+
     ];
 
-    let progress = JSON.parse(localStorage.getItem('study_progress_v3')) || {};
+
+
+    // Ciclo Semanal (17h-22h)
+
+    const STUDY_PLAN = {
+
+        1: ['front', 'comp', 'front'], // Segunda
+
+        2: ['ux', 'front', 'ux'],      // Terça
+
+        3: ['comp', 'ux', 'comp'],     // Quarta
+
+        4: ['front', 'ux', 'front'],   // Quinta
+
+        5: ['ux', 'comp', 'ux'],       // Sexta
+
+        6: ['front', 'comp', 'ux'],    // Sábado
+
+        0: ['ux', 'comp', 'front']     // Domingo
+
+    };
+
+
+
+    let progress = JSON.parse(localStorage.getItem('study_tracker_vFINAL')) || {};
+
+
 
     function init() {
-        const grid = document.getElementById('grid');
-        grid.innerHTML = '';
 
-        DATA.forEach(subject => {
-            const totalInSubject = subject.units.reduce((a, b) => a + b.count, 0);
-            const card = document.createElement('div');
-            card.className = 'subject-card';
-            card.style.setProperty('--accent-color', subject.color);
+        renderSchedule();
+
+        renderSubjects();
+
+    }
+
+
+
+    function renderSchedule() {
+
+        const now = new Date();
+
+        const day = now.getDay();
+
+        const daysBR = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
+
+        document.getElementById('dayDisplay').innerText = daysBR[day];
+
+
+
+        const grid = document.getElementById('scheduleGrid');
+
+        const subjectsToday = STUDY_PLAN[day];
+
+        const times = ["17:00 - 18:30", "18:45 - 20:30", "20:45 - 22:00"];
+
+
+
+        grid.innerHTML = subjectsToday.map((sid, index) => {
+
+            const subject = DATA.find(s => s.id === sid);
+
+            const nextTopic = findNextTopic(subject);
+
             
-            let unitsHTML = '';
-            subject.units.forEach((unit, uIdx) => {
-                let unitCheckboxes = '';
-                let checkedInUnit = 0;
-                for(let i=0; i<unit.count; i++) {
-                    const tid = `${subject.id}-${uIdx}-${i}`;
-                    if(progress[tid]) checkedInUnit++;
-                    unitCheckboxes += `
-                        <label class="topic-item">
-                            <input type="checkbox" id="${tid}" ${progress[tid] ? 'checked' : ''} 
-                                onchange="updateProgress('${tid}', '${subject.id}', ${totalInSubject}, '${subject.id}-u${uIdx}-stat', ${unit.count})">
-                            <span class="topic-label">Tópico ${i+1}</span>
-                        </label>`;
+
+            return `
+
+                <div class="schedule-card" style="--accent-color: ${subject.accent}">
+
+                    <span class="time-badge">${times[index]}</span>
+
+                    <span class="subj-name">${subject.name}</span>
+
+                    <div class="topic-suggestion">
+
+                        <span class="material-symbols-outlined" style="font-size:18px; color:${subject.accent}">play_circle</span>
+
+                        ${nextTopic}
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join('');
+
+    }
+
+
+
+    function findNextTopic(subject) {
+
+        for (let uIdx = 0; uIdx < subject.units.length; uIdx++) {
+
+            const unit = subject.units[uIdx];
+
+            for (let tIdx = 0; tIdx < unit.topics.length; tIdx++) {
+
+                const tid = `${subject.id}-${uIdx}-${tIdx}`;
+
+                if (!progress[tid]) {
+
+                    return `${unit.name}: ${unit.topics[tIdx]}`;
+
                 }
 
-                unitsHTML += `
-                    <div class="module-accordion" id="acc-${subject.id}-${uIdx}">
-                        <div class="accordion-header" onclick="toggleAccordion('${subject.id}-${uIdx}')">
-                            <div>
-                                <h3>${unit.name}</h3>
-                                <span class="status-info" id="${subject.id}-u${uIdx}-stat">${checkedInUnit}/${unit.count}</span>
-                            </div>
-                            <span class="material-symbols-outlined expand-icon">expand_more</span>
+            }
+
+        }
+
+        return "Matéria concluída! 🎉";
+
+    }
+
+
+
+    function renderSubjects() {
+
+        const grid = document.getElementById('subjectsGrid');
+
+        grid.innerHTML = DATA.map(subject => {
+
+            const total = subject.units.reduce((a, b) => a + b.topics.length, 0);
+
+            const done = Object.keys(progress).filter(k => k.startsWith(subject.id) && progress[k]).length;
+
+            const perc = Math.round((done / total) * 100);
+
+
+
+            return `
+
+                <div class="subject-card" style="--accent-color: ${subject.accent}">
+
+                    <div class="card-top">
+
+                        <div class="subject-info">
+
+                            <h2>${subject.name}</h2>
+
                         </div>
-                        <div class="accordion-content">${unitCheckboxes}</div>
-                    </div>`;
-            });
 
-            card.innerHTML = `
-                <div class="card-top">
-                    <div class="subject-info">
-                        <span style="font-size: 0.7rem; font-weight:700; color:var(--text-soft)">${subject.code}</span>
-                        <h2>${subject.name}</h2>
+                        <div class="progress-circle">
+
+                            <svg><circle class="bg-circle"/><circle class="main-stroke" style="stroke-dashoffset: ${131.9 - (perc/100*131.9)}"/></svg>
+
+                            <span style="position:absolute; font-size:0.7rem; font-weight:800">${perc}%</span>
+
+                        </div>
+
                     </div>
-                    <div class="progress-circle">
-                        <svg><circle class="bg-circle"/><circle class="main-stroke" id="stroke-${subject.id}"/></svg>
-                        <div class="percentage" id="perc-${subject.id}">0%</div>
-                    </div>
+
+                    ${subject.units.map((unit, uIdx) => `
+
+                        <div class="module-accordion" onclick="this.classList.toggle('active')">
+
+                            <div class="acc-header">${unit.name} <span class="material-symbols-outlined" style="font-size:16px">expand_more</span></div>
+
+                            <div class="acc-content">
+
+                                ${unit.topics.map((topic, tIdx) => {
+
+                                    const tid = `${subject.id}-${uIdx}-${tIdx}`;
+
+                                    return `
+
+                                        <div class="topic-row">
+
+                                            <input type="checkbox" id="${tid}" ${progress[tid] ? 'checked' : ''} onchange="updateProgress('${tid}')">
+
+                                            <label>${topic}</label>
+
+                                        </div>
+
+                                    `;
+
+                                }).join('')}
+
+                            </div>
+
+                        </div>
+
+                    `).join('')}
+
                 </div>
-                <div class="units-container">${unitsHTML}</div>
+
             `;
-            grid.appendChild(card);
-            calculateSubjectTotal(subject.id, totalInSubject);
-        });
+
+        }).join('');
+
     }
 
-    function toggleAccordion(id) {
-        document.getElementById(`acc-${id}`).classList.toggle('active');
-    }
 
-    function updateProgress(tid, sid, total, statId, unitTotal) {
+
+    function updateProgress(tid) {
+
         progress[tid] = document.getElementById(tid).checked;
-        localStorage.setItem('study_progress_v3', JSON.stringify(progress));
-        const unitPrefix = tid.split('-').slice(0, 2).join('-');
-        const checkedInUnit = Object.keys(progress).filter(k => k.startsWith(unitPrefix) && progress[k]).length;
-        document.getElementById(statId).innerText = `${checkedInUnit}/${unitTotal}`;
-        calculateSubjectTotal(sid, total);
+
+        localStorage.setItem('study_tracker_vFINAL', JSON.stringify(progress));
+
+        init(); // Atualiza tudo
+
     }
 
-    function calculateSubjectTotal(sid, total) {
-        const checked = Object.keys(progress).filter(k => k.startsWith(sid) && progress[k]).length;
-        const percent = Math.round((checked / total) * 100);
-        document.getElementById(`perc-${sid}`).innerText = percent + '%';
-        const stroke = document.getElementById(`stroke-${sid}`);
-        stroke.style.strokeDashoffset = 188.5 - (percent / 100 * 188.5);
-    }
 
-    function toggleMenu() {
-        document.getElementById('menu').classList.toggle('active');
-        document.getElementById('hamburgerBtn').classList.toggle('active');
-    }
 
     init();
+
 </script>
+
 </body>
+
 </html>
