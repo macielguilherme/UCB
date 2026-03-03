@@ -13,13 +13,12 @@
             --deep-blue: #0a2e5a;
             --primary-blue: #004a99;
             --soft-blue: #e2edf9;
-            --bg-color: #f1f5f9; /* Fundo ligeiramente mais escuro para destacar os cards brancos */
+            --bg-color: #f1f5f9;
             --white: #ffffff;
             --text-primary: #1e2b3c;
             --text-soft: #5b6f84;
-            --radius-lg: 28px; /* Combinando com os cantos físicos do A35 */
+            --radius-lg: 28px;
             --radius-md: 20px;
-            /* Sombra suave e elegante (Glassmorphism inspired) */
             --card-shadow: 0 10px 30px rgba(0, 40, 70, 0.08);
         }
 
@@ -33,10 +32,9 @@
             padding-bottom: 40px;
         }
 
-        /* HEADER MOBILE REFINADO */
         header {
             background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px); /* Efeito de vidro na barra de navegação */
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             padding: 12px 20px;
             display: flex;
@@ -58,16 +56,22 @@
             letter-spacing: 0.5px;
         }
 
-        main { padding: 16px; max-width: 480px; margin: 0 auto; }
+        /* CONTAINER RESPONSIVO */
+        main { 
+            padding: 16px; 
+            max-width: 1200px; /* Aumentado para Desktop */
+            margin: 0 auto; 
+        }
 
-        /* BOX DE FOCO (UX IMPROVED) */
+        /* FOCO DE ESTUDOS (FULL WIDTH) */
         .study-focus-area {
             background: var(--white);
             border-radius: var(--radius-lg);
-            padding: 22px;
+            padding: 24px;
             margin-bottom: 24px;
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255,255,255,0.6);
+            width: 100%;
         }
         .focus-header { 
             display: flex; 
@@ -86,20 +90,23 @@
             border-radius: 50px;
         }
 
-        /* GRID DE HORÁRIOS COM SOMBRA (NOVO ESTILO) */
-        .schedule-grid { display: flex; flex-direction: column; gap: 14px; }
+        /* GRID DE HORÁRIOS */
+        .schedule-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 14px; 
+        }
+        
         .schedule-card {
             background: var(--white);
             padding: 18px;
             border-radius: var(--radius-md);
-            /* Removida a borda lateral esquerda grossa */
-            border: 1px solid rgba(0,0,0,0.02); /* Borda quase invisível */
-            box-shadow: 0 6px 16px rgba(0, 30, 60, 0.05); /* Sombra dedicada para estes cards */
+            border: 1px solid rgba(0,0,0,0.02);
+            box-shadow: 0 6px 16px rgba(0, 30, 60, 0.05);
             position: relative;
-            overflow: hidden; /* Para o indicador vertical */
+            overflow: hidden;
         }
         
-        /* Indicador vertical interno sutil */
         .schedule-card::before {
             content: '';
             position: absolute;
@@ -117,7 +124,7 @@
         .topic-suggestion { 
             font-size: 0.85rem; 
             color: var(--text-primary); 
-            background: #f8fafc; /* Fundo levemente diferente */
+            background: #f8fafc;
             padding: 12px 16px; 
             border-radius: 14px; 
             border: 1px solid #edf2f7;
@@ -127,26 +134,34 @@
             font-weight: 500;
         }
 
-        /* CARDS DE MATÉRIAS */
-        .subjects-grid { display: flex; flex-direction: column; gap: 18px; }
+        /* GRID DE MATÉRIAS (3 COLUNAS NO DESKTOP) */
+        .subjects-grid { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 20px; 
+            align-items: start;
+        }
+
         .subject-card { 
             background: var(--white); 
             border-radius: var(--radius-lg); 
             padding: 22px; 
             box-shadow: var(--card-shadow);
             border: 1px solid rgba(255,255,255,0.7);
+            height: fit-content;
         }
         
         .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
         .subject-info h2 { font-size: 1.05rem; font-weight: 800; color: var(--deep-blue); max-width: 75%; }
 
+        /* PROGRESSO */
         .progress-circle { position: relative; width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; }
         .progress-circle svg { transform: rotate(-90deg); width: 46px; height: 46px; }
         .progress-circle circle { fill: none; stroke-width: 5; cx: 23; cy: 23; r: 19; stroke-linecap: round; }
         .bg-circle { stroke: #f1f5f9; }
         .main-stroke { stroke: var(--accent-color); transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); stroke-dasharray: 119.4; stroke-dashoffset: 119.4; }
 
-        /* ACORDION REFORMULADO PARA TOUCH */
+        /* ACORDION */
         .module-accordion { margin-bottom: 10px; border-radius: 16px; background: #f8fafc; border: 1px solid #edf2f7; overflow: hidden; transition: 0.2s; }
         .acc-header { padding: 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; font-weight: 700; color: var(--text-soft); }
         .acc-content { display: none; padding: 4px 14px 14px; background: white; }
@@ -155,22 +170,21 @@
         .module-accordion.active .acc-content { display: block; }
         .module-accordion.active .acc-header { color: var(--deep-blue); padding-bottom: 8px; }
 
-        /* LINHA DE TÓPICO (ZONA DE TOQUE AMPLIADA) */
+        /* TOPICOS */
         .topic-row { 
             display: flex; 
             align-items: center; 
             gap: 14px; 
-            padding: 14px 4px; 
+            padding: 12px 4px; 
             border-bottom: 1px solid #f1f5f9; 
         }
         .topic-row:last-child { border-bottom: none; }
         
-        /* Checkbox Customizado One UI Style */
         .topic-row input[type="checkbox"] {
             appearance: none;
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             border: 2px solid #cbd5e1;
             border-radius: 7px;
             background: white;
@@ -182,13 +196,12 @@
         .topic-row input[type="checkbox"]:checked {
             background: var(--accent-color);
             border-color: var(--accent-color);
-            transform: scale(1.05);
         }
         .topic-row input[type="checkbox"]:checked::after {
             content: 'check';
             font-family: 'Material Symbols Outlined';
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             position: absolute;
             left: 50%;
             top: 50%;
@@ -196,8 +209,19 @@
             font-weight: 800;
         }
         
-        .topic-row label { font-size: 0.88rem; font-weight: 500; color: var(--text-primary); flex: 1; padding: 4px 0; }
+        .topic-row label { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); flex: 1; cursor: pointer; }
         .topic-row input:checked + label { color: var(--text-soft); text-decoration: line-through; opacity: 0.7; }
+
+        /* MEDIA QUERIES PARA DESKTOP */
+        @media (min-width: 992px) {
+            .subjects-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .schedule-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .focus-header h1 { font-size: 1.6rem; }
+        }
 
     </style>
 </head>
@@ -205,17 +229,17 @@
 
 <header>
     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" class="logo">
-    <div class="header-tag">17H - 22H</div>
+    <div class="header-tag">ESTUDOS: 17H - 22H</div>
 </header>
 
 <main>
     <section class="study-focus-area">
         <div class="focus-header">
             <div class="focus-title-group">
-                <span class="material-symbols-outlined" style="color: var(--primary-blue); font-size: 26px;">event_upcoming</span>
+                <span class="material-symbols-outlined" style="color: var(--primary-blue); font-size: 28px;">calendar_month</span>
                 <h1 id="dayDisplay">---</h1>
             </div>
-            <span class="meta-tag">Meta: 5h</span>
+            <span class="meta-tag">Meta Diária: 5h</span>
         </div>
 
         <div class="schedule-grid" id="scheduleGrid">
@@ -311,7 +335,7 @@
             const total = subject.units.reduce((a, b) => a + b.topics.length, 0);
             const done = Object.keys(progress).filter(k => k.startsWith(subject.id) && progress[k]).length;
             const perc = Math.round((done / total) * 100);
-            const dash = 119.4 - (perc/100 * 119.4); // Ajustado para r=19
+            const dash = 119.4 - (perc/100 * 119.4);
 
             return `
                 <div class="subject-card" style="--accent-color: ${subject.accent}">
@@ -348,7 +372,7 @@
     function updateProgress(tid) {
         progress[tid] = document.getElementById(tid).checked;
         localStorage.setItem('study_tracker_vFINAL', JSON.stringify(progress));
-        setTimeout(init, 180); // Ligeiro delay para a animação do check One UI
+        setTimeout(init, 180);
     }
 
     init();
