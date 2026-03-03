@@ -638,7 +638,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Sua configuração (já preenchida com os dados que você enviou)
     const firebaseConfig = {
         apiKey: "AIzaSyAtoU_Put_6nHUw1gYg0AMqND0PEQ8UlGA",
         authDomain: "plano-estudos.firebaseapp.com",
@@ -649,11 +648,8 @@
         measurementId: "G-FHZXV4HQXG"
     };
 
-    // Inicializa Firebase e Firestore
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-
-    // ID do documento (pode ser um ID fixo para você, ou o e-mail do usuário no futuro)
     const USER_DOC_ID = "meu-progresso-estudos";
 
     const DATA = [
@@ -692,20 +688,13 @@
 
     let progress = {};
 
-    // --- FUNÇÕES DE SINCRONIZAÇÃO COM FIREBASE ---
-
     async function loadProgress() {
         try {
             const docRef = doc(db, "progresso_estudos", USER_DOC_ID);
             const docSnap = await getDoc(docRef);
-            
-            if (docSnap.exists()) {
-                progress = docSnap.data().topics || {};
-            }
+            if (docSnap.exists()) { progress = docSnap.data().topics || {}; }
             renderAll();
-        } catch (e) {
-            console.error("Erro ao carregar dados:", e);
-        }
+        } catch (e) { console.error("Erro ao carregar:", e); }
     }
 
     async function saveProgress(tid, checked) {
@@ -714,12 +703,8 @@
             const docRef = doc(db, "progresso_estudos", USER_DOC_ID);
             await setDoc(docRef, { topics: progress }, { merge: true });
             renderAll();
-        } catch (e) {
-            console.error("Erro ao salvar:", e);
-        }
+        } catch (e) { console.error("Erro ao salvar:", e); }
     }
-
-    // --- FUNÇÕES DE INTERFACE ---
 
     function renderAll() {
         renderSchedule();
@@ -774,16 +759,14 @@
             return `
                 <div class="subject-card" style="--accent-color: ${subject.accent}">
                     <div class="card-top">
-                        <div class="subject-info">
-                            <h2>${subject.name}</h2>
-                        </div>
+                        <div class="subject-info"><h2>${subject.name}</h2></div>
                         <div class="progress-circle">
                             <svg><circle class="bg-circle"/><circle class="main-stroke" style="stroke-dashoffset: ${dash}"/></svg>
                             <span style="position:absolute; font-size:0.65rem; font-weight:800">${perc}%</span>
                         </div>
                     </div>
                     ${subject.units.map((unit, uIdx) => `
-                        <div class="module-accordion active" onclick="this.classList.toggle('active')">
+                        <div class="module-accordion" onclick="this.classList.toggle('active')">
                             <div class="acc-header">${unit.name} <span class="material-symbols-outlined" style="font-size:18px">expand_more</span></div>
                             <div class="acc-content" onclick="event.stopPropagation()">
                                 ${unit.topics.map((topic, tIdx) => {
@@ -802,7 +785,6 @@
             `;
         }).join('');
 
-        // Adiciona os eventos de clique nos checkboxes
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => {
                 saveProgress(e.target.dataset.tid, e.target.checked);
@@ -810,10 +792,9 @@
         });
     }
 
-    // Inicia o app carregando do Firebase
     loadProgress();
-
 </script>
+      
       <veepn-lock-screen>
          <style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2) format("woff2-variations");font-weight:100 1000;font-display:swap}</style>
       </veepn-lock-screen>
