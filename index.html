@@ -423,37 +423,37 @@
       </div>
       <div class="path-event-item">
         <span class="date-badge">23 MAR (SEG)</span>
-        <div class="event-title">Agendamento de provas</div>
-        <div class="event-type">Início do período</div>
+        <div class="event-title">Início do Agendamento</div>
+        <div class="event-type">Período para agendar provas</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">27 MAR (SEX)</span>
-        <div class="event-title">Encerramento Fórum - Unidade I</div>
-        <div class="event-type">Atividade no AVA</div>
+        <div class="event-title">Encerramento do Fórum</div>
+        <div class="event-type">Fim do prazo Unidade I</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">29 MAR (DOM)</span>
-        <div class="event-title">Fim do agendamento</div>
+        <div class="event-title">Fim do Agendamento</div>
         <div class="event-type">Provas presenciais</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">01 ABR (QUA)</span>
-        <div class="event-title">Encerramento QME - Unidade II</div>
-        <div class="event-type">Atividade no AVA</div>
+        <div class="event-title">Encerramento da QME</div>
+        <div class="event-type">Fim do prazo Unidade II</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">06 A 12 ABR</span>
-        <div class="event-title">Avaliação presencial</div>
+        <div class="event-title">Avaliação Presencial</div>
         <div class="event-type">Período de provas</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">17-18 ABR</span>
-        <div class="event-title">Agendamento substitutivas</div>
-        <div class="event-type">Início do período</div>
+        <div class="event-title">Agendamento Substitutivas</div>
+        <div class="event-type">Período para agendar</div>
       </div>
       <div class="path-event-item">
         <span class="date-badge">23-25 ABR</span>
-        <div class="event-title">Provas substitutivas</div>
+        <div class="event-title">Provas Substitutivas</div>
         <div class="event-type">Avaliação presencial</div>
       </div>
       <div class="path-event-item">
@@ -482,31 +482,32 @@
 
 <script>
 let currentDate = new Date();
-currentDate.setFullYear(2026); // Define o ano para 2026 conforme os eventos
+// Ajustar para o ano 2026 para visualização correta dos eventos
+currentDate.setFullYear(2026);
 currentDate.setMonth(1); // Fevereiro (0-index: 0=Jan, 1=Fev)
 
 const MATERIA = "TEORIA GERAL DA COMPUTAÇÃO - GEE01I10375";
 
 const trilaEventos = {
-    // Fevereiro 2026
-    "20260223": { title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." },
-    "20260226": { title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA disponível." },
+    // Fevereiro 2026 (mês 01 no JS)
+    "20260123": { title: "Início do Módulo I", desc: "A partir desta data, o conteúdo do módulo estará disponível no AVA." },
+    "20260126": { title: "Abertura do Fórum – Unidade I", desc: "Atividade no AVA disponível." },
     
-    // Março 2026
-    "20260302": { title: "Abertura da QME – Unidade II", desc: "Atividade no AVA disponível." },
-    "20260323": { title: "Início do período de agendamento", desc: "Agendamento para as provas presenciais." },
-    "20260327": { title: "Encerramento do Fórum - Unidade I", desc: "Prazo final para participação." },
-    "20260329": { title: "Encerramento do agendamento", desc: "Fim do período para agendar provas presenciais." },
+    // Março 2026 (mês 02 no JS)
+    "20260202": { title: "Abertura da QME – Unidade II", desc: "Atividade no AVA disponível." },
+    "20260223": { title: "Início do Agendamento", desc: "Início do período de agendamento para as provas presenciais." },
+    "20260227": { title: "Encerramento do Fórum", desc: "Encerramento do Fórum - Unidade I." },
+    "20260229": { title: "Fim do Agendamento", desc: "Encerramento do período de agendamento para as provas presenciais." },
     
-    // Abril 2026
-    "20260401": { title: "Encerramento da QME - Unidade II", desc: "Prazo final para realizar a atividade." },
-    "20260406": { title: "Início das provas presenciais", desc: "Período para realização das provas." },
-    "20260412": { title: "Fim das provas presenciais", desc: "Último dia para realizar as provas." },
-    "20260417": { title: "Início agendamento substitutivas", desc: "Período para agendar provas substitutivas." },
-    "20260418": { title: "Agendamento substitutivas (sábado)", desc: "Continuação do período de agendamento." },
-    "20260423": { title: "Início das provas substitutivas", desc: "Período para realizar provas substitutivas." },
-    "20260425": { title: "Fim das provas substitutivas", desc: "Último dia para provas substitutivas." },
-    "20260430": { title: "Encerramento do Módulo", desc: "Conclusão oficial do Módulo I." }
+    // Abril 2026 (mês 03 no JS)
+    "20260301": { title: "Encerramento da QME", desc: "Encerramento da QME - Unidade II." },
+    "20260306": { title: "Início Avaliação Presencial", desc: "Início do período para a realização das provas presenciais." },
+    "20260312": { title: "Fim Avaliação Presencial", desc: "Fim do período para a realização das provas presenciais." },
+    "20260317": { title: "Agendamento Substitutivas", desc: "Início do período de agendamento para as provas substitutivas." },
+    "20260318": { title: "Agendamento Substitutivas", desc: "Continuação do período de agendamento para provas substitutivas." },
+    "20260323": { title: "Início Provas Substitutivas", desc: "Início do período para realização das provas substitutivas." },
+    "20260325": { title: "Fim Provas Substitutivas", desc: "Fim do período para realização das provas substitutivas." },
+    "20260330": { title: "Encerramento do Módulo", desc: "Encerramento e conclusão oficial do Módulo I." }
 };
 
 function renderCalendar() {
@@ -518,31 +519,42 @@ function renderCalendar() {
   
   monthYearElement.innerText = `${monthNames[month]} ${year}`;
   calendarGrid.innerHTML = '';
+  
   ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'].forEach(d => {
-    const div = document.createElement('div'); div.className = 'weekday'; div.innerText = d; calendarGrid.appendChild(div);
+    const div = document.createElement('div'); 
+    div.className = 'weekday'; 
+    div.innerText = d; 
+    calendarGrid.appendChild(div);
   });
   
   const firstDay = new Date(year, month, 1).getDay();
   const lastDate = new Date(year, month + 1, 0).getDate();
   
   for (let i = 0; i < firstDay; i++) {
-    const div = document.createElement('div'); div.className = 'calendar-day empty'; calendarGrid.appendChild(div);
+    const div = document.createElement('div'); 
+    div.className = 'calendar-day empty'; 
+    calendarGrid.appendChild(div);
   }
   
   for (let i = 1; i <= lastDate; i++) {
     const dayDiv = document.createElement('div');
     dayDiv.className = 'calendar-day';
     dayDiv.innerHTML = `<span>${i}</span>`;
-    const key = `${year}${String(month+1).padStart(2, '0')}${String(i).padStart(2, '0')}`;
+    
+    const key = `${year}${String(month).padStart(2, '0')}${String(i).padStart(2, '0')}`;
     
     if (trilaEventos[key]) {
-      const dot = document.createElement('div'); dot.className = 'event-dot'; dayDiv.appendChild(dot);
+      const dot = document.createElement('div'); 
+      dot.className = 'event-dot'; 
+      dayDiv.appendChild(dot);
       dayDiv.onclick = () => showDetails(key, i, monthNames[month]);
+      dayDiv.style.backgroundColor = 'var(--soft-blue)';
     }
     
-    // Destacar hoje (considerando ano 2026 para visualização)
-    const today = new Date();
-    if (i === 23 && month === 1 && year === 2026) dayDiv.classList.add('today');
+    // Destacar o dia 23 de Fevereiro de 2026 como exemplo
+    if (i === 23 && month === 1 && year === 2026) {
+      dayDiv.classList.add('today');
+    }
     
     calendarGrid.appendChild(dayDiv);
   }
@@ -561,8 +573,15 @@ function showDetails(key, day, monthName) {
     </div>`;
 }
 
-function prevMonth() { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); }
-function nextMonth() { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); }
+function prevMonth() { 
+  currentDate.setMonth(currentDate.getMonth() - 1); 
+  renderCalendar(); 
+}
+
+function nextMonth() { 
+  currentDate.setMonth(currentDate.getMonth() + 1); 
+  renderCalendar(); 
+}
 
 function toggleMenu() {
   document.getElementById('hamburgerButton').classList.toggle('active');
@@ -570,7 +589,6 @@ function toggleMenu() {
   document.body.style.overflow = document.getElementById('hamburgerDropdown').classList.contains('active') ? 'hidden' : 'auto';
 }
 
-// Fechar ao clicar fora
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('hamburgerDropdown');
   const btn = document.getElementById('hamburgerButton');
