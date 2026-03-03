@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Atividades · Católica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+
+    <style>
+        :root {
+            --deep-blue: #0a2e5a;
+            --primary-blue: #004a99;
+            --soft-blue: #e2edf9;
+            --bg-color: #f4f8fb;
+            --white: #ffffff;
+            --text-primary: #1e2b3c;
+            --text-soft: #5b6f84;
+            --success: #27ae60;
+            --ux-color: #f39c12;
+            --comp-color: #00bcd4;
+            --front-color: #8e44ad;
+            --card-shadow: 0 12px 32px rgba(0, 40, 70, 0.1);
+            --transition-speed: 0.35s;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-primary); }
+
+        /* HEADER & MENU (Sincronizado com index) */
+        header {
+            background: var(--white); padding: 1rem 5%;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 1100; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .logo { max-height: 40px; }
+
+        .hamburger-button {
+            background: none; border: none; cursor: pointer;
+            display: flex; flex-direction: column; gap: 5px;
+            width: 44px; height: 44px; align-items: center; justify-content: center;
+            z-index: 1200; position: relative;
+        }
+        .hamburger-button span {
+            display: block; width: 24px; height: 2.5px;
+            background: var(--deep-blue); border-radius: 3px;
+            transition: var(--transition-speed);
+        }
+        .hamburger-button.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .hamburger-button.active span:nth-child(2) { opacity: 0; }
+        .hamburger-button.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        .hamburger-dropdown {
+            position: fixed; top: 0; right: 0; bottom: 0; width: 280px;
+            background: var(--white); box-shadow: -15px 0 35px rgba(0,0,0,0.1);
+            visibility: hidden; transform: translateX(100%);
+            transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1150; padding-top: 80px;
+        }
+        .hamburger-dropdown.active { visibility: visible; transform: translateX(0); }
+        .hamburger-dropdown a {
+            display: flex; align-items: center; gap: 15px; padding: 18px 25px;
+            color: var(--text-primary); text-decoration: none; font-weight: 600;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        /* CONTEÚDO */
+        main { padding: 2rem 5%; max-width: 1200px; margin: 0 auto; }
+        .dashboard-header { margin-bottom: 2.5rem; }
+        .dashboard-header h1 { font-size: 2rem; font-weight: 800; color: var(--deep-blue); }
+
+        /* CARDS */
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; }
+        .subject-card {
+            background: var(--white); border-radius: 30px; padding: 2rem;
+            box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .subject-info h2 { font-size: 1.2rem; color: var(--deep-blue); font-weight: 800; }
+
+        /* PROGRESS CIRCLE */
+        .progress-circle { position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; }
+        .progress-circle svg { transform: rotate(-90deg); width: 80px; height: 80px; }
+        .progress-circle circle { fill: none; stroke-width: 8; stroke-linecap: round; cx: 40; cy: 40; r: 34; }
+        .bg-circle { stroke: var(--soft-blue); }
+        .main-stroke { stroke: var(--accent-color); transition: stroke-dashoffset 0.5s ease; stroke-dasharray: 213.6; stroke-dashoffset: 213.6; }
+        .percentage { position: absolute; font-size: 1rem; font-weight: 800; }
+
+        /* CHECKBOXES & LIST */
+        .module-group { margin-bottom: 1.5rem; }
+        .module-title { font-size: 0.85rem; font-weight: 800; color: var(--text-soft); text-transform: uppercase; margin-bottom: 10px; display: block; }
+        
+        .topic-item {
+            display: flex; align-items: center; gap: 12px; padding: 10px 0;
+            border-bottom: 1px solid #f1f5f9; cursor: pointer;
+        }
+        .topic-item:last-child { border-bottom: none; }
+
+        input[type="checkbox"] {
+            width: 20px; height: 20px; accent-color: var(--accent-color); cursor: pointer;
+        }
+
+        .topic-label { font-size: 0.95rem; font-weight: 500; transition: 0.2s; }
+        input[type="checkbox"]:checked + .topic-label { color: var(--text-soft); text-decoration: line-through; }
+
+        @media (max-width: 768px) { .subjects-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Logomarca_Universidade_Catolica_de_Brasilia.svg/1280px-Logomarca_Universidade_Catolica_de_Brasilia.svg.png" class="logo">
+    <button class="hamburger-button" onclick="toggleMenu()" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+    </button>
+</header>
+
+<div class="hamburger-dropdown" id="menu">
+    <a href="index.html"><span class="material-symbols-outlined">calendar_month</span> Calendário</a>
+    <a href="atividades.html" style="background: var(--soft-blue)"><span class="material-symbols-outlined">assignment_turned_in</span> Atividades</a>
+    <a href="2.html"><span class="material-symbols-outlined">person</span> Meu Perfil</a>
+</div>
+
+<main>
+    <div class="dashboard-header">
+        <h1>Tracker de Estudos</h1>
+        <p>Marque os tópicos concluídos para atualizar seu progresso.</p>
+    </div>
+
+    <div class="subjects-grid" id="grid">
+        </div>
+</main>
+
+<script>
+    const DATA = [
+        {
+            id: 'front',
+            name: 'Desenvolvimento Front End',
+            code: 'GEE61I10021',
+            color: 'var(--front-color)',
+            modules: [
+                { title: 'Plano & Dúvidas', count: 7 }, // 5 plano + 2 duvidas
+                { title: 'Unidade 1', count: 9 },
+                { title: 'Unidade 2', count: 7 },
+                { title: 'Unidade 3', count: 6 },
+                { title: 'Unidade 4', count: 4 }
+            ]
+        },
+        {
+            id: 'comp',
+            name: 'Teoria Geral da Computação',
+            code: 'GEE01I10375',
+            color: 'var(--comp-color)',
+            modules: [
+                { title: 'Plano & Dúvidas', count: 7 },
+                { title: 'Unidade 1', count: 6 },
+                { title: 'Unidade 2', count: 10 },
+                { title: 'Avaliações', count: 1 }
+            ]
+        },
+        {
+            id: 'ux',
+            name: 'Experiência do Usuário (UX)',
+            code: 'GEE39I10089',
+            color: 'var(--ux-color)',
+            modules: [
+                { title: 'Plano & Dúvidas', count: 6 },
+                { title: 'Unidade 1', count: 7 },
+                { title: 'Unidade 2', count: 6 },
+                { title: 'Unidade 3', count: 5 },
+                { title: 'Unidade 4', count: 5 }
+            ]
+        }
+    ];
+
+    // Carregar progresso salvo ou usar o inicial das imagens
+    let progress = JSON.parse(localStorage.getItem('study_progress')) || {};
+
+    function init() {
+        const grid = document.getElementById('grid');
+        grid.innerHTML = '';
+
+        DATA.forEach(subject => {
+            const totalInSubject = subject.modules.reduce((a, b) => a + b.count, 0);
+            
+            const card = document.createElement('div');
+            card.className = 'subject-card';
+            card.style.setProperty('--accent-color', subject.color);
+            
+            let modulesHTML = '';
+            subject.modules.forEach((mod, mIdx) => {
+                modulesHTML += `<div class="module-group">
+                    <span class="module-title">${mod.title}</span>`;
+                for(let i=0; i<mod.count; i++) {
+                    const tid = `${subject.id}-${mIdx}-${i}`;
+                    const checked = progress[tid] ? 'checked' : '';
+                    modulesHTML += `
+                        <label class="topic-item">
+                            <input type="checkbox" id="${tid}" ${checked} onchange="updateProgress('${tid}', '${subject.id}', ${totalInSubject})">
+                            <span class="topic-label">Tópico ${i+1}</span>
+                        </label>`;
+                }
+                modulesHTML += `</div>`;
+            });
+
+            card.innerHTML = `
+                <div class="card-top">
+                    <div class="subject-info">
+                        <h2>${subject.name}</h2>
+                        <span>${subject.code}</span>
+                    </div>
+                    <div class="progress-circle" id="circle-${subject.id}">
+                        <svg><circle class="bg-circle"/><circle class="main-stroke" id="stroke-${subject.id}"/></svg>
+                        <div class="percentage" id="perc-${subject.id}">0%</div>
+                    </div>
+                </div>
+                <div class="modules-list">${modulesHTML}</div>
+            `;
+            grid.appendChild(card);
+            calculateSubjectTotal(subject.id, totalInSubject);
+        });
+    }
+
+    function updateProgress(tid, sid, total) {
+        const cb = document.getElementById(tid);
+        progress[tid] = cb.checked;
+        localStorage.setItem('study_progress', JSON.stringify(progress));
+        calculateSubjectTotal(sid, total);
+    }
+
+    function calculateSubjectTotal(sid, total) {
+        const checked = Object.keys(progress).filter(k => k.startsWith(sid) && progress[k]).length;
+        const percent = Math.round((checked / total) * 100);
+        
+        document.getElementById(`perc-${sid}`).innerText = percent + '%';
+        
+        // Animando o círculo (Circunferência é ~213.6)
+        const stroke = document.getElementById(`stroke-${sid}`);
+        const offset = 213.6 - (percent / 100 * 213.6);
+        stroke.style.strokeDashoffset = offset;
+    }
+
+    function toggleMenu() {
+        document.getElementById('menu').classList.toggle('active');
+        document.getElementById('hamburgerBtn').classList.toggle('active');
+    }
+
+    init();
+</script>
+
+</body>
+</html>
